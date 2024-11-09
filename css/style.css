@@ -1,0 +1,57 @@
+:root {
+  --color1: #118240;
+  --color2: #4cac6c;
+  --color3: #5cbc74;
+  --color4: #74dc80;
+  --whiteText: #ffffff;
+}
+
+.bg-green {
+  background-color: var(--color3) !important;
+  color: var(--whiteText) !important;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  /* border: 1px solid #8d8d8d; */
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+
+/* ======================================================= */
+
+/* --------------------[ Nav Bar ]-------------------- */
+nav {
+  border-bottom: 1px solid #88888820;
+}
+
+/* --------------------[ Card ]-------------------- */
+.card {
+  box-shadow: 1px 1px 5px 0 #00000024;
+}
+
+
+
+
+/* --------------------[ Image Cropper ]-------------------- */
+
+#imageCropperSection #image {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+}
+
+
+#imageCropperSection  #output {
+  display: block;
+  max-width: 100%;
+}
+
+#imageCropperSection .frame {
+  border: 1px solid #000;
+}
