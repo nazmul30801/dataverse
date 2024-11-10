@@ -136,7 +136,7 @@ if (isset($_POST["submit"])) {
 </div>';
 
 	$insert_status_html .= '<div class="alert alert-primary alert-dismissible fade show" role="alert">
-	New Profile <a href="/identity/index.php?q='.$last_id.'">ID - '.$last_id.' <strong>View</strong></a>
+	New Profile ID - '.$last_id.' <a href="/identity/index.php?q='.$last_id.'"><strong>View</strong></a>
 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>';
 } else {
