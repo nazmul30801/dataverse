@@ -1,6 +1,8 @@
 <?php
 
-
+$base_dir = "../";
+$error = array();
+$insert_status_html = "";
 if (isset($_POST["submit"])) {
 
 	$form_data = array(
@@ -45,69 +47,71 @@ if (isset($_POST["submit"])) {
 	$sql = "INSERT INTO `identity` (" . $db_cols . ") VALUES (" . $form_cols . ");";
 
 
-	require "../dbhandler.php";
+	require $base_dir . "dbhandler.php";
 	if ($conn->query($sql) === TRUE) {
+		if (isset($_FILES["profileImage"])) {
+			$image = $_FILES["profileImage"];
 
 
-		$target_dir = "../img/uploads/";
-		$target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
-		$uploadOk = 1;
-		$imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+			$last_id = $conn->insert_id;
+			$target_file = $base_dir . "img/profile/profile_" . $last_id . ".jpeg";
 
-		// Check if image file is a actual image or fake image
-		$check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
-		if ($check !== false) {
-			echo "File is an image - " . $check["mime"] . ".";
+
 			$uploadOk = 1;
-		} else {
-			echo "File is not an image.";
-			$uploadOk = 0;
-		}
+			$imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
 
-
-		// Check if file already exists
-		if (file_exists($target_file)) {
-			echo "Sorry, file already exists.";
-			$uploadOk = 0;
-		}
-
-		// Check file size
-		if ($_FILES["fileToUpload"]["size"] > 500000) {
-			echo "Sorry, your file is too large.";
-			$uploadOk = 0;
-		}
-
-		// Allow certain file formats
-		if (
-			$imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
-			&& $imageFileType != "gif"
-		) {
-			echo "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
-			$uploadOk = 0;
-		}
-
-		// Check if $uploadOk is set to 0 by an error
-		if ($uploadOk == 0) {
-			echo "Sorry, your file was not uploaded.";
-			// if everything is ok, try to upload file
-		} else {
-			if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
-				echo "The file " . htmlspecialchars(basename($_FILES["fileToUpload"]["name"])) . " has been uploaded.";
-
-				session_start();
-				$_SESSION["id"] = $conn->insert_id;
-				$_SESSION["imageFile"] = $target_file;
-				header("Location: image_uploader.php");
+			// Check if image file is a actual image or fake image
+			$check = getimagesize($image["tmp_name"]);
+			if ($check !== false) {
+				$error[] = "File is an image - " . $check["mime"] . ".";
+				$uploadOk = 1;
 			} else {
-				echo "Sorry, there was an error uploading your file.";
+				$error[] = "File is not an image.";
+				$uploadOk = 0;
 			}
-		}
 
-		$insert_status = [
-			"color" => "success",
-			"text_bold" => "Data Inserted Successfully",
-			"text_normal" => ""
-		];
+
+			// Check if file already exists
+			if (file_exists($target_file)) {
+				$error[] = "Sorry, file already exists.";
+				$uploadOk = 0;
+			}
+
+			// Check file size
+			if ($image["size"] > 500000) {
+				$error[] = "Sorry, your file is too large.";
+				$uploadOk = 0;
+			}
+
+			// Allow certain file formats
+			if ($imageFileType == "image/jpeg") {
+				$error[] = "Sorry, only JPEG files are allowed.";
+				$uploadOk = 0;
+			}
+
+			// Check if $uploadOk is set to 0 by an error
+			if ($uploadOk == 0) {
+				$error[] = "Sorry, your file was not uploaded.";
+				// if everything is ok, try to upload file
+			} else {
+				if (move_uploaded_file($image["tmp_name"], $target_file)) {
+					$error[] = "The file " . htmlspecialchars(basename($image["name"])) . " has been uploaded.";
+
+					// session_start();
+					// $_SESSION["id"] = $conn->insert_id;
+					// $_SESSION["imageFile"] = $target_file;
+					// header("Location: image_uploader.php");
+				} else {
+					$error[] = "Sorry, there was an error uploading your file.";
+				}
+			}
+
+			$insert_status = [
+				"color" => "success",
+				"text_bold" => "Data Inserted Successfully",
+				"text_normal" => ""
+			];
+		}
 	} else {
 		$insert_status = [
 			"color" => "danger",
@@ -119,9 +123,20 @@ if (isset($_POST["submit"])) {
 
 	$conn->close();
 
+	foreach ($error as $err) {
+		$insert_status_html .= '<div class="alert alert-info alert-dismissible fade show" role="alert">
+<strong></strong>' . $err . '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>';
+	}
 
-	$insert_status_html = '<div class="alert alert-' . $insert_status['color'] . ' alert-dismissible fade show" role="alert">
+
+	$insert_status_html .= '<div class="alert alert-' . $insert_status['color'] . ' alert-dismissible fade show" role="alert">
 <strong>' . $insert_status['text_bold'] . '</strong>' . $insert_status['text_normal'] . '
+<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>';
+
+	$insert_status_html .= '<div class="alert alert-primary alert-dismissible fade show" role="alert">
+	New Profile <a href="/identity/index.php?q='.$last_id.'">ID - '.$last_id.' <strong>View</strong></a>
 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>';
 } else {
@@ -140,20 +155,18 @@ if (isset($_POST["submit"])) {
 
 
 
-
-
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
 	<link rel="stylesheet" href="/css/cropper.min.css">
-	<?php require "../meta_links.php"; ?>
+	<?php require $base_dir . "meta_links.php"; ?>
 	<title>Dataverse</title>
 </head>
 
 <body>
 	<!-- Body - Header -->
-	<?php require "../header.php"; ?>
+	<?php require $base_dir . "header.php"; ?>
 
 	<!-- Main Body  -->
 	<main>
@@ -446,7 +459,7 @@ if (isset($_POST["submit"])) {
 									</div>
 									<div class="col-12">
 										<div class="mb-3">
-											<input class="form-control" type="file" id="fileToUpload" name="fileToUpload">
+											<input class="form-control" type="file" id="imageToUpload" name="profileImage">
 										</div>
 									</div>
 									<div class="col-12">
@@ -473,7 +486,7 @@ if (isset($_POST["submit"])) {
 		</section>
 
 		<!-- Image Cropper Modal -->
-		<section class="modal m-0 p-0" id="imageCropperModal" tabindex="-1">
+		<section class="modal m-0 p-0" id="imageCropperModal" tabindex="100">
 			<div class="modal-dialog modal-fullscreen">
 				<div class="modal-content">
 					<div class="modal-header">
@@ -481,22 +494,26 @@ if (isset($_POST["submit"])) {
 						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 					</div>
 					<div class="modal-body">
-						<div class="row">
-							<div class="col-lg-6">
-								<div class="frame">
-									<img id="inputImage" src="" >
+						<div class="container">
+							<div class="row">
+								<div class="col-lg-6">
+									<div class="frame" id="inputImageFrame">
+										<img id="editImage">
+									</div>
 								</div>
-							</div>
-							<div class="col-lg-6">
-								<div class="frame bg-success p-5">
-									<img id="outputImage" src="" class="rounded-circle border border-light border-5">
+								<div class="col-lg-6">
+									<div class="frame bg-success" id="outputImageFrame">
+										<img id="outputImage" class="rounded-circle border border-light border-5">
+									</div>
 								</div>
 							</div>
 						</div>
+
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
 						<button type="button" class="btn btn-primary" id="cropBtn">Crop Image</button>
+						<button type="button" class="btn btn-primary" id="saveBtn">Save</button>
 					</div>
 				</div>
 			</div>
@@ -508,46 +525,7 @@ if (isset($_POST["submit"])) {
 
 	<!-- Script -->
 	<script src="/js/cropper.min.js"></script>
-	<?php require "../end_scripts.php"; ?>
-
-	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-	<script>
-		const image = document.getElementById('image');
-		document.getElementById('fileToUpload').addEventListener('change', function(event) {
-			$('#cropperModal').modal('toggle');
-			var file = event.target.files[0];
-			if (file) {
-				const reader = new FileReader();
-				reader.onload = function(e) {
-					image.src = e.target.result;
-				}
-				reader.readAsDataURL(file);
-			}
-		});
-
-
-		const cropper = new Cropper(image, {
-			aspectRatio: 1 / 1,
-			viewMode: 0,
-		});
-
-		document.getElementById("cropBtn").addEventListener("click",
-			function() {
-				var croppedImage = cropper.getCroppedCanvas().toDataURL("image/png");
-				document.getElementById("output").src = croppedImage;
-			});
-
-		document.getElementById("output").src = cropper.getCroppedCanvas.toDataURL("image/png");
-
-		function cropView() {}
-
-		setInterval(function() {
-			document.getElementById('output').src = cropper
-				.getCroppedCanvas()
-				.toDataURL('image/png');
-		}, 50);
-	</script>
+	<?php require $base_dir . "end_scripts.php"; ?>
 </body>
 
 </html>

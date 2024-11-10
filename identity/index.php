@@ -1,5 +1,5 @@
 <?php
-
+$base_dir = "../";
 if (isset($_GET["q"])) {
 	$query = $_GET["q"];
 
@@ -66,7 +66,7 @@ if (isset($_GET["q"])) {
 						$fathersName = $fathers_row["firstName"] . " " . $fathers_row["lastName"];
 					}
 				} else {
-					$$fathersName = "Not Found";
+					$fathersName = "Not Found";
 				}
 			}
 			if ($row["mothersID"] === null) {
@@ -97,7 +97,7 @@ if (isset($_GET["q"])) {
 							<div class="col-sm-12 my-3">
 								<div class="card bg-success">
 									<div class="card-img-top d-flex justify-content-center p-3">
-										<img src="/data/profiles/'.$id.'/profile_photo_'.$id.'.jpg" class="rounded-circle border border-light border-5 w-100" style="max-height:300px; max-width:300px;">
+										<img src="'.$base_dir.'img/profile/profile_'.$id.'.jpeg" class="rounded-circle border border-light border-5 w-100" style="max-height:300px; max-width:300px;">
 									</div>
 									<div class="card-body">
 										<h5 class="card-title fs-4 capitalize-text fw-bold text-center text-white">' . $fullName . '</h5>
