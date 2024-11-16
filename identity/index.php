@@ -1,5 +1,14 @@
 <?php
-$base_dir = "../";
+
+// --------------------[ Header ]--------------------
+$root_dir = "../";
+$page_id = 2;
+require $root_dir . "page_handler.php";
+
+
+
+
+// --------------------[ Main ]--------------------
 if (isset($_GET["q"])) {
 	$query = $_GET["q"];
 
@@ -97,7 +106,7 @@ if (isset($_GET["q"])) {
 							<div class="col-sm-12 my-3">
 								<div class="card bg-success">
 									<div class="card-img-top d-flex justify-content-center p-3">
-										<img src="'.$base_dir.'img/profile/profile_'.$id.'.jpeg" class="rounded-circle border border-light border-5 w-100" style="max-height:300px; max-width:300px;">
+										<img src="' . $root_dir . 'img/profile/profile_' . $id . '.jpeg" class="rounded-circle border border-light border-5 w-100" style="max-height:300px; max-width:300px;">
 									</div>
 									<div class="card-body">
 										<h5 class="card-title fs-4 capitalize-text fw-bold text-center text-white">' . $fullName . '</h5>
@@ -257,32 +266,22 @@ if (isset($_GET["q"])) {
 <html lang="en">
 
 <head>
-	<?php require "../meta_links.php"; ?>
-	<title>Dataverse</title>
+	<?php require $root_dir . "meta_links.php"; ?>
+	<title><?php echo $title; ?></title>
 </head>
 
 <body>
 	<!-- Body - Header -->
-	<?php require "../header.php"; ?>
+	<?php require $root_dir . "header.php"; ?>
 
 	<!-- Main Body  -->
-	<main>
-		<!-- page Update -->
-		<!-- <section id="page-update" class="bg-light">
-            <div class="container">
-                
-            </div>
-        </section> -->
-
-		<!-- Profile Section -->
-		<?php echo $profile_section; ?>
-	</main>
+	<?php require $root_dir . "main.php"; ?>
 
 	<!-- Body - Footer -->
-	<?php require "../footer.php"; ?>
+	<?php require $root_dir . "footer.php"; ?>
 
 	<!-- Script -->
-	<?php require "../end_scripts.php"; ?>
+	<?php require $root_dir . "end_scripts.php"; ?>
 </body>
 
 </html>

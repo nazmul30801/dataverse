@@ -1,5 +1,16 @@
 <?php
 
+
+// --------------------[ Header ]--------------------
+$root_dir = "../";
+$page_id = 3;
+require $root_dir . "page_handler.php";
+
+
+
+
+
+
 if (!isset($_GET["id"])) {
     $_GET["id"] = "1";
 }
@@ -55,8 +66,7 @@ if ($result->num_rows > 0) {
     }
     // HTML Formating
     $family_table_head =
-        '<table id="data-table">
-                <caption>পরিবারের সদস্যগন</caption>
+        '<table class="table table-striped">
                 <tr>
                     <th>ID</th>
                     <th>নাম</th>
@@ -91,75 +101,65 @@ $conn->close();
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
-    <title>শেকড়</title>
+    <?php require $root_dir . "meta_links.php"; ?>
+    <!-- <link rel="stylesheet" href="css/style.css"> -->
+    <title><?php echo $title; ?></title>
 </head>
 
 <body>
-    <header>
-        <div class="header-title"><img src="img/logo.png"><img src="img/text-logo.png">
+    <!-- Body - Header -->
+    <?php require $root_dir . "header.php"; ?>
 
-
-        </div>
-    </header>
-    <!-- <section id="section-subdata">
-        <div class="row">
-            <div class="col-6">
-                <div class="data-view">পরিবার প্রধান : মোস্তফা কামাল</div>
+    <!-- Main Body  -->
+    <?php require $root_dir . "main.php"; ?>
+    <main>
+        <section id="generation-series">
+            <div class="container">
+                <div class="text-white"><span class="fw-bold">বংশানুক্রম :</span>
+                    <?php
+                    foreach ($gen_series as $gen_member) {
+                        echo "<a href='?id=" . $gen_member["ID"] . ";'>" . $gen_member["Name"] . "</a> <span>></span>";
+                    }
+                    ?>
+                </div>
             </div>
-            <div class="col-3">
-                <div class="data-view">প্রজন্ম : ৫ম</div>
-            </div>
-            <div class="col-3">
-                <form id="search-form" action="index.php" method="get">
-                    <input type="text" >
-                    <input type="submit" value="Find">
-                </form>
-            </div>
-        </div>
-    </section> -->
-    <section id="section-gen-series">
-        <div class="row">
-            <div class="col-12"><span>বংশানুক্রম :</span>
-                <?php
-                foreach ($gen_series as $gen_member) {
-                    echo "<a href='?id=" . $gen_member["ID"] . ";'>" . $gen_member["Name"] . "</a> <span>></span>";
-                }
-                ?>
-            </div>
-        </div>
-    </section>
-    <section id="section-family-head">
-        <div class="row">
-            <div class="col-12">
-                <table id="data-table">
-                    <caption>পরিবার প্রধানের তথ্য</caption>
-                    <tr>
-                        <td>ID</td>
-                        <td><?php echo $own["ID"]; ?></td>
-                    </tr>
-                    <tr>
-                        <td>নাম</td>
-                        <td><?php echo $own["Name"]; ?></td>
-                    </tr>
-                </table>
-            </div>
-        </div>
-    </section>
-    <hr>
-    <section id="section-family-mamber">
-        <div class="row">
-            <div class="col-12">
-                <?php echo $family_table; ?>
-            </div>
-        </div>
-    </section>
+        </section>
+        <section id="family">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="family-head">
+                            <div class="card">
+                                <div class="card-header">পরিবারের প্রধান</div>
+                                <div class="card-body">
+                                    <h5 class="card-title"><?php echo $own["Name"]." (ID - ".$own["ID"].")" ; ?></h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-8">
+                        <div class="family-member">
+                            <div class="card">
+                                <div class="card-header">পরিবারের সদস্যগন</div>
+                                <div class="card-body">
+                                    <?php echo $family_table; ?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
 
 
+            </div>
+        </section>
+    </main>
+
+    <!-- Body - Footer -->
+    <?php require $root_dir . "footer.php"; ?>
+
+    <!-- End Scripts -->
+    <?php require $root_dir . "end_scripts.php"; ?>
 </body>
 
 </html>
