@@ -1,22 +1,42 @@
 <?php
-include "config/config.php";
-include "function.php";
-$table = "caller_id";
 
-$name = set_form_value("name");
-$number = strval(set_form_value("number"));
-$relative = set_form_value("relative");
-$result = $conn->query("SELECT DISTINCT `get_from` FROM `$table`;");
+$root_dir = "../";
+$page_id = 4;
+require $root_dir . "page_handler.php";
+
+
+
+require "function.php";
+
+
+
+if (isset($_GET["submit"])) {
+    $name = htmlspecialchars($_GET["name"]);
+    $number = htmlspecialchars($_GET["number"]);
+    $relative = htmlspecialchars($_GET["relative"]);
+} else {
+    $name = "";
+    $number = "";
+    $relative = "";
+}
+
+
+
+
+
+// ---------------------[ Collect Profile List ]---------------------
+
+$result = sql_query("SELECT DISTINCT `get_from` FROM `caller_id`;", "data_center");
 if ($result->num_rows > 0) {
     if ($relative != "") {
         $select_state = "";
-        $option1 = '<option value="'.$relative.'" selected>'.$relative.'</option>';
+        $option1 = '<option value="' . $relative . '" selected>' . $relative . '</option>';
     } else {
-        $select_state = "selected";
-        ;$option1 = "";
+        $select_state = "selected";;
+        $option1 = "";
     }
-    $options = '<option value="none" '.$select_state.' disabled>Select a Relative</option>
-    '.$option1.'
+    $options = '<option value="none" ' . $select_state . ' disabled>Select a Relative</option>
+    ' . $option1 . '
     <option value="all">All</option>';
     while ($row = $result->fetch_assoc()) {
         $options .= '<option value="' . $row["get_from"] . '">' . $row["get_from"] . '</option>';
@@ -26,12 +46,21 @@ if ($result->num_rows > 0) {
 }
 
 
-$number_condition = make_condition("number", "number");
-$name_condition = make_condition("name", "name");
+
+
+
+
+
+
+
+// ---------------------[ Making Conditions ]---------------------
+
+$number_condition = make_condition($number, "number");
+$name_condition = make_condition($name, "name");
 if ($relative == "all") {
     $relative_condition = "";
 } else {
-    $relative_condition = make_condition("relative", "get_from");
+    $relative_condition = make_condition($relative, "get_from");
 }
 $condition = "1" . $number_condition . $name_condition . $relative_condition;
 if ($condition == "1" and $relative == "all") {
@@ -39,8 +68,13 @@ if ($condition == "1" and $relative == "all") {
 } elseif ($condition == "1") {
     $condition = "0";
 }
-$sql = "SELECT `id`, `name`, `number`, `get_from` FROM `$table` WHERE " . $condition . ";";
-$result = $conn->query($sql);
+
+
+
+
+// ---------------------[ Data Collecton ]---------------------
+
+$result = sql_query("SELECT `id`, `name`, `number`, `get_from` FROM `caller_id` WHERE " . $condition . ";", "data_center");
 
 $total_result = $result->num_rows;
 if ($total_result > 0) {
@@ -60,66 +94,30 @@ if ($total_result > 0) {
     <td colspan='4' style='padding:5rem 0;'>No Data</td>
 </tr>";
 }
-$conn->close();
 ?>
+
+
 
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/style.css">
-    <title>Contacts</title>
+    <?php require $root_dir . "meta_links.php"; ?>
+    <title><?php echo $title; ?></title>
 </head>
 
 <body>
-    <header>
-        <div class="site-title">Contacts</div>
-    </header>
-    <section class="nav-section">
-        <nav>
-            <ul>
-                <li><a href="#">Home</a></li>
-                <li><a href="vcf-collector.php">VCF Collector</a></li>
-                <li><a href="demo.php">Demo</a></li>
-                <li><a href="uploads/">Uploads</a></li>
-            </ul>
-        </nav>
-    </section>
-    <section class="main-section">
+    <!-- Body - Header -->
+    <?php require $root_dir . "header.php"; ?>
 
-        <section class="search-box">
-            <form class="search-form" method="get">
-                <div class="search-form-header">Search Box</div>
-                <div class="search-form-body">
-                    <input name="number" type="number" placeholder="01x xxxx-xxxx" value=<?php echo $number ?>>
-                    <input name="name" type="text" placeholder="Name here..." value="<?php echo $name ?>">
-                    <select name="relative">
-                        <?php echo $options; ?>
-                    </select>
-                    <input type="submit" value="Search">
-                </div>
-            </form>
-        </section>
-        <section class="data-sheet">
-                <div class="caption"><?php echo $total_result." Results Found"?></div>
-            <table class="data-sheet-table">
-                <thead class="data-sheet-head">
-                    <tr>
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>Number</th>
-                        <th>Relative</th>
-                    </tr>
-                </thead>
-                <tbody class="data-sheet-body">
-                    <?php echo $table_data; ?>
-                </tbody>
-            </table>
-        </section>
-    </section>
+    <!-- Main Body  -->
+    <?php require $root_dir . "main.php"; ?>
+
+    <!-- Body - Footer -->
+    <?php require $root_dir . "footer.php"; ?>
+
+    <!-- End Scripts -->
+    <?php require $root_dir . "end_scripts.php"; ?>
 </body>
 
 </html>

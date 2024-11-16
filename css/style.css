@@ -144,7 +144,7 @@ nav {
 
 
 
-/* --------------------[ Section = family ]-------------------- */
+/* --------------------[ Section = family  ]-------------------- */
 
 
 #family .family-head, #family .family-member {
@@ -169,3 +169,12 @@ nav {
 #family table tr td a:hover {
   color: var(--white);
 }
+
+
+
+
+
+/* --------------------[ Section = family  ]-------------------- */
+#caller_id #search_form, #caller_id #search_result {
+  margin-top: 1.5rem;
+} 

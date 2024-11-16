@@ -1,8 +1,8 @@
 <?php
 function make_condition($name, $column)
 {
-    if ($name != "") {
-        $condition = " AND `" . $column . "` LIKE '%" . $name . "%'";
+    if ($_GET[$name] != "") {
+        $condition = " AND `" . $column . "` LIKE '%" . $_GET[$name] . "%'";
     } else {
         $condition = "";
     }

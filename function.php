@@ -1,14 +1,13 @@
 <?php
 
 
-function create_conn()
+function create_conn($database = "dataverse")
 {
     $servername = "localhost";
     $username = "root";
     $password = "";
-    $dbname = "dataverse";
     // Create connection
-    $connection = new mysqli($servername, $username, $password, $dbname);
+    $connection = new mysqli($servername, $username, $password, $database);
 
     // Check connection
     if ($connection->connect_error) {
@@ -21,9 +20,9 @@ function create_conn()
 
 
 
-function sql_query($sql)
+function sql_query($sql, $database = "dataverse")
 {
-    $connection = create_conn();
+    $connection = create_conn($database);
     $result = $connection->query($sql);
     $connection->close();
     return $result;
