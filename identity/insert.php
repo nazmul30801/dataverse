@@ -6,8 +6,8 @@ $insert_status_html = "";
 if (isset($_POST["submit"])) {
 
 	$form_data = array(
-		array("firstName", "first_name"),
-		array("lastName", "last_name"),
+		array("fullName", "full_name"),
+		array("nickName", "nick_name"),
 		array("email", "email"),
 		array("phoneNumber", "phone_number"),
 		array("presentStreet", "pre_addr_street"),
@@ -198,12 +198,12 @@ if (isset($_POST["submit"])) {
 										<div class="h4">Basic Info</div>
 									</div>
 									<div class="col-md-6">
-										<input type="text" class="form-control" id="inputFirtsName" name="first_name"
-											required placeholder="First Name" />
+										<input type="text" class="form-control" id="inputFullName" name="full_name"
+											required placeholder="Full Name" />
 									</div>
 									<div class="col-md-6">
-										<input type="text" class="form-control" id="inputLastName" name="last_name"
-											placeholder="Last Name" />
+										<input type="text" class="form-control" id="inputNickName" name="nick_name"
+											placeholder="Nick Name" />
 									</div>
 									<div class="col-md-6">
 										<input type="email" class="form-control" id="inputEmail" name="email"

@@ -17,9 +17,9 @@ if (isset($_GET["search"])) {
 		// output data of each row
 		while ($row = $result->fetch_assoc()) {
 			$id = $row["id"];
-			$firstName = $row["firstName"];
-			$lastName = $row["lastName"];
-			$fullName = $firstName . " " . $lastName;
+			$fullName = $row["fullName"];
+			$nickName = $row["nickName"];
+			$fullName = $fullName . " " . $nickName;
 			$email = $row["email"];
 			$phoneNumber = $row["phoneNumber"];
 			$preAddrStreet = $row["presentStreet"];
@@ -40,11 +40,11 @@ if (isset($_GET["search"])) {
 			if ($row["maritalStatus"] == 0) {
 				$maritalStatus = "Unmarried";
 			} else {
-				$spouse_result = sql_query("SELECT `firstName`, `lastName` FROM `identity` WHERE `id`=" . $row["spouseID"] . ";");
+				$spouse_result = sql_query("SELECT `fullName`, `nickName` FROM `identity` WHERE `id`=" . $row["spouseID"] . ";");
 				if ($spouse_result->num_rows > 0) {
 					// output data of each row
 					while ($spouse_row = $spouse_result->fetch_assoc()) {
-						$spouseName = $spouse_row["firstName"] . " " . $spouse_row["lastName"];
+						$spouseName = $spouse_row["fullName"] . " (" . $spouse_row["nickName"].")";
 					}
 					$maritalStatus = "Married" . '</td></tr> <tr><td>Spouse Name</td><td>' . $spouseName;
 				} else {
@@ -63,11 +63,11 @@ if (isset($_GET["search"])) {
 			if ($row["fathersID"] === null) {
 				$$fathersName = "Not Found";
 			} else {
-				$fathers_result = sql_query("SELECT `firstName`, `lastName` FROM `identity` WHERE `id`=" . $row["fathersID"] . ";");
+				$fathers_result = sql_query("SELECT `fullName`, `nickName` FROM `identity` WHERE `id`=" . $row["fathersID"] . ";");
 				if ($fathers_result->num_rows > 0) {
 					// output data of each row
 					while ($fathers_row = $fathers_result->fetch_assoc()) {
-						$fathersName = $fathers_row["firstName"] . " " . $fathers_row["lastName"];
+						$fathersName = $fathers_row["fullName"] . " (" . $fathers_row["nickName"].")";
 					}
 				} else {
 					$fathersName = "Not Found";
@@ -76,11 +76,11 @@ if (isset($_GET["search"])) {
 			if ($row["mothersID"] === null) {
 				$mothersName = "Not Found";
 			} else {
-				$mothers_result = sql_query("SELECT `firstName`, `lastName` FROM `identity` WHERE `id`=" . $row["mothersID"] . ";");
+				$mothers_result = sql_query("SELECT `fullName`, `nickName` FROM `identity` WHERE `id`=" . $row["mothersID"] . ";");
 				if ($mothers_result->num_rows > 0) {
 					// output data of each row
 					while ($mothers_row = $mothers_result->fetch_assoc()) {
-						$mothersName = $mothers_row["firstName"] . " " . $mothers_row["lastName"];
+						$mothersName = $mothers_row["fullName"] . " (" . $mothers_row["nickName"].")";
 					}
 				} else {
 					$mothersName = "Not Found";
