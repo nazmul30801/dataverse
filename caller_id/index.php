@@ -11,9 +11,13 @@ require "function.php";
 
 
 if (isset($_GET["submit"])) {
-    $name = htmlspecialchars($_GET["name"]);
-    $number = htmlspecialchars($_GET["number"]);
-    $relative = htmlspecialchars($_GET["relative"]);
+    $name = $_GET["name"];
+    $number = $_GET["number"];
+    if (isset($_GET["relative"])) {
+        $relative = $_GET["relative"];
+    } else {
+        $relative = "all";
+    }
 } else {
     $name = "";
     $number = "";
