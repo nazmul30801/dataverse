@@ -19,7 +19,7 @@ if (isset($_GET["search"])) {
 			$id = $row["id"];
 			$fullName = $row["fullName"];
 			$nickName = $row["nickName"];
-			$fullName = $fullName . " " . $nickName;
+			$fullName = $fullName . " (" . $nickName . ")";
 			$email = $row["email"];
 			$phoneNumber = $row["phoneNumber"];
 			$preAddrStreet = $row["presentStreet"];
