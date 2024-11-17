@@ -175,6 +175,6 @@ nav {
 
 
 /* --------------------[ Section = family  ]-------------------- */
-#caller_id #search_form, #caller_id #search_result {
+#search_box, #search_result {
   margin-top: 1.5rem;
 } 

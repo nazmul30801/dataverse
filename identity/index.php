@@ -9,13 +9,10 @@ require $root_dir . "page_handler.php";
 
 
 // --------------------[ Main ]--------------------
-if (isset($_GET["q"])) {
-	$query = $_GET["q"];
+if (isset($_GET["search"])) {
+	$query = $_GET["search"];
 
-	require "../dbhandler.php";
-	$sql = "SELECT * FROM `identity` WHERE `id`=$query";
-	$result = $conn->query($sql);
-
+	$result = sql_query("SELECT * FROM `identity` WHERE `id`=$query");
 	if ($result->num_rows > 0) {
 		// output data of each row
 		while ($row = $result->fetch_assoc()) {
@@ -43,8 +40,7 @@ if (isset($_GET["q"])) {
 			if ($row["maritalStatus"] == 0) {
 				$maritalStatus = "Unmarried";
 			} else {
-				$spouse_sql = "SELECT `firstName`, `lastName` FROM `identity` WHERE `id`=" . $row["spouseID"] . ";";
-				$spouse_result = $conn->query($spouse_sql);
+				$spouse_result = sql_query("SELECT `firstName`, `lastName` FROM `identity` WHERE `id`=" . $row["spouseID"] . ";");
 				if ($spouse_result->num_rows > 0) {
 					// output data of each row
 					while ($spouse_row = $spouse_result->fetch_assoc()) {
@@ -67,8 +63,7 @@ if (isset($_GET["q"])) {
 			if ($row["fathersID"] === null) {
 				$$fathersName = "Not Found";
 			} else {
-				$fathers_sql = "SELECT `firstName`, `lastName` FROM `identity` WHERE `id`=" . $row["fathersID"] . ";";
-				$fathers_result = $conn->query($fathers_sql);
+				$fathers_result = sql_query("SELECT `firstName`, `lastName` FROM `identity` WHERE `id`=" . $row["fathersID"] . ";");
 				if ($fathers_result->num_rows > 0) {
 					// output data of each row
 					while ($fathers_row = $fathers_result->fetch_assoc()) {
@@ -81,8 +76,7 @@ if (isset($_GET["q"])) {
 			if ($row["mothersID"] === null) {
 				$mothersName = "Not Found";
 			} else {
-				$mothers_sql = "SELECT `firstName`, `lastName` FROM `identity` WHERE `id`=" . $row["mothersID"] . ";";
-				$mothers_result = $conn->query($mothers_sql);
+				$mothers_result = sql_query("SELECT `firstName`, `lastName` FROM `identity` WHERE `id`=" . $row["mothersID"] . ";");
 				if ($mothers_result->num_rows > 0) {
 					// output data of each row
 					while ($mothers_row = $mothers_result->fetch_assoc()) {
@@ -99,14 +93,22 @@ if (isset($_GET["q"])) {
 		}
 		$profile_section =
 			'<section id="profile" class="h-100 bg-light">
-			<div class="container py-5 h-100">
+			<div class="container pt-2 h-100">
 				<div class="row d-flex justify-content-center h-100">
 					<div class="col-lg-3 col-md-4 ">
 						<div class="row">
+							<div class="col-sm-12 mt-3">
+								<form role="search" method="get">
+									<div class="input-group mb-3">
+										<input class="form-control" type="search" placeholder="Search" aria-label="Search" name="search" value="'.$query.'" />
+										<button class="btn btn-success" type="submit">Search</button>
+									</div>
+								</form>
+							</div>
 							<div class="col-sm-12 my-3">
 								<div class="card bg-success">
 									<div class="card-img-top d-flex justify-content-center p-3">
-										<img src="' . $root_dir . 'img/profile/profile_' . $id . '.jpeg" class="rounded-circle border border-light border-5 w-100" style="max-height:300px; max-width:300px;">
+										<img onerror="this.src=\'' . $root_dir . 'img/profile/profile_demo.jpeg\';" src="' . $root_dir . 'img/profile/profile_' . $id . '.jpeg" class="rounded-circle border border-light border-5 w-100" style="max-height:300px; max-width:300px;">
 									</div>
 									<div class="card-body">
 										<h5 class="card-title fs-4 capitalize-text fw-bold text-center text-white">' . $fullName . '</h5>
@@ -234,7 +236,6 @@ if (isset($_GET["q"])) {
 			</div>
 		</section>';
 	}
-	$conn->close();
 } else {
 	$profile_section =
 		'<section id="profile" class="h-100 bg-light">
@@ -244,7 +245,7 @@ if (isset($_GET["q"])) {
 						<div class="display-2 text-secondary text-center mb-sm-0 mb-5">Identity</div>
 					</div><div class="col-12 m-sm-5 p-sm-5">
 						<form class="d-flex" role="search" method="get">
-							<input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="q" />
+							<input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="search" />
 							<button class="btn btn-outline-success" type="submit">Search</button>
 						</form>
 					</div>
@@ -275,7 +276,9 @@ if (isset($_GET["q"])) {
 	<?php require $root_dir . "header.php"; ?>
 
 	<!-- Main Body  -->
-	<?php require $root_dir . "main.php"; ?>
+	<main>
+		<?php echo $profile_section; ?>
+	</main>
 
 	<!-- Body - Footer -->
 	<?php require $root_dir . "footer.php"; ?>

@@ -16,10 +16,12 @@ if (!isset($_GET["id"])) {
 }
 $cid = $_GET["id"];
 
-include("dbconnect.php");
+
+
+
+
 // ------------------[ Own Data ]------------------
-$sql = "SELECT * FROM `citizens` WHERE ID = " . $cid . ";";
-$result = $conn->query($sql);
+$result = sql_query("SELECT * FROM `citizens` WHERE ID = " . $cid . ";", "shekor");
 if ($result->num_rows > 0) {
     // output data of each row
     while ($row = $result->fetch_assoc()) {
@@ -33,8 +35,7 @@ if ($result->num_rows > 0) {
 // ------------------[ Gen Series Data ]------------------
 $dads_id = $own["Fathers_ID"];
 while ($dads_id != 0) {
-    $sql = "SELECT `ID`, `Fathers_ID`, `Name` FROM `citizens` WHERE ID = " . $dads_id . ";";
-    $result = $conn->query($sql);
+    $result = sql_query("SELECT `ID`, `Fathers_ID`, `Name` FROM `citizens` WHERE ID = " . $dads_id . ";", "shekor");
     if ($result->num_rows > 0) {
         // output data of each row
         while ($row = $result->fetch_assoc()) {
@@ -52,8 +53,7 @@ $gen_series = array_reverse($gen_series);
 
 // ------------------[ Family Data ]------------------
 $family = array();
-$sql = "SELECT * FROM `citizens` WHERE Fathers_ID = " . $own["ID"] . " ORDER BY ID ASC;";
-$result = $conn->query($sql);
+$result = sql_query("SELECT * FROM `citizens` WHERE Fathers_ID = " . $own["ID"] . " ORDER BY ID ASC;", "shekor");
 if ($result->num_rows > 0) {
     // output data of each row
     while ($row = $result->fetch_assoc()) {
@@ -88,12 +88,6 @@ if ($result->num_rows > 0) {
 }
 
 
-
-
-
-$conn->close();
-
-
 ?>
 
 
@@ -111,7 +105,6 @@ $conn->close();
     <?php require $root_dir . "header.php"; ?>
 
     <!-- Main Body  -->
-    <?php require $root_dir . "main.php"; ?>
     <main>
         <section id="generation-series">
             <div class="container">
@@ -127,7 +120,7 @@ $conn->close();
         <section id="family">
             <div class="container">
                 <div class="row">
-                    <div class="col-lg-4">
+                    <div class="col-md-4">
                         <div class="family-head">
                             <div class="card">
                                 <div class="card-header">পরিবারের প্রধান</div>
@@ -137,7 +130,7 @@ $conn->close();
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-8">
+                    <div class="col-md-8">
                         <div class="family-member">
                             <div class="card">
                                 <div class="card-header">পরিবারের সদস্যগন</div>
@@ -148,9 +141,6 @@ $conn->close();
                         </div>
                     </div>
                 </div>
-
-
-
             </div>
         </section>
     </main>
