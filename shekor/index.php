@@ -21,7 +21,7 @@ $cid = $_GET["id"];
 
 
 // ------------------[ Own Data ]------------------
-$result = sql_query("SELECT * FROM `citizens` WHERE ID = " . $cid . ";", "shekor");
+$result = sql_query("SELECT * FROM `citizens` WHERE ID = " . $cid . ";");
 if ($result->num_rows > 0) {
     // output data of each row
     while ($row = $result->fetch_assoc()) {
@@ -35,7 +35,7 @@ if ($result->num_rows > 0) {
 // ------------------[ Gen Series Data ]------------------
 $dads_id = $own["Fathers_ID"];
 while ($dads_id != 0) {
-    $result = sql_query("SELECT `ID`, `Fathers_ID`, `Name` FROM `citizens` WHERE ID = " . $dads_id . ";", "shekor");
+    $result = sql_query("SELECT `ID`, `Fathers_ID`, `Name` FROM `citizens` WHERE ID = " . $dads_id . ";");
     if ($result->num_rows > 0) {
         // output data of each row
         while ($row = $result->fetch_assoc()) {
@@ -53,7 +53,7 @@ $gen_series = array_reverse($gen_series);
 
 // ------------------[ Family Data ]------------------
 $family = array();
-$result = sql_query("SELECT * FROM `citizens` WHERE Fathers_ID = " . $own["ID"] . " ORDER BY ID ASC;", "shekor");
+$result = sql_query("SELECT * FROM `citizens` WHERE Fathers_ID = " . $own["ID"] . " ORDER BY ID ASC;");
 if ($result->num_rows > 0) {
     // output data of each row
     while ($row = $result->fetch_assoc()) {

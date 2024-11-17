@@ -30,7 +30,7 @@ if (isset($_GET["submit"])) {
 
 // ---------------------[ Collect Profile List ]---------------------
 
-$result = sql_query("SELECT DISTINCT `get_from` FROM `caller_id`;", "data_center");
+$result = sql_query("SELECT DISTINCT `get_from` FROM `caller_id`;");
 if ($result->num_rows > 0) {
     if ($relative != "") {
         $select_state = "";
@@ -78,7 +78,7 @@ if ($condition == "1" and $relative == "all") {
 
 // ---------------------[ Data Collecton ]---------------------
 
-$result = sql_query("SELECT `id`, `name`, `number`, `get_from` FROM `caller_id` WHERE " . $condition . ";", "data_center");
+$result = sql_query("SELECT `id`, `name`, `number`, `get_from` FROM `caller_id` WHERE " . $condition . ";");
 
 $total_result = $result->num_rows;
 if ($total_result > 0) {
