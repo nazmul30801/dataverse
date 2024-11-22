@@ -26,28 +26,38 @@ if (isset($_GET["submit"])) {
 
 
 
-
-
 // ---------------------[ Collect Profile List ]---------------------
 
 $result = sql_query("SELECT DISTINCT `get_from` FROM `caller_id`;");
 if ($result->num_rows > 0) {
-    if ($relative != "") {
-        $select_state = "";
-        $option1 = '<option value="' . $relative . '" selected>' . $relative . '</option>';
-    } else {
-        $select_state = "selected";;
-        $option1 = "";
-    }
-    $options = '<option value="none" ' . $select_state . ' disabled>Select a Relative</option>
-    ' . $option1 . '
-    <option value="all">All</option>';
+    // id to name convertion
+    $connection_ids = "";
     while ($row = $result->fetch_assoc()) {
-        $options .= '<option value="' . $row["get_from"] . '">' . $row["get_from"] . '</option>';
+        $connection_ids .= $row["get_from"].", "; 
+    }
+    $connection_ids = substr($connection_ids, 0, -2);
+    $name_list = sql_query("SELECT `id`, `fullName` FROM `main` WHERE id IN ($connection_ids);");
+
+    $id_name_table = [];
+    $options = "";
+    while ($row = $name_list->fetch_assoc()) {
+        $id_name_table += [$row["id"] => $row["fullName"]];
+        $options .= '<option value="' . $row["id"] . '">' . $row["fullName"] . '</option>';
     }
 } else {
     $options = "<option value='none' disabled selected>No Relative Found</option>";
 }
+
+if ($relative != "") {
+    $select_state = "";
+    $option1 = '<option value="' . $relative . '" selected>' . $id_name_table[$relative] . '</option>';
+} else {
+    $select_state = "selected";;
+    $option1 = "";
+}
+$options = '<option value="none" ' . $select_state . ' disabled>Select a Relative</option>
+' . $option1 . '
+<option value="all">All</option>'.$options;
 
 
 
@@ -84,12 +94,16 @@ $total_result = $result->num_rows;
 if ($total_result > 0) {
     $table_data = "";
     while ($row = $result->fetch_assoc()) {
+        
+
+
+
         $table_data = $table_data . "
 <tr>
     <td>" . $row["id"] . "</td>
     <td>" . $row["name"] . "</td>
     <td>" . $row["number"] . "</td>
-    <td>" . $row["get_from"] . "</td>
+    <td>" . $id_name_table[$row["get_from"]] . "</td>
 </tr>";
     }
 } else {

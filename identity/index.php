@@ -12,14 +12,16 @@ require $root_dir . "page_handler.php";
 if (isset($_GET["search"])) {
 	$query = $_GET["search"];
 
-	$result = sql_query("SELECT * FROM `identity` WHERE `id`=$query");
+	$result = sql_query("SELECT * FROM `main` WHERE `id`=$query");
 	if ($result->num_rows > 0) {
 		// output data of each row
 		while ($row = $result->fetch_assoc()) {
 			$id = $row["id"];
 			$fullName = $row["fullName"];
 			$nickName = $row["nickName"];
-			$fullName = $fullName . " (" . $nickName . ")";
+			if ($nickName != "") {
+				$fullName = $fullName . " (" . $nickName . ")";
+			}
 			$email = $row["email"];
 			$phoneNumber = $row["phoneNumber"];
 			$preAddrStreet = $row["presentStreet"];
@@ -40,11 +42,11 @@ if (isset($_GET["search"])) {
 			if ($row["maritalStatus"] == 0) {
 				$maritalStatus = "Unmarried";
 			} else {
-				$spouse_result = sql_query("SELECT `fullName`, `nickName` FROM `identity` WHERE `id`=" . $row["spouseID"] . ";");
+				$spouse_result = sql_query("SELECT `fullName`, `nickName` FROM `main` WHERE `id`=" . $row["spouseID"] . ";");
 				if ($spouse_result->num_rows > 0) {
 					// output data of each row
 					while ($spouse_row = $spouse_result->fetch_assoc()) {
-						$spouseName = $spouse_row["fullName"] . " (" . $spouse_row["nickName"].")";
+						$spouseName = $spouse_row["fullName"] . " (" . $spouse_row["nickName"] . ")";
 					}
 					$maritalStatus = "Married" . '</td></tr> <tr><td>Spouse Name</td><td>' . $spouseName;
 				} else {
@@ -63,12 +65,17 @@ if (isset($_GET["search"])) {
 			if ($row["fathersID"] === null) {
 				$$fathersName = "Not Found";
 			} else {
-				$fathers_result = sql_query("SELECT `fullName`, `nickName` FROM `identity` WHERE `id`=" . $row["fathersID"] . ";");
+				$fathers_result = sql_query("SELECT `fullName`, `nickName` FROM `main` WHERE `id`=" . $row["fathersID"] . ";");
 				if ($fathers_result->num_rows > 0) {
 					// output data of each row
 					while ($fathers_row = $fathers_result->fetch_assoc()) {
-						$fathersName = $fathers_row["fullName"] . " (" . $fathers_row["nickName"].")";
+						if ($fathers_row["nickName"] != "") {
+							$fathersName = $fathers_row["nickName"] . " (" . $fathers_row["nickName"] . ")";
+						} else {
+							$fathersName = $fathers_row["fullName"];
+						}
 					}
+					$fathersName = '<a class="text-decoration-none" href="?search='.$row["fathersID"].'">'.$fathersName.'</a>';
 				} else {
 					$fathersName = "Not Found";
 				}
@@ -76,12 +83,17 @@ if (isset($_GET["search"])) {
 			if ($row["mothersID"] === null) {
 				$mothersName = "Not Found";
 			} else {
-				$mothers_result = sql_query("SELECT `fullName`, `nickName` FROM `identity` WHERE `id`=" . $row["mothersID"] . ";");
+				$mothers_result = sql_query("SELECT `fullName`, `nickName` FROM `main` WHERE `id`=" . $row["mothersID"] . ";");
 				if ($mothers_result->num_rows > 0) {
 					// output data of each row
 					while ($mothers_row = $mothers_result->fetch_assoc()) {
-						$mothersName = $mothers_row["fullName"] . " (" . $mothers_row["nickName"].")";
+						if ($fathers_row["nickName"] != "") {
+							$mothersName = $mothers_row["nickName"] . " (" . $fathers_row["nickName"] . ")";
+						} else {
+							$mothersName = $mothers_row["fullName"];
+						}
 					}
+					$mothersName = '<a class="text-decoration-none" href="?search='.$row["mothersID"].'">'.$mothersName.'</a>';
 				} else {
 					$mothersName = "Not Found";
 				}
@@ -100,7 +112,7 @@ if (isset($_GET["search"])) {
 							<div class="col-sm-12 mt-3">
 								<form role="search" method="get">
 									<div class="input-group mb-3">
-										<input class="form-control" type="search" placeholder="Search" aria-label="Search" name="search" value="'.$query.'" />
+										<input class="form-control" type="search" placeholder="Search" aria-label="Search" name="search" value="' . $query . '" />
 										<button class="btn btn-success" type="submit">Search</button>
 									</div>
 								</form>

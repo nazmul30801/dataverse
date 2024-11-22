@@ -44,75 +44,69 @@ if (isset($_POST["submit"])) {
 		$db_cols .= ", `" . $col[0] . "`";
 		$form_cols .= ",'" . $form_col . "'";
 	}
-	$sql = "INSERT INTO `identity` (" . $db_cols . ") VALUES (" . $form_cols . ");";
+	$sql = "INSERT INTO `main` (" . $db_cols . ") VALUES (" . $form_cols . ");";
 
 
 	require $base_dir . "dbhandler.php";
-	if ($conn->query($sql) === TRUE) {
-		if (isset($_FILES["profileImage"])) {
-			$image = $_FILES["profileImage"];
+	if ($conn->query($sql) === TRUE && isset($_FILES["profileImage"]) && $_FILES["profileImage"]["tmp_name"] != "") {
+		$image = $_FILES["profileImage"];
+		print_r($image);
 
 
-			$last_id = $conn->insert_id;
-			$target_file = $base_dir . "img/profile/profile_" . $last_id . ".jpeg";
+		$last_id = $conn->insert_id;
+		$target_file = $base_dir . "img/profile/profile_" . $last_id . ".jpeg";
 
 
+		$uploadOk = 1;
+		$imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+
+		// Check if image file is a actual image or fake image
+		$check = getimagesize($image["tmp_name"]);
+		if ($check !== false) {
+			$error[] = "File is an image - " . $check["mime"] . ".";
 			$uploadOk = 1;
-			$imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+		} else {
+			$error[] = "File is not an image.";
+			$uploadOk = 0;
+		}
 
-			// Check if image file is a actual image or fake image
-			$check = getimagesize($image["tmp_name"]);
-			if ($check !== false) {
-				$error[] = "File is an image - " . $check["mime"] . ".";
-				$uploadOk = 1;
+
+		// Check if file already exists
+		if (file_exists($target_file)) {
+			$error[] = "Sorry, file already exists.";
+			$uploadOk = 0;
+		}
+
+		// Check file size
+		if ($image["size"] > 500000) {
+			$error[] = "Sorry, your file is too large.";
+			$uploadOk = 0;
+		}
+
+		// Allow certain file formats
+		if ($imageFileType == "image/jpeg") {
+			$error[] = "Sorry, only JPEG files are allowed.";
+			$uploadOk = 0;
+		}
+
+		// Check if $uploadOk is set to 0 by an error
+		if ($uploadOk == 0) {
+			$error[] = "Sorry, your file was not uploaded.";
+			// if everything is ok, try to upload file
+		} else {
+			if (move_uploaded_file($image["tmp_name"], $target_file)) {
+				$error[] = "The file " . htmlspecialchars(basename($image["name"])) . " has been uploaded.";
+
+				// session_start();
+				// $_SESSION["id"] = $conn->insert_id;
+				// $_SESSION["imageFile"] = $target_file;
+				// header("Location: image_uploader.php");
 			} else {
-				$error[] = "File is not an image.";
-				$uploadOk = 0;
+				$error[] = "Sorry, there was an error uploading your file.";
 			}
-
-
-			// Check if file already exists
-			if (file_exists($target_file)) {
-				$error[] = "Sorry, file already exists.";
-				$uploadOk = 0;
-			}
-
-			// Check file size
-			if ($image["size"] > 500000) {
-				$error[] = "Sorry, your file is too large.";
-				$uploadOk = 0;
-			}
-
-			// Allow certain file formats
-			if ($imageFileType == "image/jpeg") {
-				$error[] = "Sorry, only JPEG files are allowed.";
-				$uploadOk = 0;
-			}
-
-			// Check if $uploadOk is set to 0 by an error
-			if ($uploadOk == 0) {
-				$error[] = "Sorry, your file was not uploaded.";
-				// if everything is ok, try to upload file
-			} else {
-				if (move_uploaded_file($image["tmp_name"], $target_file)) {
-					$error[] = "The file " . htmlspecialchars(basename($image["name"])) . " has been uploaded.";
-
-					// session_start();
-					// $_SESSION["id"] = $conn->insert_id;
-					// $_SESSION["imageFile"] = $target_file;
-					// header("Location: image_uploader.php");
-				} else {
-					$error[] = "Sorry, there was an error uploading your file.";
-				}
-			}
-
-			$insert_status = [
-				"color" => "success",
-				"text_bold" => "Data Inserted Successfully",
-				"text_normal" => ""
-			];
 		}
 	} else {
+		$last_id = $conn->insert_id;
 		$insert_status = [
 			"color" => "danger",
 			"text_bold" => "Error: " . $sql,
@@ -136,7 +130,7 @@ if (isset($_POST["submit"])) {
 </div>';
 
 	$insert_status_html .= '<div class="alert alert-primary alert-dismissible fade show" role="alert">
-	New Profile ID - '.$last_id.' <a href="/identity/index.php?q='.$last_id.'"><strong>View</strong></a>
+	New Profile ID - ' . $last_id . ' <a href="/identity/index.php?search=' . $last_id . '"><strong>View</strong></a>
 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>';
 } else {
