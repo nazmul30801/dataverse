@@ -28,15 +28,19 @@ if (isset($_GET["submit"])) {
 
 // ---------------------[ Collect Profile List ]---------------------
 
-$result = sql_query("SELECT DISTINCT `get_from` FROM `caller_id`;");
+$result = sql_query("SELECT DISTINCT `connectionID` FROM `caller_id`;");
 if ($result->num_rows > 0) {
     // id to name convertion
-    $connection_ids = "";
+
+    // Connection ID List
+    $connection_id_list = "";
     while ($row = $result->fetch_assoc()) {
-        $connection_ids .= $row["get_from"].", "; 
+        $connection_id_list .= $row["connectionID"] . ", ";
     }
-    $connection_ids = substr($connection_ids, 0, -2);
-    $name_list = sql_query("SELECT `id`, `fullName` FROM `main` WHERE id IN ($connection_ids);");
+    $connection_id_list = substr($connection_id_list, 0, -2);
+
+
+    $name_list = sql_query("SELECT `id`, `fullName` FROM `main` WHERE id IN ($connection_id_list);");
 
     $id_name_table = [];
     $options = "";
@@ -44,20 +48,31 @@ if ($result->num_rows > 0) {
         $id_name_table += [$row["id"] => $row["fullName"]];
         $options .= '<option value="' . $row["id"] . '">' . $row["fullName"] . '</option>';
     }
+
+    if ($relative == "all") {
+        $select_state = "";
+        $option1 = '<option value="all" selected>All</option>';
+    } elseif ($relative == "") {
+        $select_state = "selected";
+        $option1 = '';
+    } elseif ($relative != "all") {
+        $select_state = "";
+        $option1 = '<option value="' . $relative . '" selected>' . $id_name_table[$relative] . '</option>';
+    } else {
+        $select_state = "selected";;
+        $option1 = "";
+    }
 } else {
     $options = "<option value='none' disabled selected>No Relative Found</option>";
 }
 
-if ($relative != "") {
-    $select_state = "";
-    $option1 = '<option value="' . $relative . '" selected>' . $id_name_table[$relative] . '</option>';
-} else {
-    $select_state = "selected";;
-    $option1 = "";
-}
+
+
+
+
 $options = '<option value="none" ' . $select_state . ' disabled>Select a Relative</option>
 ' . $option1 . '
-<option value="all">All</option>'.$options;
+<option value="all">All</option>' . $options;
 
 
 
@@ -74,7 +89,7 @@ $name_condition = make_condition($name, "name");
 if ($relative == "all") {
     $relative_condition = "";
 } else {
-    $relative_condition = make_condition($relative, "get_from");
+    $relative_condition = make_condition($relative, "connectionID");
 }
 $condition = "1" . $number_condition . $name_condition . $relative_condition;
 if ($condition == "1" and $relative == "all") {
@@ -88,13 +103,13 @@ if ($condition == "1" and $relative == "all") {
 
 // ---------------------[ Data Collecton ]---------------------
 
-$result = sql_query("SELECT `id`, `name`, `number`, `get_from` FROM `caller_id` WHERE " . $condition . ";");
+$result = sql_query("SELECT `id`, `name`, `number`, `connectionID` FROM `caller_id` WHERE " . $condition . ";");
 
 $total_result = $result->num_rows;
 if ($total_result > 0) {
     $table_data = "";
     while ($row = $result->fetch_assoc()) {
-        
+
 
 
 
@@ -103,7 +118,7 @@ if ($total_result > 0) {
     <td>" . $row["id"] . "</td>
     <td>" . $row["name"] . "</td>
     <td>" . $row["number"] . "</td>
-    <td>" . $id_name_table[$row["get_from"]] . "</td>
+    <td>" . $id_name_table[$row["connectionID"]] . "</td>
 </tr>";
     }
 } else {

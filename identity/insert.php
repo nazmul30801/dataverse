@@ -268,13 +268,13 @@ if (isset($_POST["submit"])) {
 									<div class="col-xl-4 col-sm-6">
 										<div class="input-group mb-3">
 											<span class="input-group-text">Union</span>
-											<input type="text" class="form-control" id="inputUnion" placeholder="Nayergaon (S:)" name="union" value="Nayergaon (S:)" />
+											<input type="text" class="form-control" id="inputUnion" placeholder="Nayergaon Dakkshin" name="union" value="Nayergaon Dakkshin" />
 										</div>
 									</div>
 									<div class="col-xl-4  col-sm-6">
 										<div class="input-group mb-3">
 											<span class="input-group-text">Sub District</span>
-											<input type="text" class="form-control" id="inputSubDist" placeholder="Upazilla/Police Station" name="sub_dist" value="Matlab" />
+											<input type="text" class="form-control" id="inputSubDist" placeholder="Upazilla/Police Station" name="sub_dist" value="Matlab Dakkshin" />
 										</div>
 									</div>
 									<div class="col-xl-4 col-sm-6">
