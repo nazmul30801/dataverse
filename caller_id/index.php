@@ -181,7 +181,7 @@ if ($total_result > 0) {
                                 <div class="card-body table-responsive">
                                     <table class="table table-striped">
                                         <thead class="table-success">
-                                            <tr class=""
+                                            <tr>
                                                 <th>Name</th>
                                                 <th>Number</th>
                                                 <th>Relative</th>
