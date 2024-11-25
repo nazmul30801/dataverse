@@ -44,9 +44,12 @@ if ($result->num_rows > 0) {
 
     $id_name_table = [];
     $options = "";
+    $option1 = "";
     while ($row = $name_list->fetch_assoc()) {
         $id_name_table += [$row["id"] => $row["fullName"]];
-        $options .= '<option value="' . $row["id"] . '">' . $row["fullName"] . '</option>';
+        $options .= <<<HTML
+            <option value="{$row['id']}">{$row["fullName"]}</option>
+        HTML;
     }
 
     if ($relative == "all") {
@@ -57,7 +60,9 @@ if ($result->num_rows > 0) {
         $option1 = '';
     } elseif ($relative != "all") {
         $select_state = "";
-        $option1 = '<option value="' . $relative . '" selected>' . $id_name_table[$relative] . '</option>';
+        $option1 .= <<<HTML
+            <option value="$relative" selected>$id_name_table[$relative]</option>
+        HTML;
     } else {
         $select_state = "selected";;
         $option1 = "";
@@ -67,13 +72,11 @@ if ($result->num_rows > 0) {
 }
 
 
-
-
-
-$options = '<option value="none" ' . $select_state . ' disabled>Select a Relative</option>
-' . $option1 . '
-<option value="all">All</option>' . $options;
-
+$options = <<<HTML
+    <option value="none" $select_state disabled>Select a Relative</option>
+    $option1
+    $options
+HTML;
 
 
 
@@ -109,23 +112,21 @@ $total_result = $result->num_rows;
 if ($total_result > 0) {
     $table_data = "";
     while ($row = $result->fetch_assoc()) {
-
-
-
-
-        $table_data = $table_data . "
-<tr>
-    <td>" . $row["id"] . "</td>
-    <td>" . $row["name"] . "</td>
-    <td>" . $row["number"] . "</td>
-    <td>" . $id_name_table[$row["connectionID"]] . "</td>
-</tr>";
+        $table_data .= <<<HTML
+            <tr>
+                <td>{$row["id"]}</td>
+                <td>{$row["name"]}</td>
+                <td>{$row["number"]}</td>
+                <td>{$id_name_table[$row["connectionID"]]}</td>
+            </tr>
+        HTML;
     }
 } else {
-    $table_data = "
-<tr>
-    <td colspan='4' style='padding:5rem 0;'>No Data</td>
-</tr>";
+    $table_data = <<<HTML
+        <tr>
+            <td colspan='4' style='padding:5rem 0;'>No Data</td>
+        </tr>
+    HTML;
 }
 ?>
 

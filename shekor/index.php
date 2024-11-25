@@ -125,7 +125,7 @@ if ($result->num_rows > 0) {
                             <div class="card">
                                 <div class="card-header">পরিবারের প্রধান</div>
                                 <div class="card-body">
-                                    <h5 class="card-title"><?php echo $own["fullName"]." (ID - ".$own["id"].")" ; ?></h5>
+                                    <h5 class="card-title"><?php echo $own["fullName"] . " (ID - " . $own["id"] . ")"; ?></h5>
                                 </div>
                             </div>
                         </div>

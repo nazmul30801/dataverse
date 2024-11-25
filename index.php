@@ -23,14 +23,33 @@ require $root_dir . "page_handler.php";
 
     <!-- Main Body  -->
     <main>
+        <section id="search_engine">
+            <div class="container py-5">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="display-1 pb-5 text-center text-secondary"><img class="d-inline-block" style="width: 25rem;" src="/img/text-logo.png" alt=""></div>
+                    </div>
+                </div>
+            </div>
+        </section>
         <section id="apps-list">
-            <div class="container p-5 d-flex justify-content-center">
-                <div class="app-box">
-                    <div class="app-box-title display-1">Apps</div>
-                    <div class="app-box-body d-flex flex-wrap justify-content-center">
-                        <a href="/identity" class="app">Identity</a>
-                        <a href="/caller_id/" class="app">Caller ID</a>
-                        <a href="/shekor/" class="app">Shekor</a>
+            <div class="container">
+                <div class="row">
+                </div>
+                <div class="col-12">
+                    <div class="app-box d-flex justify-content-center ">
+                        <div class="app-box-body bg-secondary d-flex flex-wrap justify-content-center">
+                            <a href="/identity" class="app"><i class="fa-solid fa-address-card"></i></a>
+                            <a href="/caller_id/" class="app"><i class="fa-solid fa-address-book"></i></a>
+                            <a href="/shekor/" class="app"><i class="fa-solid fa-people-roof"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="d-flex justify-content-center mt-5">
+                        <div class="w-75">
+                            <?php echo search_engine(); ?>
+                        </div>
                     </div>
                 </div>
             </div>
