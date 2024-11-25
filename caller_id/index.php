@@ -114,7 +114,6 @@ if ($total_result > 0) {
     while ($row = $result->fetch_assoc()) {
         $table_data .= <<<HTML
             <tr>
-                <td>{$row["id"]}</td>
                 <td>{$row["name"]}</td>
                 <td>{$row["number"]}</td>
                 <td>{$id_name_table[$row["connectionID"]]}</td>
@@ -182,8 +181,7 @@ if ($total_result > 0) {
                                 <div class="card-body table-responsive">
                                     <table class="table table-striped">
                                         <thead class="table-success">
-                                            <tr class="">
-                                                <th>ID</th>
+                                            <tr class=""
                                                 <th>Name</th>
                                                 <th>Number</th>
                                                 <th>Relative</th>
