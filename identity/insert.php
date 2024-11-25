@@ -1,6 +1,9 @@
 <?php
 
-$base_dir = "../";
+$root_dir = "../";
+$page_id = 4;
+require $root_dir . "page_handler.php";
+
 $error = array();
 $insert_status_html = "";
 if (isset($_POST["submit"])) {
@@ -47,14 +50,14 @@ if (isset($_POST["submit"])) {
 	$sql = "INSERT INTO `main` (" . $db_cols . ") VALUES (" . $form_cols . ");";
 
 
-	require $base_dir . "dbhandler.php";
+	require $root_dir . "dbhandler.php";
 	if ($conn->query($sql) === TRUE && isset($_FILES["profileImage"]) && $_FILES["profileImage"]["tmp_name"] != "") {
 		$image = $_FILES["profileImage"];
 		print_r($image);
 
 
 		$last_id = $conn->insert_id;
-		$target_file = $base_dir . "img/profile/profile_" . $last_id . ".jpeg";
+		$target_file = $root_dir . "img/profile/profile_" . $last_id . ".jpeg";
 
 
 		$uploadOk = 1;
@@ -154,13 +157,13 @@ if (isset($_POST["submit"])) {
 
 <head>
 	<link rel="stylesheet" href="/css/cropper.min.css">
-	<?php require $base_dir . "meta_links.php"; ?>
+	<?php require $root_dir . "meta_links.php"; ?>
 	<title>Dataverse</title>
 </head>
 
 <body>
 	<!-- Body - Header -->
-	<?php require $base_dir . "header.php"; ?>
+	<?php require $root_dir . "header.php"; ?>
 
 	<!-- Main Body  -->
 	<main>
@@ -519,7 +522,7 @@ if (isset($_POST["submit"])) {
 
 	<!-- Script -->
 	<script src="/js/cropper.min.js"></script>
-	<?php require $base_dir . "end_scripts.php"; ?>
+	<?php require $root_dir . "end_scripts.php"; ?>
 </body>
 
 </html>

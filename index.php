@@ -27,7 +27,7 @@ require $root_dir . "page_handler.php";
             <div class="container py-5">
                 <div class="row">
                     <div class="col-12">
-                        <div class="display-1 pb-5 text-center text-secondary"><img class="d-inline-block" style="width: 25rem;" src="/img/text-logo.png" alt=""></div>
+                        <div class="display-1 pb-5 text-center text-secondary"><img class="d-inline-block" style="width: 18rem;" src="/img/text-logo.png" alt=""></div>
                     </div>
                 </div>
             </div>
@@ -42,6 +42,7 @@ require $root_dir . "page_handler.php";
                             <a href="/identity" class="app"><i class="fa-solid fa-address-card"></i></a>
                             <a href="/caller_id/" class="app"><i class="fa-solid fa-address-book"></i></a>
                             <a href="/shekor/" class="app"><i class="fa-solid fa-people-roof"></i></a>
+                            <a href="/identity/insert.php" class="app"><i class="fa-solid fa-square-plus"></i></i></a>
                         </div>
                     </div>
                 </div>
