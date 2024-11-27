@@ -96,7 +96,6 @@ if ($result->num_rows > 0) {
 
 <head>
     <?php require $root_dir . "meta_links.php"; ?>
-    <!-- <link rel="stylesheet" href="css/style.css"> -->
     <title><?php echo $title; ?></title>
 </head>
 

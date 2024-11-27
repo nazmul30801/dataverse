@@ -5,11 +5,6 @@ $page_id = 4;
 require $root_dir . "page_handler.php";
 
 
-
-require "function.php";
-
-
-
 if (isset($_GET["submit"])) {
     $name = $_GET["name"];
     $number = $_GET["number"];
