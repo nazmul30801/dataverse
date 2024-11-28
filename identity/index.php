@@ -9,9 +9,12 @@ require $root_dir . "page_handler.php";
 
 
 // --------------------[ Main ]--------------------
+
 if (isset($_GET["search"])) {
 	$query = $_GET["search"];
 
+
+	
 	$result = sql_query("SELECT * FROM `main` WHERE `id`=$query");
 	if ($result->num_rows > 0) {
 		// output data of each row
@@ -104,18 +107,24 @@ if (isset($_GET["search"])) {
 			$tiktok = $row["tiktok"];
 		}
 		$profile_section = <<<HTML
+			<section id="search_engine">
+				<div class="container py-5">
+					<div class="row">
+						<div class="col-12">
+							<div class="display-1 text-success fw-bold pb-5 text-center text-secondary">
+								<div><i class="fa-solid fa-address-card"></i> IDENTITY</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
 			<section id="profile" class="h-100 bg-light">
 				<div class="container pt-2 h-100">
 					<div class="row d-flex justify-content-center h-100">
 						<div class="col-lg-3 col-md-4 ">
 							<div class="row">
 								<div class="col-sm-12 mt-3">
-									<form role="search" method="get">
-										<div class="input-group mb-3">
-											<input class="form-control" type="search" placeholder="Search" aria-label="Search" name="search" value="$query" />
-											<button class="btn btn-success" type="submit">Search</button>
-										</div>
-									</form>
+									$search_engine
 								</div>
 								<div class="col-sm-12 my-3">
 									<div class="card bg-success">
@@ -233,17 +242,26 @@ if (isset($_GET["search"])) {
 			</section>
 		HTML;
 	} else {
+		$query = "";
+		$search_engine = search_engine();
 		$profile_section = <<<HTML
 			<section id="profile" class="h-100 bg-light">
 				<div class="container py-5 h-100">
-					<div class="row d-flex justify-content-center h-100">
-						<div class="col-12 m-sm-5 p-sm-5">
-							<div class="display-2 text-secondary text-center">No Profile Found</div>
-						</div><div class="col-12 m-sm-5 p-sm-5">
-							<form class="d-flex" role="search" method="get">
-								<input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="q" />
-								<button class="btn btn-outline-success" type="submit">Search</button>
-							</form>
+					<div class="row">
+						<div class="col-12">
+							<div class="display-1 text-success fw-bold pb-5 text-center text-secondary">
+								<div><i class="fa-solid fa-address-card"></i> IDENTITY</div>
+							</div>
+						</div>
+						<div class="col-12">
+							<div class="d-flex justify-content-center mt-5">
+								<div class="w-75">
+									$search_engine
+								</div>
+							</div>
+						</div>
+						<div class="col-12">
+							NO Data found
 						</div>
 					</div>
 				</div>
