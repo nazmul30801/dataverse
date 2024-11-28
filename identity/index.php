@@ -9,12 +9,14 @@ require $root_dir . "page_handler.php";
 
 
 // --------------------[ Main ]--------------------
+$search_engine = search_engine();
+$full_search_engine = full_search_engine();
 
 if (isset($_GET["search"])) {
 	$query = $_GET["search"];
 
 
-	
+	$search_engine = search_engine($query);
 	$result = sql_query("SELECT * FROM `main` WHERE `id`=$query");
 	if ($result->num_rows > 0) {
 		// output data of each row
@@ -107,20 +109,9 @@ if (isset($_GET["search"])) {
 			$tiktok = $row["tiktok"];
 		}
 		$profile_section = <<<HTML
-			<section id="search_engine">
-				<div class="container py-5">
-					<div class="row">
-						<div class="col-12">
-							<div class="display-1 text-success fw-bold pb-5 text-center text-secondary">
-								<div><i class="fa-solid fa-address-card"></i> IDENTITY</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</section>
-			<section id="profile" class="h-100 bg-light">
-				<div class="container pt-2 h-100">
-					<div class="row d-flex justify-content-center h-100">
+			<section id="profile">
+				<div class="container">
+					<div class="row d-flex justify-content-center">
 						<div class="col-lg-3 col-md-4 ">
 							<div class="row">
 								<div class="col-sm-12 mt-3">
@@ -242,58 +233,25 @@ if (isset($_GET["search"])) {
 			</section>
 		HTML;
 	} else {
-		$query = "";
-		$search_engine = search_engine();
 		$profile_section = <<<HTML
-			<section id="profile" class="h-100 bg-light">
-				<div class="container py-5 h-100">
-					<div class="row">
-						<div class="col-12">
-							<div class="display-1 text-success fw-bold pb-5 text-center text-secondary">
-								<div><i class="fa-solid fa-address-card"></i> IDENTITY</div>
-							</div>
-						</div>
-						<div class="col-12">
-							<div class="d-flex justify-content-center mt-5">
-								<div class="w-75">
-									$search_engine
-								</div>
-							</div>
-						</div>
-						<div class="col-12">
-							NO Data found
-						</div>
-					</div>
-				</div>
-			</section>
+			$full_search_engine;
+			
 		HTML;
 	}
 } else {
 	$search_engine = search_engine();
 	$profile_section = <<<HTML
 		<section id="search_engine">
-			<div class="container py-5">
-				<div class="row">
-					<div class="col-12">
-						<div class="display-1 text-success fw-bold pb-5 text-center text-secondary">
-							<div><i class="fa-solid fa-address-card"></i> IDENTITY</div>
-						</div>
-					</div>
-					<div class="col-12">
-						<div class="d-flex justify-content-center mt-5">
-							<div class="w-75">
-								$search_engine
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
+
 		</section>
 	HTML;
 }
 
-
-
+$main_sec_header = main_section_header("IDENTITY");
+$main_sectoin = <<<HTML
+	$main_sec_header
+	$profile_section
+HTML;
 
 
 
@@ -315,7 +273,7 @@ if (isset($_GET["search"])) {
 
 	<!-- Main Body  -->
 	<main>
-		<?php echo $profile_section; ?>
+		<?php echo $main_sectoin; ?>
 	</main>
 
 	<!-- Body - Footer -->

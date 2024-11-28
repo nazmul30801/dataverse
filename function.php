@@ -9,7 +9,7 @@ function create_conn($database = "dataverse")
     $password = "";
     // Create connection
     $connection = new mysqli($servername, $username, $password, $database);
-    
+
     // Check connection
     if ($connection->connect_error) {
         echo $connection->connect_error;
@@ -31,11 +31,11 @@ function sql_query($sql, $database = "dataverse")
 
 // ---------------[Search Engin Functions]---------------
 
-function search($query) {
+function search($query)
+{
     if (is_numeric((int)$query)) {
         $result = $sql = "SELECT * FROM `main` WHERE `id` LIKE  %$query%";
     } else {
-        
     }
 }
 
@@ -149,12 +149,12 @@ function insert_contacts($vcf_file, $get_from)
         $data .= "\n(NULL, '" . $contacts["name"][$i] . "', '" . $contacts["number"][$i] . "', '" . $get_from . "'),";
     }
     $sql = "INSERT INTO `contacts` (`id`, `name`, `number`, `get_from`) \nVALUES " . substr_replace($data, ';', -1);
-    
+
     // Create SQL file
     $sql_file = fopen("uploads/sql/" . $get_from . "'s Contacts.sql", "w") or die("Unable to Open File.");
     fwrite($sql_file, $sql);
     fclose($sql_file);
-    
+
     // Insert Data on Database
     require "config/config.php";
     if ($conn->query($sql) === TRUE) {
@@ -190,3 +190,43 @@ function search_engine($query = "")
     return $search_engine;
 }
 
+function full_search_engine($query = "")
+{
+    $search_engine = search_engine($query);
+    $full_search_engine = <<<HTML
+		<section id="full_search_engine">
+			<div class="container">
+				<div class="row">
+					<div class="col-12">
+						<div class="d-flex justify-content-center mt-5">
+							<div class="w-75">
+								$search_engine
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+	HTML;
+    return $full_search_engine;
+}
+
+
+function main_section_header($title)
+{
+    $main_section_header = <<<HTML
+		<section id="profile">
+			<div class="container my-5">
+				<div class="row">
+					<div class="col-12">
+						<div class="display-1 text-success fw-bold text-center text-secondary">
+							<div><i class="fa-solid fa-address-card"></i> $title</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+	HTML;
+    return $main_section_header;
+
+}

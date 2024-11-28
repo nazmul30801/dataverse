@@ -21,7 +21,7 @@ body {
 
 /* --------------------[ Section = Nav Bar ]-------------------- */
 #main_menu {
-  background-color: var(--bs-light);
+	background-color: var(--bs-light);
 	border-bottom: 1px solid #88888820;
 }
 
@@ -69,7 +69,7 @@ body {
 	padding: 0.8rem;
 }
 #apps-list .app-box-body .app {
-  width: 7rem;
+	width: 7rem;
 	height: 7rem;
 	background-color: var(--bs-light);
 	border: 2px solid #ffffffa8;
@@ -84,8 +84,8 @@ body {
 }
 
 #apps-list .app-box-body .app:hover {
-  background: var(--bs-success);
-  color: var(--bs-light);
+	background: var(--bs-success);
+	color: var(--bs-light);
 	outline: 0.5rem solid #ffffff50;
 }
 
@@ -133,4 +133,31 @@ body {
 #search_box,
 #search_result {
 	margin-top: 1.5rem;
+}
+
+/* --------------------[ Section = search_result  ]-------------------- */
+#search_result {
+	/* background-color: var(--bs-primary); */
+}
+#search_result .search-result-box {
+	overflow: hidden;
+	border-radius: 2rem;
+	padding: 2rem;
+	margin: 2rem 0;
+}
+#search_result .result_item {
+	padding: 1rem;
+	display: block;
+	text-decoration: none;
+	color: inherit;
+}
+#search_result .result_item:hover {
+	background-color: var(--bs-light);
+}
+#search_result .profile-image img {
+	display: inline-block;
+	max-width: 3rem;
+	max-height: 3rem;
+	border: 3px solid var(--bs-secondary);
+	border-radius: 50%;
 }
