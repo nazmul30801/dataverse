@@ -180,7 +180,7 @@ function insert_contacts($vcf_file, $get_from)
 function search_engine($query = "")
 {
     $search_engine = <<<HTML
-        <form action="/identity/index.php" role="search" method="get">
+        <form action="/search/index.php" role="search" method="get">
             <div class="input-group">
                 <input type="search" class="form-control" placeholder="Search here ..." name="search" value="$query">
                 <button class="btn btn-success" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
