@@ -43,12 +43,29 @@ document.addEventListener('DOMContentLoaded', function () {
 			alert(5);
 			const croppedArea = cropper.getCroppedCanvas();
 			croppedArea.toBlob(function (blob) {
-                const imageObj = new File([blob], 'image.jpg');
-                const dataTransfer = new DataTransfer();
+				const imageObj = new File([blob], 'image.jpg');
+				const dataTransfer = new DataTransfer();
 				dataTransfer.items.add(imageObj);
 				inputImage.files = dataTransfer.files;
-                modal.hide();
+				modal.hide();
 			}, 'image/jpeg');
 		});
 	});
 });
+
+// -------------------[Highlighter]-------------------
+
+function highlightSpecifiedText(elementClass, keyword) {
+	var elements = document.getElementsByClassName(elementClass);
+	for (var i = 0; i < elements.length; i++) {
+		var element = elements[i];
+		var innerHTML = element.innerHTML;
+		var index = innerHTML.indexOf(keyword);
+		if (index >= 0) {
+			innerHTML = innerHTML.substring(0, index) + 
+				"<span class='highlight'>" + keyword + '</span>' +
+				innerHTML.substring(index + keyword.length);
+			element.innerHTML = innerHTML;
+		}
+	}
+}

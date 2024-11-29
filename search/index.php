@@ -9,45 +9,40 @@ require $root_dir . "page_handler.php";
 
 
 // --------------------[ Main ]--------------------
-function search_item()
-{
-    $search_item = <<<HTML
-        <a href="#" class="result_item border-bottom">
-            <div class="row">
-                <div class="col-md-2 col-3 d-flex align-items-center">
-                    <div class="profile-image">
-                        <img src="/img/profile/profile_78.jpeg">
-                    </div>
-                </div>
-                <div class="col-md-10 col-9">
-                    <div class="row">
-                        <div class="col-md-4 col-12 d-flex align-items-center">
-                            <div class="profile-name fw-bold fs-5">Anisur Rahman</div>
-                        </div>
-                        <div class="col-md-6 col-12 mt-2">
-                            <p>Thisi is a text for demo to this correctly</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </a>
-    HTML;
-    return $search_item;
-}
+$section_search_result = "";
+$section_search_result_status = 0;
+$search_item_all = "";
 
 
-
-if (isset($_GET["search"])) {
+if (isset($_GET["search"]) && $_GET["search"] != "") {
     $query = $_GET["search"];
+    $result = sql_query(make_sql($query, "main"));
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            $details = <<<HTML
+                <div class='search-details'>
+                    <span class=''>{$row["column_name"]} : </span>{$row["value"]}
+                </div>
+            HTML;
+            $search_item_all .= search_item($row["id"], $row["fullName"],  $details);
+        }
+    } else {
+        $search_item_all = <<<HTML
+            <div class="fs-5 text-center fw-bold text-secondary"><i class="fa-solid fa-circle-xmark"></i> No Data Found </div>
+        HTML;
+    }
+    $section_search_result_status = 1;
+} else { $query = "";}
 
-    $sql = "";
-
-
-
-    $sql = "SELECT ";
-} else {
-    $query = "";
-}
+$section_search_result = <<<HTML
+    <section id="search_result">
+        <div class="container">
+            <div class="search-result-box border">
+                $search_item_all
+            </div>
+        </div>
+    </section>
+HTML;
 
 
 ?>
@@ -84,19 +79,7 @@ if (isset($_GET["search"])) {
                 </div>
             </div>
         </section>
-        <section id="search_result">
-            <div class="container">
-                <div class="search-result-box border">
-                    <?php
-                    $i = 1;
-                    while ($i <= 10) {
-                        echo search_item();
-                        $i += 1;
-                    }
-                    ?>
-                </div>
-            </div>
-        </section>
+        <?php view_section($section_search_result, $section_search_result_status) ?>
     </main>
 
     <!-- Body - Footer -->
@@ -104,6 +87,11 @@ if (isset($_GET["search"])) {
 
     <!-- End Scripts -->
     <?php require $root_dir . "end_scripts.php"; ?>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            highlightSpecifiedText('search-details', '<?php echo $query; ?>');
+        });
+    </script>
 </body>
 
 </html>

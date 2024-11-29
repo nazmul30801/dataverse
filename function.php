@@ -31,15 +31,28 @@ function sql_query($sql, $database = "dataverse")
 
 // ---------------[Search Engin Functions]---------------
 
-function search($query)
+function make_sql($search_term, $table)
 {
-    if (is_numeric((int)$query)) {
-        $result = $sql = "SELECT * FROM `main` WHERE `id` LIKE  %$query%";
-    } else {
+    $result_column = sql_query("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '$table' AND TABLE_SCHEMA = 'dataverse'");
+    if ($result_column->num_rows > 0) {
+        // output data of each row
+        $sql = "";
+        while ($columns = $result_column->fetch_assoc()) {
+            $column = $columns["COLUMN_NAME"];
+            $sql .= "SELECT `id`, `fullName`, '$column' AS column_name, `$column` AS value FROM `main` WHERE `$column` LIKE '%$search_term%' UNION ";
+        }
+        $sql = substr($sql, 0, -7);
+        $sql = $sql . ";";
+        return $sql;
     }
 }
 
 
+function view_section($section, $status=1) {
+    if ($status == 1) {
+        echo $section;
+    }
+}
 
 
 
@@ -180,9 +193,9 @@ function insert_contacts($vcf_file, $get_from)
 function search_engine($query = "")
 {
     $search_engine = <<<HTML
-        <form action="/search/index.php" role="search" method="get">
+        <form action="/search" role="search" method="get">
             <div class="input-group">
-                <input type="search" class="form-control" placeholder="Search here ..." name="search" value="$query">
+                <input type="search" class="form-control" required placeholder="Search here ..." name="search" value="$query">
                 <button class="btn btn-success" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
             </div>
         </form>
@@ -229,4 +242,31 @@ function main_section_header($title)
 	HTML;
     return $main_section_header;
 
+}
+
+
+function search_item($id, $name, $details)
+{
+    $search_item = <<<HTML
+        <a href="/identity/index.php?search={$id}" class="result_item border-bottom">
+            <div class="row">
+                <div class="col-md-2 col-3 d-flex align-items-center">
+                    <div class="profile-image">
+                        <img onerror="this.src='/img/profile/profile_demo.jpeg';" src="/img/profile/profile_{$id}.jpeg">
+                    </div>
+                </div>
+                <div class="col-md-10 col-9">
+                    <div class="row">
+                        <div class="col-md-4 col-12 d-flex align-items-center">
+                            <div class="profile-name fw-bold fs-5">$name</div>
+                        </div>
+                        <div class="col-md-6 col-12 mt-2">
+                            $details
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </a>
+    HTML;
+    return $search_item;
 }

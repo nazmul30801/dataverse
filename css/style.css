@@ -19,6 +19,11 @@ body {
 
 /* ======================================================= */
 
+/* --------------------[ Common CSS ]-------------------- */
+.highlight {
+	background-color: yellow;
+}
+
 /* --------------------[ Section = Nav Bar ]-------------------- */
 #main_menu {
 	background-color: var(--bs-light);
