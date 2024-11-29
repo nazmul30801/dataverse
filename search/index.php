@@ -37,7 +37,7 @@ if (isset($_GET["search"]) && $_GET["search"] != "") {
 $section_search_result = <<<HTML
     <section id="search_result">
         <div class="container">
-            <div class="search-result-box border">
+            <div class="search-result-box border bg-light">
                 $search_item_all
             </div>
         </div>

@@ -22,6 +22,7 @@ body {
 /* --------------------[ Common CSS ]-------------------- */
 .highlight {
 	background-color: yellow;
+	color: #000;
 }
 
 /* --------------------[ Section = Nav Bar ]-------------------- */
@@ -155,9 +156,11 @@ body {
 	display: block;
 	text-decoration: none;
 	color: inherit;
+	border-radius: 1rem;
 }
 #search_result .result_item:hover {
-	background-color: var(--bs-light);
+	background-color: var(--bs-success);
+	color: #fff;
 }
 #search_result .profile-image img {
 	display: inline-block;
