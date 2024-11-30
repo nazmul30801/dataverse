@@ -142,21 +142,14 @@ body {
 }
 
 /* --------------------[ Section = search_result  ]-------------------- */
-#search_result {
-	/* background-color: var(--bs-primary); */
-}
-#search_result .search-result-box {
-	overflow: hidden;
-	border-radius: 2rem;
-	padding: 2rem;
-	margin: 2rem 0;
-}
+/* #search_result {} */
+
 #search_result .result_item {
 	padding: 1rem;
 	display: block;
 	text-decoration: none;
 	color: inherit;
-	border-radius: 1rem;
+	border-radius: 0.3rem;
 }
 #search_result .result_item:hover {
 	background-color: var(--bs-success);
