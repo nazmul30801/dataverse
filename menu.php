@@ -13,9 +13,9 @@
                 <li class="nav-item">
                     <a class="nav-link" aria-current="page" href="/identity/insert.php">Profile +</a>
                 </li>
-                <li class="nav-item">
+                <!-- <li class="nav-item">
                     <a class="nav-link" aria-current="page" href="/identity/">Identity</a>
-                </li>
+                </li> -->
                 <li class="nav-item">
                     <a class="nav-link" aria-current="page" href="/caller_id/">Caller ID</a>
                 </li>

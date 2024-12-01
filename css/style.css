@@ -139,9 +139,10 @@ section {
 }
 
 /* --------------------[ Section = Search Engine  ]-------------------- */
-#search_engine .search-bar {
+.search-bar {
 	max-width: 44rem;
-	margin: auto;
+	margin: 1rem auto;
+
 }
 
 

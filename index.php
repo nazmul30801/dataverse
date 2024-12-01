@@ -29,8 +29,12 @@ require $root_dir . "page_handler.php";
                     <div class="col-12">
                         <div class="display-1 pb-5 text-center text-secondary"><img class="d-inline-block" style="width: 18rem;" src="/img/text-logo.png" alt=""></div>
                     </div>
+                    <div class="col-12">
+                        <div class="search-bar my-5">
+                            <?php echo search_engine(); ?>
+                        </div>
+                    </div>
                 </div>
-            </div>
         </section>
         <section id="apps-list">
             <div class="container">
@@ -39,17 +43,10 @@ require $root_dir . "page_handler.php";
                 <div class="col-12">
                     <div class="app-box d-flex justify-content-center ">
                         <div class="app-box-body bg-secondary d-flex flex-wrap justify-content-center">
-                            <a href="/identity" class="app"><i class="fa-solid fa-address-card"></i></a>
+                            <!-- <a href="/identity" class="app"><i class="fa-solid fa-address-card"></i></a> -->
                             <a href="/caller_id/" class="app"><i class="fa-solid fa-address-book"></i></a>
                             <a href="/shekor/" class="app"><i class="fa-solid fa-people-roof"></i></a>
                             <a href="/identity/insert.php" class="app"><i class="fa-solid fa-square-plus"></i></i></a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-12">
-                    <div class="d-flex justify-content-center mt-5">
-                        <div class="w-75">
-                            <?php echo search_engine(); ?>
                         </div>
                     </div>
                 </div>
