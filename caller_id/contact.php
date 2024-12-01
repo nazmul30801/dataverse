@@ -24,22 +24,22 @@ if (isset($_GET["id"])) {
 
 $section_contact = <<<HTML
     <section id="contact" class="fs-5">
-        <div class="container d-flex justify-content-center">
-            <div class="card" style="min-width: 400px;">
-                <div class="card-header text-center fw-bold text-secondary">CONTACT</div>
-                <div class="card-body">
-                    <div class="row border-bottom">
-                        <div class="col-4">Name</div>
-                        <div class="col-8">$name</div>
+        <div class="container">
+                <div class="card" style="min-width: 200px;">
+                    <div class="card-header text-center fw-bold text-secondary">CONTACT</div>
+                    <div class="card-body">
+                        <div class="row border-bottom">
+                            <div class="col-4">Name</div>
+                            <div class="col-8">$name</div>
+                        </div>
+                        <div class="row border-bottom">
+                            <div class="col-4">Number</div>
+                            <div class="col-8">$number</div>
+                        </div>
+                        <div class="connection">Connection with <a href="/identity/index.php?search=$connection">$connection_name</a></div>
                     </div>
-                    <div class="row border-bottom">
-                        <div class="col-4">Number</div>
-                        <div class="col-8">$number</div>
-                    </div>
-                    <div class="connection">Connection with <a href="/identity/index.php?search=$connection">$connection_name</a></div>
+                    <!-- <div class="card-footer">Footer</div> -->
                 </div>
-                <!-- <div class="card-footer">Footer</div> -->
-            </div>
         </div>
     </section>
 HTML;

@@ -24,9 +24,6 @@ body {
 	background-color: yellow;
 	color: #000;
 }
-.card {
-	margin: 2rem;
-}
 /* --------------------[ Section = Nav Bar ]-------------------- */
 #main_menu {
 	background-color: var(--bs-light);
@@ -169,18 +166,16 @@ body {
 
 /* --------------------[ Section = Contact  ]-------------------- */
 #contact {
+	margin-top: 1rem;
 	font-size: 2rem;
 	color: var(--bs-secondary);
 }
-#contact .card {
-	margin: 2rem;
-}
-#contact .row {
+#contact .card-body .row {
 	padding: 0.5rem;
 	font-weight: bold;
 	color: var(--bs-secondary);
 }
-#contact .row:hover {
+#contact .card-body .row:hover {
 	background-color: var(--bs-warning);
 	color: var(--bs-dark);
 }
