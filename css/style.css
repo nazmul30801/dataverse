@@ -172,6 +172,9 @@ body {
 	font-size: 2rem;
 	color: var(--bs-secondary);
 }
+#contact .card {
+	margin: 2rem;
+}
 #contact .row {
 	padding: 0.5rem;
 	font-weight: bold;
