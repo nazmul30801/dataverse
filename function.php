@@ -48,7 +48,8 @@ function make_sql($search_term, $table, $columns_array)
 }
 
 
-function view_section($section, $status=1) {
+function view_section($section, $status = 1)
+{
     if ($status == 1) {
         echo $section;
     }
@@ -190,6 +191,32 @@ function insert_contacts($vcf_file, $get_from)
 
 // ---------------[HTML Functions]---------------
 
+
+
+function meta_links()
+{
+    $meta_links = <<<HTML
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+        <link rel="stylesheet" href="/assets/fontawesome/css/all.min.css">
+        <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/css/style.css" />
+    HTML;
+    return $meta_links;
+}
+
+function scripts()
+{
+    $script = <<<HTML
+        <script src="/assets/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <script src="/js/script.js"></script>
+    HTML;
+    return $script;
+}
+
+
+
 function search_engine($query = "")
 {
     $search_engine = <<<HTML
@@ -241,7 +268,6 @@ function main_section_header($title)
 		</section>
 	HTML;
     return $main_section_header;
-
 }
 
 

@@ -1,7 +1,7 @@
 <?php
 
 // --------------------[ Header ]--------------------
-$root_dir = "../";
+$root_dir = "";
 $page_id = 2;
 require $root_dir . "page_handler.php";
 
@@ -18,7 +18,7 @@ if (isset($_GET["search"]) && $_GET["search"] != "") {
     $query = $_GET["search"];
 
     $columns = ["id", "fullName"];
-    $link = "/identity/index.php?search=";
+    $link = "/profile.php?id=";
     $result = sql_query(make_sql($query, "main", $columns));
     $result_number = $result->num_rows;
     if ($result->num_rows > 0) {
