@@ -131,9 +131,9 @@ if (isset($_POST["submit"])) {
 <strong>' . $insert_status['text_bold'] . '</strong>' . $insert_status['text_normal'] . '
 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>';
-
+	$profile_link = profile_link($last_id);
 	$insert_status_html .= '<div class="alert alert-primary alert-dismissible fade show" role="alert">
-	New Profile ID - ' . $last_id . ' <a href="/identity/index.php?search=' . $last_id . '"><strong>View</strong></a>
+	New Profile ID - ' . $last_id . ' <a href="'.$last_id.'"><strong>View</strong></a>
 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>';
 } else {

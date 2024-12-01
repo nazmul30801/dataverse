@@ -296,3 +296,7 @@ function search_item($link, $id, $name, $details)
     HTML;
     return $search_item;
 }
+
+function profile_link($id) {
+    return "/profile.php?id=$id";
+}

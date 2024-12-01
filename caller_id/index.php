@@ -107,11 +107,16 @@ $total_result = $result->num_rows;
 if ($total_result > 0) {
     $table_data = "";
     while ($row = $result->fetch_assoc()) {
+        $connection_profile_link = profile_link($row["connectionID"]);
         $table_data .= <<<HTML
             <tr>
                 <td>{$row["name"]}</td>
                 <td>{$row["number"]}</td>
-                <td>{$id_name_table[$row["connectionID"]]}</td>
+                <td>
+                    <a
+                    class = "text-decoration-none fw-bold text-secondary" 
+                    href="$connection_profile_link">{$id_name_table[$row["connectionID"]]}</a>
+                </td>
             </tr>
         HTML;
     }

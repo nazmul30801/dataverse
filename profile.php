@@ -87,7 +87,8 @@ if (isset($_GET["id"])) {
 							$fathersName = $fathers_row["fullName"];
 						}
 					}
-					$fathersName = '<a class="text-decoration-none" href="?search=' . $row["fathersID"] . '">' . $fathersName . '</a>';
+					$fathers_profile_link = profile_link($row["fathersID"]);
+					$fathersName = '<a class="text-decoration-none" href="'.$fathers_profile_link.'">' . $fathersName . '</a>';
 				} else {
 					$fathersName = "Not Found";
 				}
@@ -138,12 +139,12 @@ if (isset($_GET["id"])) {
 								/>
 							</div>
 						</div>
-						<div class="col-sm-5">
+						<div class="col-sm-6">
 							<div class="profile-name d-flex align-items-sm-center justify-content-sm-start justify-content-center">
 								<div class="fs-3 fw-bold text-secondary">$fullName</div>
 							</div>
 						</div>
-						<div class="col-sm-4">
+						<div class="col-sm-3">
 							<div class="profile-buttons d-flex align-items-sm-end justify-content-sm-end justify-content-center">
 								<button class="btn btn-success fw-bold"><i class="fa-solid fa-pen-to-square"></i> Edit</button>
 							</div>
