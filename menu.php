@@ -1,4 +1,4 @@
-<nav id="main_menu" class="navbar navbar-expand-lg bg-light sticky-top">
+<nav id="main_menu" class="navbar navbar-expand-lg bg-light border-bottom">
     <div class="container-fluid">
         <a class="navbar-brand" href="/">
             <img src="/img/text-logo.png" alt="Bootstrap" height="24" />

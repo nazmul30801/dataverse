@@ -20,14 +20,21 @@ body {
 /* ======================================================= */
 
 /* --------------------[ Common CSS ]-------------------- */
+section {
+	margin-bottom: 1rem;
+}
 .highlight {
 	background-color: yellow;
 	color: #000;
 }
+/* --------------------[ Card ]-------------------- */
+.card {
+	box-shadow: 1px 1px 5px 0 #00000024;
+}
 /* --------------------[ Section = Nav Bar ]-------------------- */
 #main_menu {
 	background-color: var(--bs-light);
-	border-bottom: 1px solid #88888820;
+	/* border-bottom: 1px solid #88888820; */
 }
 
 /* --------------------[ Section = Insert Form ]-------------------- */
@@ -35,10 +42,6 @@ body {
 	border-radius: 0;
 }
 
-/* --------------------[ Card ]-------------------- */
-.card {
-	box-shadow: 1px 1px 5px 0 #00000024;
-}
 
 /* --------------------[ Section = Image Cropper ]-------------------- */
 
@@ -140,8 +143,23 @@ body {
 	margin-top: 1.5rem;
 }
 
+/* --------------------[ Section = Search Engine  ]-------------------- */
+#search_engine .search-bar {
+	max-width: 44rem;
+	margin: auto;
+}
+
+
+
 /* --------------------[ Section = search_result  ]-------------------- */
-/* #search_result {} */
+#search_result {
+	margin-bottom: 1rem;
+}
+#search_result .card {
+	max-width: 44rem;
+	margin: auto;
+
+}
 
 #search_result .result_item {
 	padding: 1rem;
@@ -170,6 +188,11 @@ body {
 	font-size: 2rem;
 	color: var(--bs-secondary);
 }
+#contact .card {
+	min-width: 350px;
+	max-width: 500px;
+	margin: auto;
+}
 #contact .card-body .row {
 	padding: 0.5rem;
 	font-weight: bold;
@@ -188,4 +211,35 @@ body {
 	text-decoration: none;
 	font-weight: bold;
 	color: var(--bs-info);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* --------------------[ Section = Main ]-------------------- */
+main {
+	min-height: 80vh;
+}
+
+/* --------------------[ Section = Footer ]-------------------- */
+footer {
+	background-color: var(--bs-light);
+	/* color: var(--bs-secondary); */
+	padding: 1rem;
+}
+
+
+footer #copyright {
+	text-align: center;
+	color: var(--bs-secondary);
 }

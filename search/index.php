@@ -27,24 +27,24 @@ if (isset($_GET["search"]) && $_GET["search"] != "") {
                 <div class='search-details'>
                     <span class=''>{$row["column_name"]} : </span>{$row["value"]}
                 </div>
-                HTML;
-                $search_item_all .= search_item($link, $row[$columns[0]], $row[$columns[1]],  $details);
-            }
-        }
-        
-    $columns = ["id", "name"];
-    $link = "/caller_id/contact.php?id=";
-    $result = sql_query(make_sql($query, "caller_id", $columns));
-    $result_number += $result->num_rows;
-    if ($result->num_rows > 0) {
-        while ($row = $result->fetch_assoc()) {
-            $details = <<<HTML
-                <div class='search-details'>
-                    <span class=''>{$row["column_name"]} : </span>{$row["value"]}
-                </div>
             HTML;
             $search_item_all .= search_item($link, $row[$columns[0]], $row[$columns[1]],  $details);
         }
+        // }
+
+        // $columns = ["id", "name"];
+        // $link = "/caller_id/contact.php?id=";
+        // $result = sql_query(make_sql($query, "caller_id", $columns));
+        // $result_number += $result->num_rows;
+        // if ($result->num_rows > 0) {
+        //     while ($row = $result->fetch_assoc()) {
+        //         $details = <<<HTML
+        //             <div class='search-details'>
+        //                 <span class=''>{$row["column_name"]} : </span>{$row["value"]}
+        //             </div>
+        //         HTML;
+        //         $search_item_all .= search_item($link, $row[$columns[0]], $row[$columns[1]],  $details);
+        //     }
     } else {
         $search_item_all = <<<HTML
             <div class="fs-5 text-center fw-bold text-secondary">
@@ -106,10 +106,8 @@ HTML;
                         <div class="display-1 py-5 text-center text-secondary"><img class="d-inline-block" style="width: 18rem;" src="/img/text-logo.png" alt=""></div>
                     </div>
                     <div class="col-12">
-                        <div class="d-flex justify-content-center py-3">
-                            <div class="w-75">
-                                <?php echo search_engine($query); ?>
-                            </div>
+                        <div class="search-bar">
+                            <?php echo search_engine($query); ?>
                         </div>
                     </div>
                 </div>

@@ -10,9 +10,9 @@ if (isset($_GET["id"])) {
         while ($row = $result->fetch_assoc()) {
             $name = $row["name"];
             $number = $row["number"];
-            $connection = $row["connectionID"];
+            $connection_id = $row["connectionID"];
         }
-        $connection_result = sql_query("SELECT `fullName` FROM `main` WHERE `id` = $connection");
+        $connection_result = sql_query("SELECT `fullName` FROM `main` WHERE `id` = $connection_id");
         if ($connection_result->num_rows > 0) {
             while ($row = $connection_result->fetch_assoc()) {
                 $connection_name = $row["fullName"];
@@ -25,7 +25,7 @@ if (isset($_GET["id"])) {
 $section_contact = <<<HTML
     <section id="contact" class="fs-5">
         <div class="container">
-                <div class="card" style="min-width: 200px;">
+                <div class="card">
                     <div class="card-header text-center fw-bold text-secondary">CONTACT</div>
                     <div class="card-body">
                         <div class="row border-bottom">
@@ -36,7 +36,7 @@ $section_contact = <<<HTML
                             <div class="col-4">Number</div>
                             <div class="col-8">$number</div>
                         </div>
-                        <div class="connection">Connection with <a href="/identity/index.php?search=$connection">$connection_name</a></div>
+                        <div class="connection">Connection with <a href="/identity/index.php?search=$connection_id">$connection_name</a></div>
                     </div>
                     <!-- <div class="card-footer">Footer</div> -->
                 </div>
