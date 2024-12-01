@@ -31,7 +31,7 @@ function sql_query($sql, $database = "dataverse")
 
 // ---------------[Search Engin Functions]---------------
 
-function make_sql($search_term, $table)
+function make_sql($search_term, $table, $columns_array)
 {
     $result_column = sql_query("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '$table' AND TABLE_SCHEMA = 'dataverse'");
     if ($result_column->num_rows > 0) {
@@ -39,7 +39,7 @@ function make_sql($search_term, $table)
         $sql = "";
         while ($columns = $result_column->fetch_assoc()) {
             $column = $columns["COLUMN_NAME"];
-            $sql .= "SELECT `id`, `fullName`, '$column' AS column_name, `$column` AS value FROM `main` WHERE `$column` LIKE '%$search_term%' UNION ";
+            $sql .= "SELECT `{$columns_array[0]}`, `{$columns_array[1]}`, '$column' AS column_name, `$column` AS value FROM `$table` WHERE `$column` LIKE '%$search_term%' UNION ";
         }
         $sql = substr($sql, 0, -7);
         $sql = $sql . ";";
@@ -245,10 +245,10 @@ function main_section_header($title)
 }
 
 
-function search_item($id, $name, $details)
+function search_item($link, $id, $name, $details)
 {
     $search_item = <<<HTML
-        <a href="/identity/index.php?search={$id}" class="result_item border-bottom">
+        <a href="$link$id" class="result_item border-bottom">
             <div class="row">
                 <div class="col-md-2 col-3 d-flex align-items-center">
                     <div class="profile-image">

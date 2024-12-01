@@ -24,7 +24,9 @@ body {
 	background-color: yellow;
 	color: #000;
 }
-
+.card {
+	margin: 2rem;
+}
 /* --------------------[ Section = Nav Bar ]-------------------- */
 #main_menu {
 	background-color: var(--bs-light);
@@ -161,4 +163,31 @@ body {
 	max-height: 3rem;
 	border: 3px solid var(--bs-secondary);
 	border-radius: 50%;
+}
+
+
+
+/* --------------------[ Section = Contact  ]-------------------- */
+#contact {
+	font-size: 2rem;
+	color: var(--bs-secondary);
+}
+#contact .row {
+	padding: 0.5rem;
+	font-weight: bold;
+	color: var(--bs-secondary);
+}
+#contact .row:hover {
+	background-color: var(--bs-warning);
+	color: var(--bs-dark);
+}
+#contact .connection {
+	padding: 1.5rem;
+	text-align: center;
+	color: var(--bs-secondary);
+}
+#contact .connection a {
+	text-decoration: none;
+	font-weight: bold;
+	color: var(--bs-info);
 }
