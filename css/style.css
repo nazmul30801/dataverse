@@ -24,9 +24,6 @@ body {
 section {
 	margin-bottom: 1rem;
 }
-a:hover {
-	color: var(--bs-info) !important;
-}
 .highlight {
 	background-color: yellow;
 	color: #000;
@@ -103,8 +100,17 @@ a:hover {
 	color: var(--bs-light);
 	outline: 0.5rem solid #0d6efd20;
 }
+/* --------------------[ Section = Profile ]-------------------- */
+#profile tr a {
+	font-weight: bold;
+	color: var(--bs-secondary);
+	text-decoration: none;
+}
+#profile tr a:hover {
+	color: var(--bs-info) !important;
+}
 
-
+/* ====================[ Page = Shekor ]==================== */
 /* --------------------[ Section = generation-series ]-------------------- */
 #generation-series {
 	background-color: var(--bs-success);

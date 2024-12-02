@@ -50,6 +50,7 @@ if (isset($_GET["id"])) {
 			// ----------[ Marital Status Data Collection ]----------
 			if ($row["maritalStatus"] == 0) {
 				$maritalStatus = "Unmarried";
+				$spouseName = "None";
 			} else {
 				$spouse_result = sql_query("SELECT `fullName`, `nickName` FROM `main` WHERE `id`=" . $row["spouseID"] . ";");
 				if ($spouse_result->num_rows > 0) {
@@ -88,7 +89,7 @@ if (isset($_GET["id"])) {
 						}
 					}
 					$fathers_profile_link = profile_link($row["fathersID"]);
-					$fathersName = '<a class="text-decoration-none" href="'.$fathers_profile_link.'">' . $fathersName . '</a>';
+					$fathersName = '<a href="'.$fathers_profile_link.'">' . $fathersName . '</a>';
 				} else {
 					$fathersName = "Not Found";
 				}
@@ -102,13 +103,14 @@ if (isset($_GET["id"])) {
 				if ($mothers_result->num_rows > 0) {
 					// output data of each row
 					while ($mothers_row = $mothers_result->fetch_assoc()) {
-						if ($fathers_row["nickName"] != "") {
-							$mothersName = $mothers_row["nickName"] . " (" . $fathers_row["nickName"] . ")";
+						if ($mothers_row["nickName"] != "") {
+							$mothersName = $mothers_row["nickName"] . " (" . $mothers_row["nickName"] . ")";
 						} else {
 							$mothersName = $mothers_row["fullName"];
 						}
 					}
-					$mothersName = '<a class="text-decoration-none" href="?search=' . $row["mothersID"] . '">' . $mothersName . '</a>';
+					$mothers_profile_link = profile_link($row["mothersID"]);
+					$mothersName = '<a href="'.$mothers_profile_link.'">' . $mothersName . '</a>';
 				} else {
 					$mothersName = "Not Found";
 				}
@@ -141,7 +143,7 @@ if (isset($_GET["id"])) {
 						</div>
 						<div class="col-sm-6">
 							<div class="profile-name d-flex align-items-sm-center justify-content-sm-start justify-content-center">
-								<div class="fs-3 fw-bold text-secondary">$fullName</div>
+								<div class="fs-4 fw-bold text-secondary">$fullName</div>
 							</div>
 						</div>
 						<div class="col-sm-3">
@@ -165,6 +167,7 @@ if (isset($_GET["id"])) {
 						<tr><td>Nationanl ID</td><td>$nid</td></tr>
 						<tr><td>Gender</td><td>$gender</td></tr>
 						<tr><td>Marital Status</td><td>$maritalStatus</td></tr>
+						<tr><td>Spouse Name</td><td>$spouseName</td></tr>
 						<tr><td>Education Level</td><td>$eduLevel</td></tr>
 						<tr><td>Education Group</td><td>$eduGroup</td></tr>
 						<tr><td>Occupation</td><td>$occupation</td></tr>
