@@ -40,7 +40,6 @@ document.addEventListener('DOMContentLoaded', function () {
 			alert('Cropper Not Works perfectly');
 		}
 		saveButton.addEventListener('click', function () {
-			alert(5);
 			const croppedArea = cropper.getCroppedCanvas();
 			croppedArea.toBlob(function (blob) {
 				const imageObj = new File([blob], 'image.jpg');

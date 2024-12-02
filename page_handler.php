@@ -1,6 +1,6 @@
 <?php
 
-require $root_dir."function.php";
+require "sections.php";
 
 $result = sql_query("SELECT * FROM pages WHERE `id` = $page_id");
 if ($result && $row = $result->fetch_assoc()) {
@@ -8,3 +8,14 @@ if ($result && $row = $result->fetch_assoc()) {
 } else {
     $title = "Not Found";
 }
+
+
+$page = [
+    "home" => "/index.php",
+    "search" => "/search.php",
+    "profile" => "/profile.php",
+    "add-profile" => "/add-profile.php",
+    "caller_id" => "/caller_id/index.php",
+    "contact" => "/caller_id/contact.php",
+    "shekor" => "/shekor/index.php"
+];

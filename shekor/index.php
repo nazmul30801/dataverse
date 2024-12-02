@@ -52,7 +52,6 @@ $gen_series = array_reverse($gen_series);
 
 
 // ------------------[ Family Data ]------------------
-$family = array();
 $result = sql_query("SELECT * FROM `main` WHERE fathersID = " . $own["id"] . " ORDER BY id ASC;");
 if ($result->num_rows > 0) {
     // output data of each row
@@ -64,99 +63,115 @@ if ($result->num_rows > 0) {
         }
         $family[] = $row;
     }
+    
     // HTML Formating
-    $family_table_head =
-        '<table class="table table-striped">
-                <tr>
-                    <th>ID</th>
-                    <th>নাম</th>
-                    <th>পদবি</th>
-                </tr>';
+    $family_table_head =<<<HTML
+        <tr>
+            <th>ID</th>
+            <th>নাম</th>
+            <th>পদবি</th>
+        </tr>
+    HTML;
+
     $family_table_rows = "";
     foreach ($family as $family_member) {
-        $table_row =
-            "<tr>
-                <td>" . $family_member["id"] . "</td>
-                <td><a href='?id=" . $family_member["id"] . "'>" . $family_member["fullName"] . "</a></td>
-                <td>" . $family_member["Gender"] . "</td>
-            </tr>";
-        $family_table_rows .= $table_row;
+        $family_table_rows .= <<<HTML
+            <tr>
+                <td>{$family_member["id"]}</td>
+                <td><a href='?id={$family_member["id"]}'>{$family_member["fullName"]}</a></td>
+                <td>{$family_member["Gender"]}</td>
+            </tr>
+
+        HTML;
     }
-    $family_table = $family_table_head . $family_table_rows . "</table>";
+
+    $family_table = <<<HTML
+        <table class="table table-striped">
+            $family_table_head
+            $family_table_rows
+        </table>
+    HTML;
+
 } else {
     $family_table = '<div class="error-title">' . $own["fullName"] . ' এর পরিবারের কোনো তথ্য পাওয়া যায় নি</div>';
 }
 
 
-?>
+$gen_members = "";
+foreach ($gen_series as $gen_member) {
+    $gen_members .= "<a href='?id=" . $gen_member["id"] . "'>" . $gen_member["fullName"] . "</a> <span>></span>";
+}
 
+$section_generation_series = <<<HTML
+    <section id="generation-series">
+        <div class="container">
+            <div class="text-white"><span class="fw-bold">বংশানুক্রম :</span>
+                $gen_members
+            </div>
+        </div>
+    </section>
+HTML;
+
+$link = profile_link($own["id"]);
+$section_family = <<<HTML
+    <section id="family">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="family-head">
+                        <div class="card">
+                            <div class="card-header">পরিবারের প্রধান</div>
+                            <div class="card-body">
+                                <div class="name fw-bold fs-4 text-center">
+                                    <a class="text-decoration-none text-secondary text-hover-warning" href="$link">{$own["fullName"]}</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="family-member">
+                        <div class="card">
+                            <div class="card-header">পরিবারের সদস্যগন</div>
+                            <div class="card-body">
+                                $family_table
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+HTML;
+
+$main_sectoin = <<<HTML
+    <main>
+        $section_generation_series
+        $section_family
+    </main>
+HTML;
+?>
 
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <?php require $root_dir . "meta_links.php"; ?>
+    <?php echo meta_links(); ?>
     <title><?php echo $title; ?></title>
 </head>
 
 <body>
     <!-- Body - Header -->
-    <?php require $root_dir . "header.php"; ?>
-
+    <?php echo page_header(); ?>
+    
     <!-- Main Body  -->
-    <main>
-        <section id="generation-series">
-            <div class="container">
-                <div class="text-white"><span class="fw-bold">বংশানুক্রম :</span>
-                    <?php
-                    foreach ($gen_series as $gen_member) {
-                        echo "<a href='?id=" . $gen_member["id"] . ";'>" . $gen_member["fullName"] . "</a> <span>></span>";
-                    }
-                    ?>
-                </div>
-            </div>
-        </section>
-        <section id="family">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-4">
-                        <div class="family-head">
-                            <div class="card">
-                                <div class="card-header">পরিবারের প্রধান</div>
-                                <div class="card-body">
-                                    <div class="name fw-bold fs-4 text-center">
-                                        <?php
-                                            $name = $own["fullName"];
-                                            $link = profile_link($own["id"]);
-                                            echo <<<HTML
-                                            <a class="text-decoration-none text-secondary text-hover-warning" href="$link">$name</a>
-                                            HTML; 
-                                        ?>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-8">
-                        <div class="family-member">
-                            <div class="card">
-                                <div class="card-header">পরিবারের সদস্যগন</div>
-                                <div class="card-body">
-                                    <?php echo $family_table; ?>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
+    <?php echo $main_sectoin; ?>
 
     <!-- Body - Footer -->
-    <?php require $root_dir . "footer.php"; ?>
+    <?php echo page_footer(); ?>
 
     <!-- End Scripts -->
-    <?php require $root_dir . "end_scripts.php"; ?>
+    <?php echo scripts(); ?>
 </body>
 
 </html>

@@ -4,8 +4,46 @@ $root_dir = "";
 $page_id = 1;
 require $root_dir . "page_handler.php";
 
+$search_engine =  search_engine();
+$section_search_engine = <<<HTML
+    <section id="search_engine">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="display-1 py-5 text-center text-secondary"><img class="d-inline-block" style="width: 18rem;" src="/img/text-logo.png" alt=""></div>
+                </div>
+                <div class="col-12">
+                    <div class="search-bar">
+                        $search_engine
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+HTML;
 
+$section_app_list = <<<HTML
+    <section id="apps-list">
+        <div class="container">
+            <div class="card app-box">
+                <div class=" d-flex flex-wrap justify-content-center">
+                    <a href="{$page['caller_id']}" class="app border"><i class="fa-solid fa-address-book"></i></a>
+                    <a href="{$page['shekor']}" class="app border"><i class="fa-solid fa-people-roof"></i></a>
+                    <a href="{$page['add-profile']}" class="app border"><i class="fa-solid fa-square-plus"></i></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+HTML;
+
+$main_sectoin = <<<HTML
+    <main>
+        $section_search_engine
+        $section_app_list
+    </main>
+HTML;
 ?>
+
 
 
 
@@ -13,52 +51,22 @@ require $root_dir . "page_handler.php";
 <html lang="en">
 
 <head>
-    <?php require $root_dir . "meta_links.php"; ?>
+    <?php echo meta_links(); ?>
     <title><?php echo $title; ?></title>
 </head>
 
 <body>
     <!-- Body - Header -->
-    <?php require $root_dir . "header.php"; ?>
-
+    <?php echo page_header(); ?>
+    
     <!-- Main Body  -->
-    <main>
-        <section id="search_engine">
-            <div class="container py-5">
-                <div class="row">
-                    <div class="col-12">
-                        <div class="display-1 pb-5 text-center text-secondary"><img class="d-inline-block" style="width: 18rem;" src="/img/text-logo.png" alt=""></div>
-                    </div>
-                    <div class="col-12">
-                        <div class="search-bar my-5">
-                            <?php echo search_engine(); ?>
-                        </div>
-                    </div>
-                </div>
-        </section>
-        <section id="apps-list">
-            <div class="container">
-                <div class="row">
-                </div>
-                <div class="col-12">
-                    <div class="app-box d-flex justify-content-center ">
-                        <div class="app-box-body bg-secondary d-flex flex-wrap justify-content-center">
-                            <!-- <a href="/identity" class="app"><i class="fa-solid fa-address-card"></i></a> -->
-                            <a href="/caller_id/" class="app"><i class="fa-solid fa-address-book"></i></a>
-                            <a href="/shekor/" class="app"><i class="fa-solid fa-people-roof"></i></a>
-                            <a href="/identity/insert.php" class="app"><i class="fa-solid fa-square-plus"></i></i></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
+    <?php echo $main_sectoin; ?>
 
     <!-- Body - Footer -->
-    <?php require $root_dir . "footer.php"; ?>
+    <?php echo page_footer(); ?>
 
     <!-- End Scripts -->
-    <?php require $root_dir . "end_scripts.php"; ?>
+    <?php echo scripts(); ?>
 </body>
 
 </html>

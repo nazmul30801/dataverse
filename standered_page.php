@@ -20,9 +20,6 @@ $main_sectoin = <<<HTML
 HTML;
 ?>
 
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -33,13 +30,13 @@ HTML;
 
 <body>
     <!-- Body - Header -->
-    <?php require $root_dir . "header.php"; ?>
+    <?php echo page_header(); ?>
     
     <!-- Main Body  -->
     <?php echo $main_sectoin; ?>
 
     <!-- Body - Footer -->
-    <?php require $root_dir . "footer.php"; ?>
+    <?php echo page_footer(); ?>
 
     <!-- End Scripts -->
     <?php echo scripts(); ?>

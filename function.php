@@ -2,7 +2,7 @@
 
 // ---------------[Main Functions]---------------
 
-function create_conn($database = "dataverse")
+function create_connection($database = "dataverse")
 {
 	$servername = "localhost";
 	$username = "root";
@@ -17,16 +17,16 @@ function create_conn($database = "dataverse")
 	return $connection;
 }
 
-
-
-
 function sql_query($sql, $database = "dataverse")
 {
-	$connection = create_conn($database);
+	
+	$connection = create_connection($database);
 	$result = $connection->query($sql);
 	$connection->close();
 	return $result;
 }
+
+
 
 
 // ---------------[Search Engin Functions]---------------
@@ -188,113 +188,3 @@ function insert_contacts($vcf_file, $get_from)
 
 
 
-
-// ---------------[HTML Functions]---------------
-
-
-
-function meta_links()
-{
-	$meta_links = <<<HTML
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
-		<link rel="stylesheet" href="/assets/fontawesome/css/all.min.css">
-		<link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css">
-		<link rel="stylesheet" href="/css/style.css" />
-	HTML;
-	return $meta_links;
-}
-
-function scripts()
-{
-	$script = <<<HTML
-		<script src="/assets/bootstrap/js/bootstrap.bundle.min.js"></script>
-		<script src="/js/script.js"></script>
-	HTML;
-	return $script;
-}
-
-	
-
-function search_engine($query = "")
-{
-	$search_engine = <<<HTML
-		<form action="/search" role="search" method="get">
-			<div class="input-group">
-				<input type="search" class="form-control" required placeholder="Search here ..." name="search" value="$query">
-				<button class="btn btn-success" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
-			</div>
-		</form>
-	HTML;
-	return $search_engine;
-}
-
-function full_search_engine($query = "")
-{
-	$search_engine = search_engine($query);
-	$full_search_engine = <<<HTML
-		<section id="full_search_engine">
-			<div class="container">
-				<div class="row">
-					<div class="col-12">
-						<div class="search-bar">
-								<?php echo search_engine($query); ?>
-							</div>
-						</div>
-				</div>
-			</div>
-		</section>
-	HTML;
-	return $full_search_engine;
-}
-
-
-function main_section_header($title)
-{
-	$main_section_header = <<<HTML
-		<section id="profile">
-			<div class="container my-5">
-				<div class="row">
-					<div class="col-12">
-						<div class="display-1 text-success fw-bold text-center text-secondary">
-							<div><i class="fa-solid fa-address-card"></i> $title</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</section>
-	HTML;
-	return $main_section_header;
-}
-
-
-function search_item($link, $id, $name, $details)
-{
-	$search_item = <<<HTML
-		<a href="$link$id" class="result_item border-bottom">
-			<div class="row">
-				<div class="col-md-2 col-3 d-flex align-items-center">
-					<div class="profile-image">
-						<img onerror="this.src='/img/profile/profile_demo.jpeg';" src="/img/profile/profile_{$id}.jpeg">
-					</div>
-				</div>
-				<div class="col-md-10 col-9">
-					<div class="row">
-						<div class="col-md-4 col-12 d-flex align-items-center">
-							<div class="profile-name fw-bold fs-5">$name</div>
-						</div>
-						<div class="col-md-6 col-12 mt-2">
-							$details
-						</div>
-					</div>
-				</div>
-			</div>
-		</a>
-	HTML;
-	return $search_item;
-}
-
-function profile_link($id) {
-	return "/profile.php?id=$id";
-}

@@ -49,9 +49,16 @@ HTML;
 
 
 
+$main_sectoin = <<<HTML
+    <main>
+        $section_contact
+    </main>
+HTML;
+
 
 
 ?>
+
 
 
 
@@ -60,24 +67,22 @@ HTML;
 <html lang="en">
 
 <head>
-    <?php require $root_dir . "meta_links.php"; ?>
+    <?php echo meta_links(); ?>
     <title><?php echo $title; ?></title>
 </head>
 
 <body>
     <!-- Body - Header -->
-    <?php require $root_dir . "header.php"; ?>
-
+    <?php echo page_header(); ?>
+    
     <!-- Main Body  -->
-    <main>
-        <?php echo $section_contact; ?>
-    </main>
+    <?php echo $main_sectoin; ?>
 
     <!-- Body - Footer -->
-    <?php require $root_dir . "footer.php"; ?>
+    <?php echo page_footer(); ?>
 
     <!-- End Scripts -->
-    <?php require $root_dir . "end_scripts.php"; ?>
+    <?php echo scripts(); ?>
 </body>
 
 </html>

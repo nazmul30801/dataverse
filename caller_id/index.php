@@ -127,84 +127,98 @@ if ($total_result > 0) {
         </tr>
     HTML;
 }
+
+
+
+$search_box = <<<HTML
+    <div id="search_box">
+        <div class="card">
+            <div class="card-header">Search Box</div>
+            <div class="card-body">
+                <form id="search_form" class="row g-3" method="get" enctype="multipart/form-data">
+                    <div>
+                        <input class="form-control" type="number" name="number" placeholder="01x xxxx-xxxx" value=$number>
+                    </div>
+                    <div>
+                        <input class="form-control" type="text" name="name" placeholder="Name here..." value="$name">
+                    </div>
+                    <div>
+                        <select name="relative" class="form-control">
+                            $options
+                        </select>
+                    </div>
+                    <div>
+                        <button class="btn btn-outline-danger" onclick="document.getElementById('search_form').reset();">Reset</button>
+                        <input class="btn btn-success float-end" name="submit" type="submit" value="Search">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+HTML;
+
+$search_result = <<<HTML
+    <div id="search_result">
+        <div class="card">
+            <div class="card-header">Result</div>
+            <div class="card-body table-responsive">
+                <table class="table table-striped">
+                    <thead class="table-success">
+                        <tr>
+                            <th>Name</th>
+                            <th>Number</th>
+                            <th>Relative</th>
+                        </tr>
+                    </thead>
+                    <tbody class="data-sheet-body">
+                        $table_data
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+HTML;
+
+
+$section_caller_id = <<<HTML
+    <section id="caller_id">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4">$search_box</div>
+                <div class="col-lg-8">$search_result</div>
+            </div>
+        </div>
+    </section>
+HTML;
+
+$main_sectoin = <<<HTML
+    <main>
+        $section_caller_id
+    </main>
+HTML;
+
 ?>
-
-
 
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <?php require $root_dir . "meta_links.php"; ?>
+    <?php echo meta_links(); ?>
     <title><?php echo $title; ?></title>
 </head>
 
 <body>
     <!-- Body - Header -->
-    <?php require $root_dir . "header.php"; ?>
-
+    <?php echo page_header(); ?>
+    
     <!-- Main Body  -->
-    <main>
-        <section id="caller_id">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-4">
-                        <div id="search_box">
-                            <div class="card">
-                                <div class="card-header">Search Box</div>
-                                <div class="card-body">
-                                    <form id="search_form" class="row g-3" method="get" enctype="multipart/form-data">
-                                        <div>
-                                            <input class="form-control" type="number" name="number" placeholder="01x xxxx-xxxx" value=<?php echo $number; ?>>
-                                        </div>
-                                        <div>
-                                            <input class="form-control" type="text" name="name" placeholder="Name here..." value="<?php echo $name; ?>">
-                                        </div>
-                                        <div>
-                                            <select name="relative" class="form-control">
-                                                <?php echo $options; ?>
-                                            </select>
-                                        </div>
-                                        <div>
-                                            <button class="btn btn-outline-danger" onclick="document.getElementById('search_form').reset();">Reset</button>
-                                            <input class="btn btn-success float-end" name="submit" type="submit" value="Search">
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-8">
-                        <div id="search_result">
-                            <div class="card">
-                                <div class="card-header">Result</div>
-                                <div class="card-body table-responsive">
-                                    <table class="table table-striped">
-                                        <thead class="table-success">
-                                            <tr>
-                                                <th>Name</th>
-                                                <th>Number</th>
-                                                <th>Relative</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody class="data-sheet-body">
-                                            <?php echo $table_data; ?>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
+    <?php echo $main_sectoin; ?>
 
     <!-- Body - Footer -->
-    <?php require $root_dir . "footer.php"; ?>
+    <?php echo page_footer(); ?>
 
     <!-- End Scripts -->
-    <?php require $root_dir . "end_scripts.php"; ?>
+    <?php echo scripts(); ?>
 </body>
 
 </html>
