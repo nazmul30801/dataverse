@@ -186,5 +186,15 @@ function insert_contacts($vcf_file, $get_from)
 
 
 
-
+//  specific session variable remover 
+function get_session_var ($variable_name) {
+	session_start();
+	if (isset($_SESSION[$variable_name])) {
+		$variable = $_SESSION[$variable_name];
+		unset($_SESSION[$variable_name]);
+	} else {
+		$variable = "";
+	}
+	return $variable; 
+}
 

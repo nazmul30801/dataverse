@@ -22,6 +22,7 @@ if (isset($_POST["submit"])) {
 		array("state", "state"),
 		array("country", "country"),
 		array("gender", "gender"),
+		array("spouseID", "spouse_id"),
 		array("maritalStatus", "marital_status"),
 		array("eduLevel", "edu_level"),
 		array("eduGroup", "edu_group"),
@@ -103,11 +104,7 @@ if (isset($_POST["submit"])) {
 			}
 		}
 		foreach ($upload_status as $status) {
-			$alerts .= <<<HTML
-				<div class="alert alert-info alert-dismissible fade show" role="alert">
-					$status<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-				</div>
-			HTML;
+			$alerts .= make_alert($status);
 		}
 		$profile_link = profile_link($last_id);
 		$alert_text = <<<HTML
@@ -115,7 +112,7 @@ if (isset($_POST["submit"])) {
 		HTML;
 		$alerts .= make_alert($alert_text);
 	} else {
-		$insert_status[] = "Data didn't inserted or Image is not select perfectly";
+		$insert_status[] = "Data IDn't inserted or Image is not select perfectly";
 		foreach ($insert_status as $status) {
 			$alerts .= make_alert($status);
 		}
@@ -145,29 +142,17 @@ $add_profile_form = <<<HTML
 					<div class="h4">Basic Info</div>
 				</div>
 				<div class="col-md-6">
-					<input type="text" class="form-control" id="inputFullName" name="full_name"
-						required placeholder="Full Name" />
+					<input type="text" class="form-control" id="inputFullName" name="full_name" required placeholder="Full Name" />
 				</div>
 				<div class="col-md-6">
-					<input type="text" class="form-control" id="inputNickName" name="nick_name"
-						placeholder="Nick Name" />
+					<input type="text" class="form-control" id="inputNickName" name="nick_name" placeholder="Nick Name" />
 				</div>
 				<div class="col-md-6">
-					<input type="email" class="form-control" id="inputEmail" name="email"
-						placeholder="example@email.com" />
+					<input type="email" class="form-control" id="inputEmail" name="email" placeholder="example@email.com" />
 				</div>
 				<div class="col-md-6">
 					<div class="input-group mb-3">
-						<span class="input-group-text" id="basic-addon1">Tel</span>
-						<span>
-							<select id="inputCountryCode" class="form-select" name="country_code">
-								<option value="+880" selected>+880</option>
-								<option value="+39">+39</option>
-								<option value="+39">+39</option>
-							</select>
-						</span>
-						<input type="number" class="form-control" id="inputNumber"
-							name="phone_number" placeholder="1987654321" maxlength="10" size="10" />
+						<input type="text" class="form-control" id="inputNumber" name="phone_number" placeholder="+8801987654321" maxlength="14" size="14" />
 					</div>
 				</div>
 				<!-- Addresses -->
@@ -269,7 +254,7 @@ $add_profile_form = <<<HTML
 				<div class="col-md-6">
 					<div class="input-group mb-3">
 						<span class="input-group-text">Spouse ID</span>
-						<input type="text" class="form-control" name="spouseDID" placeholder="Dataverse ID" />
+						<input type="text" class="form-control" name="spouse_id" placeholder="Dataverse ID" />
 					</div>
 				</div>
 				<div class="col-xl-6">

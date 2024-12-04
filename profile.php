@@ -39,7 +39,7 @@ if (isset($_GET["id"])) {
 			$zipCode = $row["zip"];
 			$state = $row["state"];
 			$country = $row["country"];
-			
+
 			// ----------[ Gender Data Collection ]----------
 			if ($row["gender"] == 0) {
 				$gender = "Female";
@@ -49,27 +49,27 @@ if (isset($_GET["id"])) {
 
 			// ----------[ Marital Status Data Collection ]----------
 			if ($row["maritalStatus"] == 0) {
-				$maritalStatus = "Unmarried";
-				$spouseName = "None";
+				$marital_status_row = "<tr><td>Marital Status</td><td>Unmarried</td></tr>";
 			} else {
-				$spouse_result = sql_query("SELECT `fullName`, `nickName` FROM `main` WHERE `id`=" . $row["spouseID"] . ";");
-				if ($spouse_result->num_rows > 0) {
-					// output data of each row
-					while ($spouse_row = $spouse_result->fetch_assoc()) {
-						$spouseName = $spouse_row["fullName"] . " (" . $spouse_row["nickName"] . ")";
-					}
-					$maritalStatus = "Married" . '</td></tr> <tr><td>Spouse Name</td><td>' . $spouseName;
-				} else {
-					$spouseName = "Not Found";
-					$maritalStatus = "Married" . '</td></tr> <tr><td></td><td>' . $spouseName;
-				}
+				$marital_status_row = "<tr><td>Marital Status</td><td>Married</td></tr>";
 			}
+
+			$spouse_result = sql_query("SELECT `fullName`, `nickName` FROM `main` WHERE `id`=" . $row["spouseID"] . ";");
+			if ($spouse_result->num_rows == 1) {
+				$spouse_row = $spouse_result->fetch_array();
+				$spouse_name = "{$spouse_row["fullName"]} ({$spouse_row["nickName"]})";
+				$spouse_name_row = "<tr><td>Spouse Name</td><td>$spouse_name</td></tr>";
+			} else {
+				$spouse_name_row = "";
+			}
+
 
 			// ----------[ Work Data Collection ]----------
 			$eduLevel = $row["eduLevel"];
 			$eduGroup = $row["eduGroup"];
 			$nid = $row["nid"];
 			$dob = $row["dob"];
+			$blood_group = $row["bloodGroup"];
 			$occupation = $row["occupation"];
 			$religion = $row["religion"];
 			$politicalView = $row["politicalView"];
@@ -89,7 +89,7 @@ if (isset($_GET["id"])) {
 						}
 					}
 					$fathers_profile_link = profile_link($row["fathersID"]);
-					$fathersName = '<a href="'.$fathers_profile_link.'">' . $fathersName . '</a>';
+					$fathersName = '<a href="' . $fathers_profile_link . '">' . $fathersName . '</a>';
 				} else {
 					$fathersName = "Not Found";
 				}
@@ -110,7 +110,7 @@ if (isset($_GET["id"])) {
 						}
 					}
 					$mothers_profile_link = profile_link($row["mothersID"]);
-					$mothersName = '<a href="'.$mothers_profile_link.'">' . $mothersName . '</a>';
+					$mothersName = '<a href="' . $mothers_profile_link . '">' . $mothersName . '</a>';
 				} else {
 					$mothersName = "Not Found";
 				}
@@ -126,8 +126,9 @@ if (isset($_GET["id"])) {
 
 
 
-
+		$alerts = get_session_var("alerts");
 		$profile_header = <<<HTML
+			$alerts
 			<div class="card bg-light">
 				<div class="card-body">
 					<div class="row">
@@ -148,7 +149,7 @@ if (isset($_GET["id"])) {
 						</div>
 						<div class="col-sm-3">
 							<div class="profile-buttons d-flex align-items-sm-end justify-content-sm-end justify-content-center">
-								<button class="btn btn-success fw-bold"><i class="fa-solid fa-pen-to-square"></i> Edit</button>
+								<a class="btn btn-success fw-bold" href="{$page['update-profile']}?id=$id"><i class="fa-solid fa-pen-to-square"></i> Edit</a>
 							</div>
 						</div>
 					</div>
@@ -165,9 +166,10 @@ if (isset($_GET["id"])) {
 						<tr><td>Phone Number</td><td>$phoneNumber</td></tr>
 						<tr><td>Date of Birth</td><td>$dob</td></tr>
 						<tr><td>Nationanl ID</td><td>$nid</td></tr>
+						<tr><td>Blood Group</td><td>$blood_group</td></tr>
 						<tr><td>Gender</td><td>$gender</td></tr>
-						<tr><td>Marital Status</td><td>$maritalStatus</td></tr>
-						<tr><td>Spouse Name</td><td>$spouseName</td></tr>
+						$marital_status_row
+						$spouse_name_row
 						<tr><td>Education Level</td><td>$eduLevel</td></tr>
 						<tr><td>Education Group</td><td>$eduGroup</td></tr>
 						<tr><td>Occupation</td><td>$occupation</td></tr>
