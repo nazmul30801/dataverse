@@ -169,15 +169,15 @@ section {
 
 }
 #search_result .result_item {
-	padding: 1rem;
+	padding: 0.5rem;
 	display: block;
 	text-decoration: none;
 	color: inherit;
-	border-radius: 0.3rem;
+	/* border-radius: 0.3rem; */
 }
 #search_result .result_item:hover {
-	background-color: var(--bs-success);
-	color: #fff;
+	background-color: var(--bs-light);
+	/* color: var(--bs-dark); */
 }
 #search_result .profile-image img {
 	display: inline-block;

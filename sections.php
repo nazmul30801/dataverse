@@ -148,12 +148,12 @@ function search_item($link, $id, $name, $details)
 						<img onerror="this.src='/img/profile/profile_demo.jpeg';" src="/img/profile/profile_{$id}.jpeg">
 					</div>
 				</div>
-				<div class="col-md-10 col-9">
-					<div class="row">
-						<div class="col-md-4 col-12 d-flex align-items-center">
+				<div class="col-md-10 col-9 d-flex align-items-center">
+					<div class="row w-100">
+						<div class="col-md-4 col-12">
 							<div class="profile-name fw-bold">$name</div>
 						</div>
-						<div class="col-md-6 col-12 mt-2">
+						<div class="col-md-6 col-12 mt-md-0 mt-2">
 							$details
 						</div>
 					</div>
