@@ -144,7 +144,7 @@ if (isset($_GET["id"])) {
 						</div>
 						<div class="col-sm-6">
 							<div class="profile-name d-flex align-items-sm-center justify-content-sm-start justify-content-center">
-								<div class="fs-4 fw-bold text-secondary">$fullName</div>
+								<div class="fs-4 fw-bold text-secondary text-sm-start text-center">$fullName</div>
 							</div>
 						</div>
 						<div class="col-sm-3">
@@ -195,7 +195,8 @@ if (isset($_GET["id"])) {
 						<tr><th>Present Address</th></tr>
 						<tr><td>$preAddrStreet, $preAddrCity</td></tr>
 					</tbody>
-				</table><table class="table table-hover">
+				</table>
+				<table class="table table-hover">
 					<tbody>
 						<tr><th colspan="2">Parmanent Address</th></tr>
 						<tr><td>Street</td><td>$street</td></tr>
