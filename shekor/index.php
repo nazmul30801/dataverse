@@ -35,7 +35,7 @@ if ($result->num_rows > 0) {
 // ------------------[ Gen Series Data ]------------------
 $dads_id = $own["fathersID"];
 while ($dads_id != 0) {
-    $result = sql_query("SELECT `id`, `fathersID`, `fullName` FROM `main` WHERE id = " . $dads_id . ";");
+    $result = sql_query("SELECT `id`, `fathersID`, `name` FROM `main` WHERE id = " . $dads_id . ";");
     if ($result->num_rows > 0) {
         // output data of each row
         while ($row = $result->fetch_assoc()) {
@@ -57,9 +57,9 @@ if ($result->num_rows > 0) {
     // output data of each row
     while ($row = $result->fetch_assoc()) {
         if ($row["gender"] == 0) {
-            $row["Gender"] = "ছেলে";
-        } else {
             $row["Gender"] = "মেয়ে";
+        } else {
+            $row["Gender"] = "ছেলে";
         }
         $family[] = $row;
     }
@@ -75,10 +75,12 @@ if ($result->num_rows > 0) {
 
     $family_table_rows = "";
     foreach ($family as $family_member) {
+        $family_member_name = full_name($family_member);
+        $family_member_name = "<a href=\"?id={$family_member["id"]}\">$family_member_name</a>";
         $family_table_rows .= <<<HTML
             <tr>
                 <td>{$family_member["id"]}</td>
-                <td><a href='?id={$family_member["id"]}'>{$family_member["fullName"]}</a></td>
+                <td>$family_member_name</a></td>
                 <td>{$family_member["Gender"]}</td>
             </tr>
 
@@ -86,20 +88,21 @@ if ($result->num_rows > 0) {
     }
 
     $family_table = <<<HTML
-        <table class="table table-striped">
+        <table class="table table-hover">
             $family_table_head
             $family_table_rows
         </table>
     HTML;
 
 } else {
-    $family_table = '<div class="error-title">' . $own["fullName"] . ' এর পরিবারের কোনো তথ্য পাওয়া যায় নি</div>';
+    $family_table = '<div class="error-title">' . $own["name"] . ' এর পরিবারের কোনো তথ্য পাওয়া যায় নি</div>';
 }
 
 
 $gen_members = "";
 foreach ($gen_series as $gen_member) {
-    $gen_members .= "<a href='?id=" . $gen_member["id"] . "'>" . $gen_member["fullName"] . "</a> <span>></span>";
+    $gen_memeber_name = "<a href=\"?id={$gen_member["id"]}\">{$gen_member["name"]}</a>";
+    $gen_members .= "$gen_memeber_name <span>></span>";
 }
 
 $section_generation_series = <<<HTML
@@ -123,7 +126,7 @@ $section_family = <<<HTML
                             <div class="card-header">পরিবারের প্রধান</div>
                             <div class="card-body">
                                 <div class="name fw-bold fs-4 text-center">
-                                    <a class="text-decoration-none text-secondary text-hover-warning" href="$link">{$own["fullName"]}</a>
+                                    <a class="text-decoration-none text-secondary text-hover-warning" href="$link">{$own["name"]}</a>
                                 </div>
                             </div>
                         </div>

@@ -165,7 +165,21 @@ function search_item($link, $id, $name, $details)
 }
 
 function profile_link($id) {
-	return "/profile.php?id=$id";
+	return "/profile.php?id=$id\" class\"profile-link\"";
+}
+function linked_profile($id, $link_value) {
+	$link = profile_link($id);
+	return "<a href=\"$link\">$link_value</a>";
+}
+
+
+function full_name($row) {
+	if ($row["nickName"] != "") {
+		$full_name = "{$row["name"]} ({$row["nickName"]})";
+	} else {
+		$full_name = $row["name"];
+	}
+	return $full_name;
 }
 
 
@@ -175,4 +189,42 @@ function make_alert($text) {
 			$text <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 		</div>
 	HTML;
+}
+
+
+
+function db_col_vs_form_col_array() {
+	$form_data = array(
+		array("fullName", "full_name"),
+		array("nickName", "nick_name"),
+		array("email", "email"),
+		array("phoneNumber", "phone_number"),
+		array("presentStreet", "pre_addr_street"),
+		array("presentCity", "pre_addr_city"),
+		array("street", "street"),
+		array("_union", "union"),
+		array("subDistrict", "sub_dist"),
+		array("district", "dist"),
+		array("zip", "zip_code"),
+		array("state", "state"),
+		array("country", "country"),
+		array("gender", "gender"),
+		array("spouseID", "spouse_id"),
+		array("maritalStatus", "marital_status"),
+		array("eduLevel", "edu_level"),
+		array("eduGroup", "edu_group"),
+		array("nid", "nid"),
+		array("dob", "dob"),
+		array("bloodGroup", "blood_group"),
+		array("occupation", "occupation"),
+		array("religion", "religion"),
+		array("politicalView", "political_view"),
+		array("fathersID", "fathers_id"),
+		array("mothersID", "mothers_id"),
+		array("fb", "facebook"),
+		array("insta", "instagram"),
+		array("tiktok", "tiktok"),
+		array("about", "about")
+	);
+	return $form_data;
 }

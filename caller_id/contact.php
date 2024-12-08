@@ -12,10 +12,10 @@ if (isset($_GET["id"])) {
             $number = $row["number"];
             $connection_id = $row["connectionID"];
         }
-        $connection_result = sql_query("SELECT `fullName` FROM `main` WHERE `id` = $connection_id");
+        $connection_result = sql_query("SELECT `name` FROM `main` WHERE `id` = $connection_id");
         if ($connection_result->num_rows > 0) {
             while ($row = $connection_result->fetch_assoc()) {
-                $connection_name = $row["fullName"];
+                $connection_name = $row["name"];
             }
         }
     }

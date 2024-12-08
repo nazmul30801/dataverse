@@ -7,38 +7,7 @@ require $root_dir . "page_handler.php";
 $alerts = "";
 if (isset($_POST["submit"])) {
 
-	$form_data = array(
-		array("fullName", "full_name"),
-		array("nickName", "nick_name"),
-		array("email", "email"),
-		array("phoneNumber", "phone_number"),
-		array("presentStreet", "pre_addr_street"),
-		array("presentCity", "pre_addr_city"),
-		array("street", "street"),
-		array("_union", "union"),
-		array("subDistrict", "sub_dist"),
-		array("district", "dist"),
-		array("zip", "zip_code"),
-		array("state", "state"),
-		array("country", "country"),
-		array("gender", "gender"),
-		array("spouseID", "spouse_id"),
-		array("maritalStatus", "marital_status"),
-		array("eduLevel", "edu_level"),
-		array("eduGroup", "edu_group"),
-		array("nid", "nid"),
-		array("dob", "dob"),
-		array("bloodGroup", "blood_group"),
-		array("occupation", "occupation"),
-		array("religion", "religion"),
-		array("politicalView", "political_view"),
-		array("fathersID", "fathers_id"),
-		array("mothersID", "mothers_id"),
-		array("fb", "facebook"),
-		array("insta", "instagram"),
-		array("tiktok", "tiktok"),
-		array("about", "about")
-	);
+	$form_data = db_col_vs_form_col_array();
 
 	$db_cols = "`id`";
 	$form_cols = "NULL";
@@ -53,58 +22,62 @@ if (isset($_POST["submit"])) {
 	// --------------------[ Data Insert & Image Upload ]--------------------
 	$connection = create_connection();
 	$query_result = $connection->query($sql);
-	if ($query_result === TRUE && isset($_FILES["profileImage"]) && $_FILES["profileImage"]["tmp_name"] != "") {
-
-		$image = $_FILES["profileImage"];
-		// print_r($image);
+	if ($query_result === TRUE) {
+		$alerts .= make_alert("Data inserted successfully!");
 		$last_id = $connection->insert_id;
-		$target_file = $root_dir . "img/profile/profile_" . $last_id . ".jpeg";
-
-		$uploadOk = 1;
-		$imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
-
-		// Check if image file is a actual image or fake image
-		$check = getimagesize($image["tmp_name"]);
-		if ($check !== false) {
-			$upload_status[] = "File is an image - " . $check["mime"] . ".";
+		if (isset($_FILES["profileImage"]) && $_FILES["profileImage"]["tmp_name"] != "") {
+			$image = $_FILES["profileImage"];
+			// print_r($image);
+			$target_file = $root_dir . "img/profile/profile_" . $last_id . ".jpeg";
+			
 			$uploadOk = 1;
-		} else {
-			$upload_status[] = "File is not an image.";
-			$uploadOk = 0;
-		}
-
-
-		// Check if file already exists
-		if (file_exists($target_file)) {
-			$upload_status[] = "Sorry, file already exists.";
-			$uploadOk = 0;
-		}
-
-		// Check file size
-		if ($image["size"] > 500000) {
-			$upload_status[] = "Sorry, your file is too large.";
-			$uploadOk = 0;
-		}
-
-		// Allow certain file formats
-		if ($imageFileType == "image/jpeg") {
-			$upload_status[] = "Sorry, only JPEG files are allowed.";
-			$uploadOk = 0;
-		}
-
-		// Check if $uploadOk is set to 0 by an error
-		if ($uploadOk == 0) {
-			$upload_status[] = "Sorry, your file was not uploaded.";
-			// if everything is ok, try to upload file
-		} else {
-			if (move_uploaded_file($image["tmp_name"], $target_file)) {
-				$upload_status[] = "The file " . htmlspecialchars(basename($image["name"])) . " has been uploaded.";
+			$imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+			
+			// Check if image file is a actual image or fake image
+			$check = getimagesize($image["tmp_name"]);
+			if ($check !== false) {
+				$upload_status[] = "File is an image - " . $check["mime"] . ".";
+				$uploadOk = 1;
 			} else {
-				$upload_status[] = "Sorry, there was an error uploading your file.";
+				$upload_status[] = "File is not an image.";
+				$uploadOk = 0;
 			}
-		}
-		foreach ($upload_status as $status) {
-			$alerts .= make_alert($status);
+			
+			
+			// Check if file already exists
+			if (file_exists($target_file)) {
+				$upload_status[] = "Sorry, file already exists.";
+				$uploadOk = 0;
+			}
+			
+			// Check file size
+			if ($image["size"] > 500000) {
+				$upload_status[] = "Sorry, your file is too large.";
+				$uploadOk = 0;
+			}
+			
+			// Allow certain file formats
+			if ($imageFileType == "image/jpeg") {
+				$upload_status[] = "Sorry, only JPEG files are allowed.";
+				$uploadOk = 0;
+			}
+			
+			// Check if $uploadOk is set to 0 by an error
+			if ($uploadOk == 0) {
+				$upload_status[] = "Sorry, your file was not uploaded.";
+				// if everything is ok, try to upload file
+			} else {
+				if (move_uploaded_file($image["tmp_name"], $target_file)) {
+					$upload_status[] = "The file " . htmlspecialchars(basename($image["name"])) . " has been uploaded.";
+				} else {
+					$upload_status[] = "Sorry, there was an error uploading your file.";
+				}
+			}
+			foreach ($upload_status as $status) {
+				$alerts .= make_alert($status);
+			}
+		} else {
+			$alerts .= make_alert("Image isn't inserted");
 		}
 		$profile_link = profile_link($last_id);
 		$alert_text = <<<HTML
@@ -112,7 +85,7 @@ if (isset($_POST["submit"])) {
 		HTML;
 		$alerts .= make_alert($alert_text);
 	} else {
-		$insert_status[] = "Data IDn't inserted or Image is not select perfectly";
+		$insert_status[] = "Data isn't inserted or Image is not select perfectly";
 		foreach ($insert_status as $status) {
 			$alerts .= make_alert($status);
 		}

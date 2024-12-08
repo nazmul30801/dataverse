@@ -17,7 +17,7 @@ $search_item_all = "";
 if (isset($_GET["search"]) && $_GET["search"] != "") {
     $query = $_GET["search"];
 
-    $columns = ["id", "fullName"];
+    $columns = ["id", "name"];
     $link = "/profile.php?id=";
     $result = sql_query(make_sql($query, "main", $columns));
     $result_number = $result->num_rows;

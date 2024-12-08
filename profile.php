@@ -21,11 +21,9 @@ if (isset($_GET["id"])) {
 
 			// ----------[ Basic Data Collection ]----------
 			$id = $row["id"];
-			$fullName = $row["fullName"];
-			$nickName = $row["nickName"];
-			if ($nickName != "") {
-				$fullName = $fullName . " (" . $nickName . ")";
-			}
+			$name = $row["name"];
+			$nick_name = $row["nickName"];
+			$full_name = full_name($row);
 			$email = $row["email"];
 			$phoneNumber = $row["phoneNumber"];
 
@@ -42,8 +40,10 @@ if (isset($_GET["id"])) {
 
 			// ----------[ Gender Data Collection ]----------
 			if ($row["gender"] == 0) {
+				$spouse_property_name = "Husband";
 				$gender = "Female";
 			} else {
+				$spouse_property_name = "Wife";
 				$gender = "Male";
 			}
 
@@ -54,11 +54,12 @@ if (isset($_GET["id"])) {
 				$marital_status_row = "<tr><td>Marital Status</td><td>Married</td></tr>";
 			}
 
-			$spouse_result = sql_query("SELECT `fullName`, `nickName` FROM `main` WHERE `id`=" . $row["spouseID"] . ";");
+			$spouse_result = sql_query("SELECT `name`, `nickName` FROM `main` WHERE `id`=" . $row["spouseID"] . ";");
 			if ($spouse_result->num_rows == 1) {
 				$spouse_row = $spouse_result->fetch_array();
-				$spouse_name = "{$spouse_row["fullName"]} ({$spouse_row["nickName"]})";
-				$spouse_name_row = "<tr><td>Spouse Name</td><td>$spouse_name</td></tr>";
+				$spouse_name = full_name($spouse_row);
+				$spouse_name = linked_profile($row["spouseID"], $spouse_name);
+				$spouse_name_row = "<tr><td>$spouse_property_name</td><td>$spouse_name</td></tr>";
 			} else {
 				$spouse_name_row = "";
 			}
@@ -76,43 +77,31 @@ if (isset($_GET["id"])) {
 
 			// ----------[ Fother Data Collection ]----------
 			if ($row["fathersID"] === null) {
-				$$fathersName = "Not Found";
+				$fathers_name_row = "";
 			} else {
-				$fathers_result = sql_query("SELECT `fullName`, `nickName` FROM `main` WHERE `id`=" . $row["fathersID"] . ";");
+				$fathers_result = sql_query("SELECT `name`, `nickName` FROM `main` WHERE `id`=" . $row["fathersID"] . ";");
 				if ($fathers_result->num_rows > 0) {
-					// output data of each row
-					while ($fathers_row = $fathers_result->fetch_assoc()) {
-						if ($fathers_row["nickName"] != "") {
-							$fathersName = $fathers_row["nickName"] . " (" . $fathers_row["nickName"] . ")";
-						} else {
-							$fathersName = $fathers_row["fullName"];
-						}
-					}
-					$fathers_profile_link = profile_link($row["fathersID"]);
-					$fathersName = '<a href="' . $fathers_profile_link . '">' . $fathersName . '</a>';
+					$fathers_row = $fathers_result->fetch_array();
+					$fathers_name = full_name($fathers_row);
+					$fathers_name = linked_profile($row["fathersID"], $fathers_name);
+					$fathers_name_row = "<tr><td>Fathers Name</td><td>$fathers_name</td></tr>";
 				} else {
-					$fathersName = "Not Found";
+					$fathers_name_row = "";
 				}
 			}
 
 			// ----------[ Mother Data Collection ]----------
 			if ($row["mothersID"] === null) {
-				$mothersName = "Not Found";
+				$mothers_name_row = "";
 			} else {
-				$mothers_result = sql_query("SELECT `fullName`, `nickName` FROM `main` WHERE `id`=" . $row["mothersID"] . ";");
+				$mothers_result = sql_query("SELECT `name`, `nickName` FROM `main` WHERE `id`=" . $row["mothersID"] . ";");
 				if ($mothers_result->num_rows > 0) {
-					// output data of each row
-					while ($mothers_row = $mothers_result->fetch_assoc()) {
-						if ($mothers_row["nickName"] != "") {
-							$mothersName = $mothers_row["nickName"] . " (" . $mothers_row["nickName"] . ")";
-						} else {
-							$mothersName = $mothers_row["fullName"];
-						}
-					}
-					$mothers_profile_link = profile_link($row["mothersID"]);
-					$mothersName = '<a href="' . $mothers_profile_link . '">' . $mothersName . '</a>';
+					$mothers_row = $mothers_result->fetch_array();
+					$mothers_name = full_name($mothers_row);
+					$mothers_name = linked_profile($row["mothersID"], $mothers_name);
+					$mothers_name_row = "<tr><td>Fathers Name</td><td>$mothers_name</td></tr>";
 				} else {
-					$mothersName = "Not Found";
+					$mothers_name_row = "";
 				}
 			}
 
@@ -144,7 +133,7 @@ if (isset($_GET["id"])) {
 						</div>
 						<div class="col-sm-6">
 							<div class="profile-name d-flex align-items-sm-center justify-content-sm-start justify-content-center">
-								<div class="fs-4 fw-bold text-secondary text-sm-start text-center">$fullName</div>
+								<div class="fs-4 fw-bold text-secondary text-sm-start text-center">$full_name</div>
 							</div>
 						</div>
 						<div class="col-sm-3">
@@ -169,7 +158,6 @@ if (isset($_GET["id"])) {
 						<tr><td>Blood Group</td><td>$blood_group</td></tr>
 						<tr><td>Gender</td><td>$gender</td></tr>
 						$marital_status_row
-						$spouse_name_row
 						<tr><td>Education Level</td><td>$eduLevel</td></tr>
 						<tr><td>Education Group</td><td>$eduGroup</td></tr>
 						<tr><td>Occupation</td><td>$occupation</td></tr>
@@ -215,8 +203,9 @@ if (isset($_GET["id"])) {
 			<div class="tab-pane" id="tab3" role="tabpanel" aria-labelledby="tab2-tab">
 				<table class="table table-hover">
 					<tbody>
-						<tr><td>Fathers Name</td><td>$fathersName</td></tr>
-						<tr><td>Mothers Name</td><td>$mothersName</td></tr>
+						$fathers_name_row
+						$mothers_name_row
+						$spouse_name_row
 					</tbody>
 				</table>
 			</div>

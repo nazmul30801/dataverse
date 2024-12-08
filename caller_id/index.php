@@ -35,15 +35,15 @@ if ($result->num_rows > 0) {
     $connection_id_list = substr($connection_id_list, 0, -2);
 
 
-    $name_list = sql_query("SELECT `id`, `fullName` FROM `main` WHERE id IN ($connection_id_list);");
+    $name_list = sql_query("SELECT `id`, `name` FROM `main` WHERE id IN ($connection_id_list);");
 
     $id_name_table = [];
     $options = "";
     $option1 = "";
     while ($row = $name_list->fetch_assoc()) {
-        $id_name_table += [$row["id"] => $row["fullName"]];
+        $id_name_table += [$row["id"] => $row["name"]];
         $options .= <<<HTML
-            <option value="{$row['id']}">{$row["fullName"]}</option>
+            <option value="{$row['id']}">{$row["name"]}</option>
         HTML;
     }
 

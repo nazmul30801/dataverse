@@ -9,38 +9,7 @@ $alerts = "";
 if (isset($_POST["submit"]) && isset($_POST["id"])) {
 	$id = $_POST["id"];
 
-	$form_data = array(
-		array("fullName", "full_name"),
-		array("nickName", "nick_name"),
-		array("email", "email"),
-		array("phoneNumber", "phone_number"),
-		array("presentStreet", "pre_addr_street"),
-		array("presentCity", "pre_addr_city"),
-		array("street", "street"),
-		array("_union", "union"),
-		array("subDistrict", "sub_dist"),
-		array("district", "dist"),
-		array("zip", "zip_code"),
-		array("state", "state"),
-		array("country", "country"),
-		array("gender", "gender"),
-		array("spouseID", "spouse_id"),
-		array("maritalStatus", "marital_status"),
-		array("eduLevel", "edu_level"),
-		array("eduGroup", "edu_group"),
-		array("nid", "nid"),
-		array("dob", "dob"),
-		array("bloodGroup", "blood_group"),
-		array("occupation", "occupation"),
-		array("religion", "religion"),
-		array("politicalView", "political_view"),
-		array("fathersID", "fathers_id"),
-		array("mothersID", "mothers_id"),
-		array("fb", "facebook"),
-		array("insta", "instagram"),
-		array("tiktok", "tiktok"),
-		array("about", "about")
-	);
+	$form_data = db_col_vs_form_col_array();
 	$update_list = "";
 	foreach ($form_data as $col) {
 		$form_col = isset($_POST[$col[1]]) == True ? $_POST[$col[1]] : "";
@@ -53,10 +22,10 @@ if (isset($_POST["submit"]) && isset($_POST["id"])) {
 	SQL;
 	if (sql_query($sql) === TRUE) {
 		$alerts .= make_alert("Data Inserted Successfully");
+		$id = $_POST["id"];
 		if (isset($_FILES["profileImage"]) && $_FILES["profileImage"]["tmp_name"] != "") {
 			$image = $_FILES["profileImage"];
 			// print_r($image);
-			$id = $_POST["id"];
 			$target_file = $root_dir . "img/profile/profile_" . $id . ".jpeg";
 
 			$uploadOk = 1;
@@ -98,7 +67,7 @@ if (isset($_POST["submit"]) && isset($_POST["id"])) {
 			if ($uploadOk == 0) {
 				$alerts .= make_alert("Sorry, your file was not uploaded.");
 			} else {
-				if (file_put_contents($target_file, $image["tmp_name"])) {
+				if (move_uploaded_file($image["tmp_name"], $target_file)) {
 					$alerts .= make_alert("Image uploaded successfully.");
 				} else {
 					$alerts .= make_alert("Error creating/replacing the file.");
@@ -153,7 +122,7 @@ if (isset($_POST["submit"]) && isset($_POST["id"])) {
 						</div>
 						<div class="col-md-6">
 							<input type="text" class="form-control" id="inputFullName" name="full_name"
-								required placeholder="Full Name"  value="{$row['fullName']}" />
+								required placeholder="Full Name"  value="{$row['name']}" />
 						</div>
 						<div class="col-md-6">
 							<input type="text" class="form-control" id="inputNickName" name="nick_name"
