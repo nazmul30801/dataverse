@@ -427,7 +427,7 @@ HTML;
 <html lang="en">
 
 <head>
-	<link rel="stylesheet" href="/css/cropper.min.css">
+	<link rel="stylesheet" href="assets/custom/css/cropper.min.css">
 	<?php echo meta_links(); ?>
 	<title><?php echo $title; ?></title>
 </head>
@@ -443,7 +443,7 @@ HTML;
 	<?php echo page_footer(); ?>
 
 	<!-- End Scripts -->
-	<script src="/js/cropper.min.js"></script>
+	<script src="assets/custom/js/cropper.min.js"></script>
 	<?php echo scripts(); ?>
 </body>
 

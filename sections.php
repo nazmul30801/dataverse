@@ -8,7 +8,7 @@ function meta_links()
 		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
 		<link rel="stylesheet" href="/assets/fontawesome/css/all.min.css">
 		<link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css">
-		<link rel="stylesheet" href="/css/style.css" />
+		<link rel="stylesheet" href="assets/custom/css/style.css" />
 	HTML;
 	return $meta_links;
 }
@@ -17,7 +17,7 @@ function scripts()
 {
 	$script = <<<HTML
 		<script src="/assets/bootstrap/js/bootstrap.bundle.min.js"></script>
-		<script src="/js/script.js"></script>
+		<script src="assets/custom/js/script.js"></script>
 	HTML;
 	return $script;
 }
