@@ -38,7 +38,9 @@ if ($result->num_rows > 0) {
     $name_list = sql_query("SELECT `id`, `name` FROM `main` WHERE id IN ($connection_id_list);");
 
     $id_name_table = [];
-    $options = "";
+    $options = <<<HTML
+            <option value="all">All</option>
+        HTML;
     $option1 = "";
     while ($row = $name_list->fetch_assoc()) {
         $id_name_table += [$row["id"] => $row["name"]];
@@ -120,11 +122,25 @@ if ($total_result > 0) {
             </tr>
         HTML;
     }
+    $search_reesult_body = <<<HTML
+        <table class="table table-hover">
+            <thead class="table-success">
+                <tr>
+                    <th>Name</th>
+                    <th>Number</th>
+                    <th>Connection with</th>
+                </tr>
+            </thead>
+            <tbody class="data-sheet-body">
+                $table_data
+            </tbody>
+        </table>
+    HTML;
 } else {
-    $table_data = <<<HTML
-        <tr>
-            <td colspan='4' style='padding:5rem 0;'>No Data</td>
-        </tr>
+    $search_reesult_body = <<<HTML
+        <div class="fs-5 text-center fw-bold text-secondary py-5">
+            <i class="fa-solid fa-circle-xmark"></i> No Contact Found
+        </div>
     HTML;
 }
 
@@ -133,7 +149,7 @@ if ($total_result > 0) {
 $search_box = <<<HTML
     <div id="search_box">
         <div class="card">
-            <div class="card-header">Search Box</div>
+            <div class="card-header fw-bold text-secondary">Search Box</div>
             <div class="card-body">
                 <form id="search_form" class="row g-3" method="get" enctype="multipart/form-data">
                     <div>
@@ -160,20 +176,12 @@ HTML;
 $search_result = <<<HTML
     <div id="search_result">
         <div class="card">
-            <div class="card-header">Result</div>
+            <div class="card-header fw-bold text-secondary">
+                Contact List
+                <span class="float-end">$total_result Result Found</span>
+            </div>
             <div class="card-body table-responsive">
-                <table class="table table-striped">
-                    <thead class="table-success">
-                        <tr>
-                            <th>Name</th>
-                            <th>Number</th>
-                            <th>Relative</th>
-                        </tr>
-                    </thead>
-                    <tbody class="data-sheet-body">
-                        $table_data
-                    </tbody>
-                </table>
+                $search_reesult_body
             </div>
         </div>
     </div>
@@ -210,7 +218,7 @@ HTML;
 <body>
     <!-- Body - Header -->
     <?php echo page_header(); ?>
-    
+
     <!-- Main Body  -->
     <?php echo $main_sectoin; ?>
 

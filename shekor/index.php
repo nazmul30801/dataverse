@@ -52,7 +52,11 @@ $gen_series = array_reverse($gen_series);
 
 
 // ------------------[ Family Data ]------------------
-$result = sql_query("SELECT * FROM `main` WHERE fathersID = " . $own["id"] . " ORDER BY id ASC;");
+if ($own["gender"] == 0) {
+    $result = sql_query("SELECT * FROM `main` WHERE mothersID = " . $own["id"] . " ORDER BY id ASC;");
+} else {
+    $result = sql_query("SELECT * FROM `main` WHERE fathersID = " . $own["id"] . " ORDER BY id ASC;");
+}
 if ($result->num_rows > 0) {
     // output data of each row
     while ($row = $result->fetch_assoc()) {
@@ -95,7 +99,20 @@ if ($result->num_rows > 0) {
     HTML;
 
 } else {
-    $family_table = '<div class="error-title">' . $own["name"] . ' এর পরিবারের কোনো তথ্য পাওয়া যায় নি</div>';
+
+    if ($own["gender"] == 0) {
+        $fid = $own["spouseID"];
+        $mid = $cid;
+    } else {
+        $fid = $cid;
+        $mid = $own["spouseID"];
+    }
+    $link = "/add-profile.php?fathers_id=$fid&mothers_id=$mid";
+    $family_table = <<<HTML
+        <p class="card-text">{$own["name"]} এর পরিবারে কোনো সদস্য পাওয়া যায় নি।</p>
+        <a href="$link" class="btn btn-success">Add Family Member</a>
+    HTML;
+    // $family_table = '<div class="error-title">' . $own["name"] . ' এর পরিবারের কোনো তথ্য পাওয়া যায় নি</div>';
 }
 
 

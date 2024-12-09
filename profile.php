@@ -99,7 +99,7 @@ if (isset($_GET["id"])) {
 					$mothers_row = $mothers_result->fetch_array();
 					$mothers_name = full_name($mothers_row);
 					$mothers_name = linked_profile($row["mothersID"], $mothers_name);
-					$mothers_name_row = "<tr><td>Fathers Name</td><td>$mothers_name</td></tr>";
+					$mothers_name_row = "<tr><td>Mothers Name</td><td>$mothers_name</td></tr>";
 				} else {
 					$mothers_name_row = "";
 				}

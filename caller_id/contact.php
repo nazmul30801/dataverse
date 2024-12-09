@@ -19,30 +19,43 @@ if (isset($_GET["id"])) {
             }
         }
     }
-}
-
-
-$section_contact = <<<HTML
+    $connection_profile = linked_profile($connection_id, $connection_name);
+    $section_contact = <<<HTML
     <section id="contact" class="fs-5">
         <div class="container">
-                <div class="card">
-                    <div class="card-header text-center fw-bold text-secondary">CONTACT</div>
-                    <div class="card-body">
-                        <div class="row border-bottom">
-                            <div class="col-4">Name</div>
-                            <div class="col-8">$name</div>
-                        </div>
-                        <div class="row border-bottom">
-                            <div class="col-4">Number</div>
-                            <div class="col-8">$number</div>
-                        </div>
-                        <div class="connection">Connection with <a href="/identity/index.php?search=$connection_id">$connection_name</a></div>
+            <div class="card">
+                <div class="card-header text-center fw-bold text-secondary">CONTACT</div>
+                <div class="card-body">
+                    <div class="row border-bottom">
+                        <div class="col-4">Name</div>
+                        <div class="col-8">$name</div>
                     </div>
-                    <!-- <div class="card-footer">Footer</div> -->
+                    <div class="row border-bottom">
+                        <div class="col-4">Number</div>
+                        <div class="col-8">$number</div>
+                    </div>
+                    <div class="connection">Connection with $connection_profile</div>
                 </div>
+                <!-- <div class="card-footer">Footer</div> -->
+            </div>
         </div>
     </section>
-HTML;
+    HTML;
+} else {
+    $section_contact = <<<HTML
+    <section id="contact" class="fs-5">
+        <div class="container">
+            <div class="card">
+                <div class="card-header text-center fw-bold text-secondary">CONTACT</div>
+                <div class="card-body">
+                    <div class="text-center fw-bold text-secondary py-5">Select a Contact form Caller ID</div>
+                </div>
+                <!-- <div class="card-footer">Footer</div> -->
+            </div>
+        </div>
+    </section>
+    HTML;
+}
 
 
 

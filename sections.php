@@ -195,7 +195,7 @@ function make_alert($text) {
 
 function db_col_vs_form_col_array() {
 	$form_data = array(
-		array("fullName", "full_name"),
+		array("name", "full_name"),
 		array("nickName", "nick_name"),
 		array("email", "email"),
 		array("phoneNumber", "phone_number"),

@@ -4,6 +4,8 @@ $root_dir = "";
 $page_id = 4;
 require $root_dir . "page_handler.php";
 
+$fathers_id = "";
+$mothers_id = "";
 $alerts = "";
 if (isset($_POST["submit"])) {
 
@@ -94,8 +96,10 @@ if (isset($_POST["submit"])) {
 
 
 	$connection->close();
-} else {
-	$alerts = "";
+} elseif (isset($_GET["fathers_id"]) && isset($_GET["mothers_id"]))  {
+	$fathers_id = $_GET["fathers_id"];
+	$mothers_id = $_GET["mothers_id"];
+	// $mothers_id = null;
 }
 
 
@@ -302,13 +306,13 @@ $add_profile_form = <<<HTML
 				<div class="col-xl-4  col-sm-6">
 					<div class="input-group mb-3">
 						<span class="input-group-text">Father's ID</span>
-						<input type="text" class="form-control" name="fathers_id" placeholder="Father's Dataverse ID" />
+						<input type="text" class="form-control" name="fathers_id" placeholder="Dataverse ID" value="$fathers_id" />
 					</div>
 				</div>
 				<div class="col-xl-4  col-sm-6">
 					<div class="input-group mb-3">
 						<span class="input-group-text">Mother's ID</span>
-						<input type="text" class="form-control" name="mothers_id" placeholder="Mother's Dataverse ID" />
+						<input type="text" class="form-control" name="mothers_id" placeholder="Dataverse ID" value="$mothers_id" />
 					</div>
 				</div>
 				<div class="col-12">
