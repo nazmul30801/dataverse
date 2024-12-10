@@ -12,14 +12,14 @@ $page = page("all");
 if (isset($_GET["id"])) {
 	$query = $_GET["id"];
 
-	// ----------[ All Data Collection ]----------
+	// |----------[ All Data Collection ]----------|
 	$search_engine = search_engine($query);
 	$result = sql_query("SELECT * FROM `main` WHERE `id`=$query");
 	if ($result->num_rows > 0) {
 		// output data of each row
 		while ($row = $result->fetch_assoc()) {
 
-			// ----------[ Basic Data Collection ]----------
+			// |----------[ Basic Data Collection ]----------|
 			$id = $row["id"];
 			$name = $row["name"];
 			$nick_name = $row["nickName"];
@@ -27,7 +27,7 @@ if (isset($_GET["id"])) {
 			$email = $row["email"];
 			$phoneNumber = $row["phoneNumber"];
 
-			// ----------[ Address Data Collection ]----------
+			// |----------[ Address Data Collection ]----------|
 			$preAddrStreet = $row["presentStreet"];
 			$preAddrCity = $row["presentCity"];
 			$street = $row["street"];
@@ -38,7 +38,7 @@ if (isset($_GET["id"])) {
 			$state = $row["state"];
 			$country = $row["country"];
 
-			// ----------[ Gender Data Collection ]----------
+			// |----------[ Gender Data Collection ]----------|
 			if ($row["gender"] == 0) {
 				$spouse_property_name = "Husband";
 				$gender = "Female";
@@ -47,13 +47,13 @@ if (isset($_GET["id"])) {
 				$gender = "Male";
 			}
 
-			// ----------[ Marital Status Data Collection ]----------
+			// |----------[ Marital Status Data Collection ]----------|
 			if ($row["maritalStatus"] == 0) {
 				$marital_status_row = "<tr><td>Marital Status</td><td>Unmarried</td></tr>";
 			} else {
 				$marital_status_row = "<tr><td>Marital Status</td><td>Married</td></tr>";
 			}
-
+			// Spouse Data
 			$spouse_result = sql_query("SELECT `name`, `nickName` FROM `main` WHERE `id`=" . $row["spouseID"] . ";");
 			if ($spouse_result->num_rows == 1) {
 				$spouse_row = $spouse_result->fetch_array();
@@ -65,17 +65,26 @@ if (isset($_GET["id"])) {
 			}
 
 
-			// ----------[ Work Data Collection ]----------
+			// |----------[ Work Data Collection ]----------|
 			$eduLevel = $row["eduLevel"];
 			$eduGroup = $row["eduGroup"];
 			$nid = $row["nid"];
+
+			// Date of Birth
 			$dob = $row["dob"];
+			if ($dob == "0000-00-00") {
+				$dob = "Unknown";
+			} else {
+				$dob = date_create($dob);
+				$dob = date_format($dob,"d F, Y");
+			}
+			
 			$blood_group = $row["bloodGroup"];
 			$occupation = $row["occupation"];
 			$religion = $row["religion"];
 			$politicalView = $row["politicalView"];
 
-			// ----------[ Fother Data Collection ]----------
+			// |----------[ Fother Data Collection ]----------|
 			if ($row["fathersID"] === null) {
 				$fathers_name_row = "";
 			} else {
@@ -90,7 +99,7 @@ if (isset($_GET["id"])) {
 				}
 			}
 
-			// ----------[ Mother Data Collection ]----------
+			// |----------[ Mother Data Collection ]----------|
 			if ($row["mothersID"] === null) {
 				$mothers_name_row = "";
 			} else {
@@ -105,11 +114,29 @@ if (isset($_GET["id"])) {
 				}
 			}
 
-			// ----------[ Others Data Collection ]----------
+			// |----------[ Others Data Collection ]----------|
 			$about = $row["about"];
-			$fb = $row["fb"];
-			$insta = $row["insta"];
-			$tiktok = $row["tiktok"];
+
+			// |----------[ Social Link Collection ]----------|
+			$social_links = "";
+			if ($row["fb"] != "") {
+				$social_links .= <<<HTML
+					<a target=”_blank” href="{$row['fb']}" class="btn btn-primary"><i class="fa-brands fa-facebook-f"></i> Facebook</a>
+				HTML;
+			}
+			if ($row["insta"] != "") {
+				$social_links .= <<<HTML
+					<a target=”_blank” href="{$row['insta']}" class="btn btn-info"><i class="fa-brands fa-instagram"></i> Instagram</a>
+				HTML;
+			}
+			if ($row["tiktok"] != "") {
+				$social_links .= <<<HTML
+					<a target=”_blank” href="{$row['tiktok']}" class="btn btn-danger"><i class="fa-brands fa-tiktok"></i> Tiktok</a>
+				HTML;
+			}
+			if ($social_links == "") {
+				$social_links = "No social media links are found";
+			}
 		}
 
 
@@ -146,6 +173,14 @@ if (isset($_GET["id"])) {
 			</div>
 		HTML;
 
+		$social_link_row = <<<HTML
+			<tr>
+				<td>Social Media</td>
+				<td class="social-buttons">
+					$social_links
+				</td>
+			</tr>
+		HTML;
 		$profile_own_data = <<<HTML
 			<div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
 				<table class="table table-hover">
@@ -163,14 +198,7 @@ if (isset($_GET["id"])) {
 						<tr><td>Occupation</td><td>$occupation</td></tr>
 						<tr><td>Religion</td><td>$religion</td></tr>
 						<tr><td>Political View</td><td>$politicalView</td></tr>
-						<tr>
-							<td>Social Media</td>
-							<td class="social-buttons">
-								<a target=”_blank” href="$fb" class="btn btn-primary"><i class="fa-brands fa-facebook-f"></i> Facebook</a>
-								<a target=”_blank” href="$insta" class="btn btn-info"><i class="fa-brands fa-instagram"></i> Instagram</a>
-								<a target=”_blank” href="$tiktok" class="btn btn-danger"><i class="fa-brands fa-tiktok"></i> Tiktok</a>
-							</td>
-						</tr>
+						$social_link_row
 					</tbody>
 				</table>
 			</div>

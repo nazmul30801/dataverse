@@ -30,7 +30,8 @@ section {
 }
 
 .card {
-	box-shadow: 1px 1px 5px 0 #00000024;
+	/* box-shadow: 1px 1px 5px 0 #00000024; */
+	box-shadow: var(--bs-box-shadow-sm);
 	/* margin: var(--bs-gutter-x) auto 0 auto; */
 	margin-top: var(--bs-gutter-x);
 	margin-bottom: 0;
