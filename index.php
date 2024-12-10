@@ -3,7 +3,7 @@
 $root_dir = "";
 $page_id = 1;
 require $root_dir . "page_handler.php";
-
+$page = page("all");
 $search_engine =  search_engine();
 $section_search_engine = <<<HTML
     <section id="search_engine">

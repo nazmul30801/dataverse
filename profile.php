@@ -4,7 +4,7 @@
 $root_dir = "";
 $page_id = 2;
 require $root_dir . "page_handler.php";
-
+$page = page("all");
 
 
 

@@ -1,5 +1,7 @@
 <?php
+
 require "function.php";
+
 function meta_links()
 {
 	$meta_links = <<<HTML
@@ -22,13 +24,29 @@ function scripts()
 	return $script;
 }
 
-	
+function page($page_name)
+{
+	$page = [
+		"home" => "/index.php",
+		"search" => "/search.php",
+		"profile" => "/profile.php",
+		"add-profile" => "/add-profile.php",
+		"update-profile" => "/update-profile.php",
+		"caller_id" => "/caller_id/index.php",
+		"contact" => "/caller_id/contact.php",
+		"shekor" => "/shekor/index.php"
+	];
+	if ($page_name == "all") {
+		return $page;
+	} else {
+		return $page[$page_name];
+	}
+}
 
-function menu() {
-	$add_profile = "/add-profile.php";
-	$caller_id = "/caller_id/index.php";
-	$shekor = "/shekor/index.php";
+function menu()
+{
 	$search_engine = search_engine();
+	$page = page("all");
 
 	return <<<HTML
 		<nav id="main_menu" class="navbar navbar-expand-lg bg-light border-bottom">
@@ -44,13 +62,13 @@ function menu() {
 				<div class="collapse navbar-collapse" id="navbarSupportedContent">
 					<ul class="navbar-nav me-auto mb-2 mb-lg-0">
 						<li class="nav-item">
-							<a class="nav-link" aria-current="page" href="$add_profile">Profile +</a>
+							<a class="nav-link" aria-current="page" href="{$page['add-profile']}">Profile +</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" aria-current="page" href="$caller_id">Caller ID</a>
+							<a class="nav-link" aria-current="page" href="{$page['caller_id']}">Caller ID</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" aria-current="page" href="$shekor">Shekor</a>
+							<a class="nav-link" aria-current="page" href="{$page['shekor']}">Shekor</a>
 						</li>
 					</ul>
 					$search_engine
@@ -60,9 +78,8 @@ function menu() {
 	HTML;
 }
 
-
-
-function page_header() {
+function page_header()
+{
 	$menu = menu();
 	return <<<HTML
 		<header>
@@ -72,8 +89,9 @@ function page_header() {
 	HTML;
 }
 
-function page_footer() {
-    return <<<HTML
+function page_footer()
+{
+	return <<<HTML
         <footer class="border-top">
             <div class="container">
                 <div id="copyright">
@@ -83,8 +101,6 @@ function page_footer() {
         </footer>
     HTML;
 }
-
-
 
 function search_engine($query = "")
 {
@@ -118,7 +134,6 @@ function full_search_engine($query = "")
 	return $full_search_engine;
 }
 
-
 function main_section_header($title)
 {
 	$main_section_header = <<<HTML
@@ -136,7 +151,6 @@ function main_section_header($title)
 	HTML;
 	return $main_section_header;
 }
-
 
 function search_item($link, $id, $name, $details)
 {
@@ -164,16 +178,19 @@ function search_item($link, $id, $name, $details)
 	return $search_item;
 }
 
-function profile_link($id) {
+function profile_link($id)
+{
 	return "/profile.php?id=$id\" class\"profile-link\"";
 }
-function linked_profile($id, $link_value) {
+
+function linked_profile($id, $link_value)
+{
 	$link = profile_link($id);
 	return "<a href=\"$link\">$link_value</a>";
 }
 
-
-function full_name($row) {
+function full_name($row)
+{
 	if ($row["nickName"] != "") {
 		$full_name = "{$row["name"]} ({$row["nickName"]})";
 	} else {
@@ -182,8 +199,8 @@ function full_name($row) {
 	return $full_name;
 }
 
-
-function make_alert($text) {
+function make_alert($text)
+{
 	return <<<HTML
 		<div class="alert alert-warning alert-dismissible fade show mt-3" role="alert">
 			$text <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -191,9 +208,8 @@ function make_alert($text) {
 	HTML;
 }
 
-
-
-function db_col_vs_form_col_array() {
+function db_col_vs_form_col_array()
+{
 	$form_data = array(
 		array("name", "full_name"),
 		array("nickName", "nick_name"),

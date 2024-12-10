@@ -4,11 +4,14 @@ $root_dir = "";
 $page_id = 4;
 require $root_dir . "page_handler.php";
 
+$page = page("all");
+
 $alerts = "";
 // If submit the Update Form -
 if (isset($_POST["submit"]) && isset($_POST["id"])) {
 	$id = $_POST["id"];
-
+	
+	// Make SQL for update profile
 	$form_data = db_col_vs_form_col_array();
 	$update_list = "";
 	foreach ($form_data as $col) {
@@ -20,9 +23,12 @@ if (isset($_POST["submit"]) && isset($_POST["id"])) {
 	$sql = <<<SQL
 		UPDATE `main` SET $update_list WHERE `id` = $id
 	SQL;
+
 	if (sql_query($sql) === TRUE) {
 		$alerts .= make_alert("Data Inserted Successfully");
 		$id = $_POST["id"];
+
+		// Profile Photo Upload
 		if (isset($_FILES["profileImage"]) && $_FILES["profileImage"]["tmp_name"] != "") {
 			$image = $_FILES["profileImage"];
 			// print_r($image);

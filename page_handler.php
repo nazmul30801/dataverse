@@ -8,15 +8,3 @@ if ($result && $row = $result->fetch_assoc()) {
 } else {
     $title = "Not Found";
 }
-
-
-$page = [
-    "home" => "/index.php",
-    "search" => "/search.php",
-    "profile" => "/profile.php",
-    "add-profile" => "/add-profile.php",
-    "update-profile" => "/update-profile.php",
-    "caller_id" => "/caller_id/index.php",
-    "contact" => "/caller_id/contact.php",
-    "shekor" => "/shekor/index.php"
-];
