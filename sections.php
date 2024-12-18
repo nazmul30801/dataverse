@@ -183,6 +183,13 @@ function profile_link($id)
 	return "/profile.php?id=$id\" class\"profile-link\"";
 }
 
+function contact_link($id, $text)
+{
+	return <<<HTML
+		<a href="/caller_id/contact.php?id=$id">$text</a>
+	HTML;
+}
+
 function linked_profile($id, $link_value)
 {
 	$link = profile_link($id);

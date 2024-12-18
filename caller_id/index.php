@@ -110,9 +110,11 @@ if ($total_result > 0) {
     $table_data = "";
     while ($row = $result->fetch_assoc()) {
         $connection_profile_link = profile_link($row["connectionID"]);
+        $contact_name = contact_link($row["id"], $row["name"]);
+        // $contact_number = contact_link($row["id"], $row["number"]);
         $table_data .= <<<HTML
             <tr>
-                <td>{$row["name"]}</td>
+                <td>$contact_name</td>
                 <td>{$row["number"]}</td>
                 <td>
                     <a

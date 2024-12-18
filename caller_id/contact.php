@@ -4,7 +4,7 @@ $root_dir = "../";
 $page_id = 4;
 require $root_dir . "page_handler.php";
 
-if (isset($_GET["id"])) {
+if (isset($_GET["id"]) && $_GET["id"] != "") {
     $result = sql_query("SELECT * FROM `caller_id` WHERE `id` = {$_GET["id"]}");
     if ($result->num_rows > 0) {
         while ($row = $result->fetch_assoc()) {
@@ -48,7 +48,16 @@ if (isset($_GET["id"])) {
             <div class="card">
                 <div class="card-header text-center fw-bold text-secondary">CONTACT</div>
                 <div class="card-body">
-                    <div class="text-center fw-bold text-secondary py-5">Select a Contact form Caller ID</div>
+                    <div class="text-center fw-bold text-secondary py-3">Select a Contact form Caller ID</div>
+                    <form class="row-cols-lg-auto g-3 align-items-center p-3">
+                        <div class="col-12">
+                            <label class="visually-hidden" for="inlineFormInputGroupUsername">Username</label>
+                            <div class="input-group">
+                                <input type="text" name="id" class="form-control"  placeholder="Contact ID"/>
+                                <input type="submit" class="input-group-text btn btn-primary" value="Go"/>
+                            </div>
+                        </div>
+                    </form>
                 </div>
                 <!-- <div class="card-footer">Footer</div> -->
             </div>
