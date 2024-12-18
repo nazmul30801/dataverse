@@ -152,10 +152,6 @@ section {
 
 
 /* --------------------[ Section = family  ]-------------------- */
-#search_box,
-#search_result {
-	/* margin-top: 1.5rem; */
-}
 
 
 /* --------------------[ Section = Search Engine  ]-------------------- */
@@ -168,12 +164,9 @@ section {
 
 
 /* --------------------[ Section = search_result  ]-------------------- */
-#search_result {
-	/* margin-bottom: var(--bs-gutter-x); */
-}
+
 #search_result .card {
 	max-width: 44rem;
-	/* margin: inherit auto; */
 
 }
 #search_result .result_item {
@@ -181,11 +174,9 @@ section {
 	display: block;
 	text-decoration: none;
 	color: inherit;
-	/* border-radius: 0.3rem; */
 }
 #search_result .result_item:hover {
 	background-color: var(--bs-light);
-	/* color: var(--bs-dark); */
 }
 #search_result .profile-image img {
 	display: inline-block;
@@ -238,7 +229,6 @@ section {
 /* --------------------[ Section = Footer ]-------------------- */
 footer {
 	background-color: var(--bs-light);
-	/* color: var(--bs-secondary); */
 	padding: var(--bs-gutter-x);
 	position: absolute;
 	width: 100%;
