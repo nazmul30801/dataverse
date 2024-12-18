@@ -54,7 +54,7 @@ if (isset($_GET["id"]) && $_GET["id"] != "") {
                             <label class="visually-hidden" for="inlineFormInputGroupUsername">Username</label>
                             <div class="input-group">
                                 <input type="text" name="id" class="form-control"  placeholder="Contact ID"/>
-                                <input type="submit" class="input-group-text btn btn-primary" value="Go"/>
+                                <input type="submit" class="btn btn-primary" value="Go"/>
                             </div>
                         </div>
                     </form>

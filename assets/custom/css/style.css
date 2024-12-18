@@ -257,3 +257,10 @@ footer #copyright {
 	color: var(--bs-light);
 	font-weight: bold;
 }
+
+
+
+/* --------------------[ Section = Profile ]-------------------- */
+#vcf_input_section .card {
+	max-width: 500px;
+}
