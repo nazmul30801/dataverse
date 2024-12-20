@@ -31,6 +31,7 @@ function page($page_name)
 		"search" => "/search.php",
 		"profile" => "/profile.php",
 		"add-profile" => "/add-profile.php",
+		"add-contact-list" => "/caller_id/add-contact-list.php",
 		"update-profile" => "/update-profile.php",
 		"caller_id" => "/caller_id/index.php",
 		"contact" => "/caller_id/contact.php",
@@ -66,6 +67,9 @@ function menu()
 						</li>
 						<li class="nav-item">
 							<a class="nav-link" aria-current="page" href="{$page['caller_id']}">Caller ID</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" aria-current="page" href="{$page['add-contact-list']}">Contact List +</a>
 						</li>
 						<li class="nav-item">
 							<a class="nav-link" aria-current="page" href="{$page['shekor']}">Shekor</a>
@@ -206,10 +210,10 @@ function full_name($row)
 	return $full_name;
 }
 
-function make_alert($text)
+function make_alert($text, $type = "primary")
 {
 	return <<<HTML
-		<div class="alert alert-warning alert-dismissible fade show mt-3" role="alert">
+		<div class="alert alert-$type alert-dismissible fade show mt-3 fw-bold" role="alert">
 			$text <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 		</div>
 	HTML;

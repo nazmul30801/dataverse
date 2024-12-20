@@ -19,7 +19,7 @@ function create_connection($database = "dataverse")
 
 function sql_query($sql, $database = "dataverse")
 {
-	
+
 	$connection = create_connection($database);
 	$result = $connection->query($sql);
 	$connection->close();
@@ -108,7 +108,7 @@ function upload($fileOnForm, $fileOnServer)
 
 
 // Functin : Phone Number Formater
-function formate_numb($number)
+function fix_tel($number)
 {
 	if (strpos(" " . $number, "-")) {
 		$number = str_replace("-", "", $number);
@@ -124,70 +124,9 @@ function formate_numb($number)
 }
 
 
-// Functin : VCF to SQL Converter
-function vcf_to_array($vcf_file)
-{
-	$file = fopen($vcf_file, "r") or die("Unable to open - (" . $vcf_file . ").");
-	$contacts = array("name" => array(), "number" => array());
-	$state = 0;
-	$name = "UnDefind";
-	while (!feof($file)) {
-		$line = fgets($file);
-		if ($state == 0 and strpos(" " . $line, "BEGIN:VCARD")) {
-			$state = 1;
-		} elseif ($state == 1 and strpos(" " . $line, "FN:")) {
-			$name = trim(substr($line, 3));
-			$state = 2;
-		} elseif ($state == 2 and (strpos(" " . $line, "TEL;CELL") or strpos(" " . $line, "TEL;HOME:"))) {
-			if (strpos(" " . $line, "TEL;CELL;PREF:")) {
-				$number = substr($line, 14);
-			} else {
-				$number = substr($line, 9);
-			}
-			$number = formate_numb($number);
-			array_push($contacts["name"], $name);
-			array_push($contacts["number"], $number);
-		} elseif ($state == 2 and strpos(" " . $line, "END:VCARD")) {
-			$state = 0;
-		}
-	}
-	return $contacts;
-}
-
-
-function insert_contacts($vcf_file, $get_from)
-{
-	$contacts = vcf_to_array($vcf_file);
-	$data = "";
-	for ($i = 0; $i < count($contacts["number"]); $i += 1) {
-		$data .= "\n(NULL, '" . $contacts["name"][$i] . "', '" . $contacts["number"][$i] . "', '" . $get_from . "'),";
-	}
-	$sql = "INSERT INTO `contacts` (`id`, `name`, `number`, `get_from`) \nVALUES " . substr_replace($data, ';', -1);
-
-	// Create SQL file
-	$sql_file = fopen("uploads/sql/" . $get_from . "'s Contacts.sql", "w") or die("Unable to Open File.");
-	fwrite($sql_file, $sql);
-	fclose($sql_file);
-
-	// Insert Data on Database
-	require "config/config.php";
-	if ($conn->query($sql) === TRUE) {
-		echo "Data inserted successfully.";
-		return 1;
-	} else {
-		echo "Unable to Insert Data !";
-		return 0;
-	}
-}
-
-
-
-
-
-
-
 //  specific session variable remover 
-function get_session_var ($variable_name) {
+function get_session_var($variable_name)
+{
 	session_start();
 	if (isset($_SESSION[$variable_name])) {
 		$variable = $_SESSION[$variable_name];
@@ -195,6 +134,63 @@ function get_session_var ($variable_name) {
 	} else {
 		$variable = "";
 	}
-	return $variable; 
+	return $variable;
 }
 
+
+
+// VCF File to Array
+function get_contacts($file_path)
+{
+	$vcf_contents = file_get_contents($file_path);
+
+	if ($vcf_contents === false) {
+		echo "Failed to read the VCF file.";
+		return [];
+	}
+
+	$contacts = [];
+	$vcards = explode("BEGIN:VCARD", $vcf_contents);
+
+	foreach ($vcards as $vcard) {
+		if (trim($vcard) == "") continue;
+
+		$name = "Unknown";
+		$number = null;
+
+		// Match FN field (Full Name)
+		if (preg_match('/FN(;CHARSET=UTF-8;ENCODING=QUOTED-PRINTABLE)?:([^\n]+)/', $vcard, $name_matches)) {
+			$name = trim($name_matches[2]);
+			if (isset($name_matches[1])) {
+				$name = quoted_printable_decode($name);
+			}
+			// Remove unwanted characters from the name
+			$name = preg_replace('/[\\\\;\'"]/u', '', $name);
+		}
+		$name = str_replace('.', ' ', $name);
+
+		// Match TEL field (Telephone Number)
+		if (preg_match('/TEL(;[^:]+)?:([^\n]+)/', $vcard, $number_matches)) {
+			$number = trim($number_matches[2]);
+		} else {
+			// Try to match TEL field without attributes
+			if (preg_match('/TEL:([^\n]+)/', $vcard, $number_matches)) {
+				$number = trim($number_matches[1]);
+			}
+		}
+
+		// Clean up the phone number by removing non-numeric characters and adding country code
+		if ($number) {
+			// Remove non-numeric characters
+			$number = preg_replace('/[^0-9]/', '', $number);
+			$number = fix_tel($number);
+		}
+
+		// Only add contact if number is present and valid
+		if ($number) {
+			$contacts[] = ['name' => $name, 'number' => $number];
+		}
+	}
+
+	return $contacts;
+}

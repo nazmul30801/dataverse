@@ -189,10 +189,11 @@ $search_result = <<<HTML
     </div>
 HTML;
 
-
+$alerts = get_session_var("alerts");
 $section_caller_id = <<<HTML
     <section id="caller_id">
         <div class="container">
+            $alerts
             <div class="row">
                 <div class="col-lg-4">$search_box</div>
                 <div class="col-lg-8">$search_result</div>
