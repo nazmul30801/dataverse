@@ -24,7 +24,7 @@ if (isset($_POST['submit'])) {
 		if ($vcf_file_error === 0) {
 			if ($vcf_file_size < 1000000) {
 				$vcf_file_name_new = "profile_" . $id . "_contacts.vcf";
-				$vcf_file_destination = $root_dir.'/caller_id/vcf/' . $vcf_file_name_new;
+				$vcf_file_destination = $root_dir . '/caller_id/vcf/' . $vcf_file_name_new;
 				if (move_uploaded_file($vcf_file_tmp_name, $vcf_file_destination)) {
 					// Add Contact List
 					$contacts = get_contacts($vcf_file_destination);
@@ -35,12 +35,11 @@ if (isset($_POST['submit'])) {
 						$sql .= " (NULL, '$name', '$number', '$id'),";
 					}
 					$sql = substr($sql, 0, -1) . ";";
-					// echo $sql;
 					if (sql_query($sql)) {
-						$alerts .= make_alert("Contacts added successfully.", "success");
-						// session_start();
-						$_SESSION['alerts'] = $alerts;
-						header("Location: $root_dir/caller_id/index.php?number=&name=&relative=$id&submit=Search");
+						$alerts .= make_alert("Contact list added successfully.", "success");
+						session_start();
+						$_SESSION["alerts"] .= $alerts;
+						header("Location: index.php?number=&name=&relative=$id&submit=Search");
 					} else {
 						$alerts .= make_alert("Failed to add contacts.", "danger");
 					}

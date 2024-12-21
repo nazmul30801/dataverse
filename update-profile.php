@@ -25,7 +25,7 @@ if (isset($_POST["submit"]) && isset($_POST["id"])) {
 	SQL;
 
 	if (sql_query($sql) === TRUE) {
-		$alerts .= make_alert("Data Inserted Successfully");
+		$alerts .= make_alert("Data Inserted Successfully", "success");
 		$id = $_POST["id"];
 
 		// Profile Photo Upload
@@ -40,24 +40,23 @@ if (isset($_POST["submit"]) && isset($_POST["id"])) {
 			// Check if image file is a actual image or fake image
 			$check = getimagesize($image["tmp_name"]);
 			if ($check !== false) {
-				$alerts .= make_alert("File is an image - " . $check["mime"] . ".");
+				$alerts .= make_alert("File is an image - " . $check["mime"] . ".", "success");
 				$uploadOk = 1;
 			} else {
-				$alerts .= make_alert("File is not an image.");
+				$alerts .= make_alert("File is not an image.", "warning");
 				$uploadOk = 0;
 			}
 
 
 			// Check file size
 			if ($image["size"] > 500000) {
-				$alerts .= make_alert("Sorry, your file is too large.");
+				$alerts .= make_alert("Sorry, your file is too large.", "warning");
 				$uploadOk = 0;
 			}
 
 			// Allow certain file formats
 			if ($imageFileType == "image/jpeg") {
-				$alerts .= make_alert("Sorry, only JPEG files are allowed.");
-				$upload_status[] = "";
+				$alerts .= make_alert("Sorry, only JPEG files are allowed.", "warning");
 				$uploadOk = 0;
 			}
 
@@ -66,30 +65,27 @@ if (isset($_POST["submit"]) && isset($_POST["id"])) {
 				// Unlink File from path
 				if (!unlink($target_file)) {
 					// Replace or Create File with new File
-					$alerts .= make_alert("Error deleting the file.");
+					$alerts .= make_alert("Error deleting the file.", "warning");
 					$uploadOk = 0;
 				}
 			}
 			if ($uploadOk == 0) {
-				$alerts .= make_alert("Sorry, your file was not uploaded.");
+				$alerts .= make_alert("Sorry, your file was not uploaded.", "warning");
 			} else {
 				if (move_uploaded_file($image["tmp_name"], $target_file)) {
-					$alerts .= make_alert("Image uploaded successfully.");
+					$alerts .= make_alert("Image uploaded successfully.", "success");
 				} else {
-					$alerts .= make_alert("Error creating/replacing the file.");
+					$alerts .= make_alert("Error creating/replacing the file.", "danger");
 				}
 			}
-			foreach ($upload_status as $status) {
-				$alerts .= make_alert($status);
-			}
 		}
-		$alerts .= make_alert("Profile Updated Successfully");
+		$alerts .= make_alert("Profile Updated Successfully", "success");
 		session_start();
 		$_SESSION["alerts"] .= $alerts;
 		header("Location: {$page["profile"]}?id=$id");
 		exit();
 	} else {
-		$alerts .= make_alert("Profile Updated Failed");
+		$alerts .= make_alert("Profile Updated Failed", "danger");
 	}
 } elseif (isset($_GET["id"])) {
 	$id = $_GET["id"];
@@ -380,11 +376,11 @@ if (isset($_POST["submit"]) && isset($_POST["id"])) {
 			</div>
 		HTML;
 	} else {
-		$alerts .= make_alert("No Profile found for this ID - $id");
+		$alerts .= make_alert("No Profile found for this ID - $id", "danger");
 		$add_profile_form = "";
 	}
 } else {
-	$alerts .= make_alert("No Profile Selected for Update");
+	$alerts .= make_alert("No Profile Selected for Update", "warning");
 	$add_profile_form = "";
 }
 
