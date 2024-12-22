@@ -47,6 +47,22 @@ function make_sql($search_term, $table, $columns_array)
 	}
 }
 
+// function get($data_column, $sql = "SELECT * FROM `main` WHERE `id` = 34;")
+function get_cell($sql = "SELECT * FROM `main` WHERE `id` = 34;")
+{
+	if ($result = sql_query($sql)) {
+		if ($result->num_rows > 0) {
+			$row = $result->fetch_row();
+			$cell_data = $row[0];
+		} else {
+			$cell_data = null;
+		}
+		return $cell_data;
+	} else {
+		return "SQL Error";
+	}
+}
+
 
 function view_section($section, $status = 1)
 {

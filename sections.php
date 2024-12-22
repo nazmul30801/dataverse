@@ -31,10 +31,10 @@ function page($page_name)
 		"search" => "/search.php",
 		"profile" => "/profile.php",
 		"add-profile" => "/add-profile.php",
-		"add-contact-list" => "/caller_id/add-contact-list.php",
 		"update-profile" => "/update-profile.php",
 		"caller_id" => "/caller_id/index.php",
 		"contact" => "/caller_id/contact.php",
+		"add-contact-list" => "/caller_id/add-contact-list.php",
 		"shekor" => "/shekor/index.php"
 	];
 	if ($page_name == "all") {
@@ -95,15 +95,20 @@ function page_header()
 
 function page_footer()
 {
+	$section_copyright = <<<HTML
+		<section id="copyright" class="py-3">
+			<div class="container">
+				<div id="copyright">
+					Copyright © 2025 | <span class="fw-bold">MD NAZMUL HAQUE</span> | All Right Reserved
+				</div>
+			</div>
+		</section>
+	HTML;
 	return <<<HTML
-        <footer class="border-top">
-            <div class="container">
-                <div id="copyright">
-                    Copyright © 2025 | <span class="fw-bold">MD NAZMUL HAQUE</span> | All Right Reserved
-                </div>
-            </div>
-        </footer>
-    HTML;
+		<footer class="border-top">
+			$section_copyright
+		</footer>
+	HTML;
 }
 
 function search_engine($query = "")

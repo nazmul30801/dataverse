@@ -159,7 +159,7 @@ if (isset($_POST["submit"]) && isset($_POST["id"])) {
 						<div class="col-xl-4 col-sm-6">
 							<div class="input-group mb-3">
 								<span class="input-group-text">City</span>
-								<input type="text" class="form-control" id="inputCity" placeholder="Dhaka" name="pre_addr_city" value="Chandpur"  value="{$row['presentCity']}" />
+								<input type="text" class="form-control" id="inputCity" placeholder="Dhaka" name="pre_addr_city" value="{$row['presentCity']}" />
 							</div>
 						</div>
 						<!-- Parmanent Address -->
