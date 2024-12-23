@@ -58,7 +58,7 @@ if (isset($_GET["search"]) && $_GET["search"] != "") {
 }
 
 $section_search_result = <<<HTML
-    <section id="search_result">
+    <section id="search_engine_result">
         <div class="container">
             <div class="card">
                 <div class="card-header">
@@ -75,7 +75,7 @@ HTML;
 
 $search_engine =  search_engine($query);
 $section_search_engine = <<<HTML
-    <section id="search_engine">
+    <section id="search_engine_from">
         <div class="container">
             <div class="row">
                 <div class="col-12">

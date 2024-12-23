@@ -165,20 +165,20 @@ section {
 
 /* --------------------[ Section = search_result  ]-------------------- */
 
-#search_result .card {
+#search_engine_result .card {
 	max-width: 44rem;
 
 }
-#search_result .result_item {
+#search_engine_result .result_item {
 	padding: 0.5rem;
 	display: block;
 	text-decoration: none;
 	color: inherit;
 }
-#search_result .result_item:hover {
+#search_engine_result .result_item:hover {
 	background-color: var(--bs-light);
 }
-#search_result .profile-image img {
+#search_engine_result .profile-image img {
 	display: inline-block;
 	max-width: 3rem;
 	max-height: 3rem;

@@ -4,7 +4,11 @@ $root_dir = "../";
 $page_id = 4;
 require $root_dir . "page_handler.php";
 
-
+$alerts = "";
+$name = "";
+$number = "";
+$relative = "";
+$contact_profile_id = "";
 if (isset($_GET["submit"])) {
 	$mode = "search";
 	$name = $_GET["name"];
@@ -14,34 +18,51 @@ if (isset($_GET["submit"])) {
 	} else {
 		$relative = "all";
 	}
-} else {
-	$name = "";
-	$number = "";
-	$relative = "";
-}
-
-if (isset($_GET["link"])) {
+} elseif (isset($_POST["link"])) {
 	$mode = "link";
-	$contact_profile_id = $_GET["profileID"];
 
-	// Fix Caller ID List
-	$caller_ids = $_GET["callerIDs"];
-	$caller_ids = explode(",", $caller_ids);
-	$ids = "";
-	foreach ($caller_ids as $caller_id) {
-		$caller_id = trim($caller_id);
-		$ids .= $caller_id . ", ";
+	$contact_profile_id = $_POST["profileID"];
+	if ($contact_profile_id == 0) {
+		$alerts = make_alert("Profile ID is Required", "Danger");
+		$mode = "none";
 	}
-	$caller_ids = substr($ids, 0, -4);
 
-	$sql = "UPDATE `caller_id` SET `profileID` = '$contact_profile_id' WHERE `id`  IN ($caller_ids);";
-	echo $sql;
+	// Filter caller_id_ keys
+	$caller_ids = array_filter($_POST, function ($key) {
+		return strpos($key, 'caller_id_') === 0;
+	}, ARRAY_FILTER_USE_KEY);
+	// Get the values for the filtered keys
+	$caller_ids = array_values($caller_ids);
+	// Convert array to comma-separated string
+	$caller_ids_str = implode(", ", $caller_ids);
+
+	$sql = "UPDATE `caller_id` SET `profileID` = '$contact_profile_id' WHERE `id`  IN ($caller_ids_str);";
+
+	// echo $sql;
 	if (sql_query($sql)) {
-		$alerts = make_alert("Profile Linked Successfully", "Success");
-		$name = "";
-	} else {
-		$alerts = make_alert("Profile Linking Failed", "Danger");
+		// Filter numbers keys
+		$numbers = array_filter($_POST, function ($key) {
+			return strpos($key, 'number_') === 0;
+		}, ARRAY_FILTER_USE_KEY);
+		// Get the values for the filtered keys
+		$numbers = array_values($numbers);
+		// Removes Duplicate Numbers
+		$numbers = array_unique($numbers);
+		// Convert array to comma-separated string
+		$numbers_str = implode(", ", $numbers);
+
+		$sql1 = "UPDATE `caller_id` SET `profileID` = '$contact_profile_id' WHERE `number`  IN ($numbers_str);";
+		// echo $sql1;
+		if (sql_query($sql1)) {
+
+			$alerts .= make_alert("Profile Linked Successfully", "success");
+			$name = "";
+		} else {
+			$alerts .= make_alert("Profile Linking Failed", "danger");
+		}
 	}
+} else {
+	$mode = "none";
 }
 
 
@@ -127,29 +148,44 @@ if ($condition == "1" and $relative == "all") {
 
 // ---------------------[ Data Collecton ]---------------------
 if ($mode == "link") {
-	$result = sql_query("SELECT * FROM `caller_id` WHERE `profileID` = $contact_profile_id ;");
+	$contact_result = sql_query("SELECT * FROM `caller_id` WHERE `profileID` = $contact_profile_id ;");
 } elseif ($mode == "search") {
-	$result = sql_query("SELECT * FROM `caller_id` WHERE $condition;");
+	$contact_result = sql_query("SELECT * FROM `caller_id` WHERE $condition;");
 }
 
-$total_result = $result->num_rows;
-if ($total_result > 0) {
-	$table_data = "";
-	$caller_ids = "";
-	while ($row = $result->fetch_assoc()) {
-		// Contact Profile Data
-		$contact_profile_id = $row["profileID"];
-		$contact_profile_name = get_cell("SELECT `name` FROM `main` WHERE `id` = $contact_profile_id;");
-		$contact_profile_name .= " ($contact_profile_id)";
-		$contact_profile_link = profile_link($contact_profile_id);
-		// Connection Profile Data
-		$connection_profile_link = profile_link($row["connectionID"]);
-		$contact_name = contact_link($row["id"], $row["name"]);
-		// $contact_number = contact_link($row["id"], $row["number"]);
-		$caller_id = $row["id"];
-		$caller_ids .= $caller_id . ", ";
-		$table_data .= <<<HTML
+$total_result = 0;
+if (isset($contact_result)) {
+	if ($contact_result->num_rows > 0) {
+		$total_result = $contact_result->num_rows;
+		$table_data = "";
+		$caller_ids = "";
+		$x = 0;
+		while ($row = $contact_result->fetch_assoc()) {
+			// Contact Profile Data
+			$contact_profile_id = $row["profileID"];
+			if ($contact_profile_id == 0) {
+				$contact_profile_name = "Not Linked";
+				$contact_profile_link = "#";
+			} else {
+				
+				$contact_profile_name = get_cell("SELECT `name` FROM `main` WHERE `id` = $contact_profile_id;");
+				$contact_profile_name .= " ($contact_profile_id)";
+				$contact_profile_link = profile_link($contact_profile_id);
+			}
+			// Connection Profile Data
+			$connection_profile_link = profile_link($row["connectionID"]);
+			$contact_name = contact_link($row["id"], $row["name"]);
+			// $contact_number = contact_link($row["id"], $row["number"]);
+			$caller_id = $row["id"];
+			$caller_ids .= $caller_id . ", ";
+			$table_data .= <<<HTML
 			<tr>
+				<td>
+					<div class="form-check">
+						<input class="form-check-input" type="checkbox" onchange="toggle('number_$x')" name="caller_id_$x" value="$caller_id" id="flexCheckDefault"  />
+					</div>
+					<input class="form-check-input d-none" type="checkbox" name="number_$x" value="{$row['number']}" id="number_$x"/>
+				</td>
 				<td>$caller_id</td>
 				<td>$contact_name</td>
 				<td>{$row["number"]}</td>
@@ -164,39 +200,53 @@ if ($total_result > 0) {
 					href="$contact_profile_link">$contact_profile_name</a>
 				</td>
 			</tr>
-		HTML;
-	}
-
-	$search_reesult_body = <<<HTML
-		<form id="search_form" class="row g-3 mb-3" method="get" enctype="multipart/form-data" action="caller_id-dvid.php">
+			HTML;
+			$x++;
+		}
+		
+		$search_reesult_body = <<<HTML
+		<form id="search_form" class="row g-3 mb-3" method="post" enctype="multipart/form-data" action="linker.php">
 			<div class="input-group flex-nowrap">
-				<span class="input-group-text" id="addon-wrapping">Caller IDs</span>
-				<input type="text" class="form-control" placeholder="234, 23, 2344, 2341, ...." name="callerIDs" value="$caller_ids" />
+				<!-- <span class="input-group-text" id="addon-wrapping">Caller IDs</span>
+				<input type="text" class="form-control" placeholder="234, 23, 2344, 2341, ...." name="callerIDs" value="$caller_ids" /> -->
 				<span class="input-group-text" id="addon-wrapping">Profile ID</span>
-				<input type="text" class="form-control" style="max-width: 75px" placeholder="233" name="profileID" value="$contact_profile_id" />
+				<input type="text" class="form-control" style="max-width: 75px" placeholder="234556" name="profileID" value="$contact_profile_id" />
 				<input class="btn btn-primary" type="submit" name="link" value="Link" />
 			</div>
+			<table class="table table-hover">
+				<thead class="table-success">
+					<tr>
+						<th>
+							<div class="form-check">
+								<input class="form-check-input" id="select_all" type="checkbox" value="" id="flexCheckDefault" />
+							</div>
+						</th>
+						<th>ID</th>
+						<th>Name</th>
+						<th>Number</th>
+						<th>Connection with</th>
+						<th>Profile</th>
+					</tr>
+				</thead>
+				<tbody class="data-sheet-body">
+					$table_data
+				</tbody>
+			</table>
 		</form>
-		<table class="table table-hover">
-			<thead class="table-success">
-				<tr>
-					<th>ID</th>
-					<th>Name</th>
-					<th>Number</th>
-					<th>Connection with</th>
-				</tr>
-			</thead>
-			<tbody class="data-sheet-body">
-				$table_data
-			</tbody>
-		</table>
-	HTML;
-} else {
-	$search_reesult_body = <<<HTML
+		HTML;
+	} else {
+		$search_reesult_body = <<<HTML
 		<div class="fs-5 text-center fw-bold text-secondary py-5">
 			<i class="fa-solid fa-circle-xmark"></i> No Contact Found
 		</div>
 	HTML;
+	}
+} else {
+	$search_reesult_body = <<<HTML
+	<div class="fs-5 text-center fw-bold text-secondary py-5">
+		<i class="fa-solid fa-circle-xmark"></i> No Contact Found
+	</div>
+HTML;
 }
 
 
@@ -242,7 +292,7 @@ $search_result = <<<HTML
 	</div>
 HTML;
 
-$alerts = get_session_var("alerts");
+$alerts .= get_session_var("alerts");
 $section_caller_id = <<<HTML
 	<section id="caller_id">
 		<div class="container">
@@ -283,6 +333,17 @@ HTML;
 
 	<!-- End Scripts -->
 	<?php echo scripts(); ?>
+	<script>
+		document.getElementById('select_all').addEventListener('change', function() {
+			var checkboxes = document.querySelectorAll('.data-sheet-body .form-check-input[type="checkbox"]');
+			for (var checkbox of checkboxes) {
+				checkbox.checked = this.checked;
+			}
+		});
+		function toggle(html_id) {
+			document.getElementById(html_id).checked = !document.getElementById(html_id).checked;
+		}
+	</script>
 </body>
 
 </html>

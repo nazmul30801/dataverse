@@ -33,6 +33,7 @@ function page($page_name)
 		"add-profile" => "/add-profile.php",
 		"update-profile" => "/update-profile.php",
 		"caller_id" => "/caller_id/index.php",
+		"linker" => "/caller_id/linker.php",
 		"contact" => "/caller_id/contact.php",
 		"add-contact-list" => "/caller_id/add-contact-list.php",
 		"shekor" => "/shekor/index.php"
@@ -67,6 +68,9 @@ function menu()
 						</li>
 						<li class="nav-item">
 							<a class="nav-link" aria-current="page" href="{$page['caller_id']}">Caller ID</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" aria-current="page" href="{$page['linker']}">Linker</a>
 						</li>
 						<li class="nav-item">
 							<a class="nav-link" aria-current="page" href="{$page['add-contact-list']}">Contact List +</a>
